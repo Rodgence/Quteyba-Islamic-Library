@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #073B33;
+  --color-primary-light: rgb(7 59 51 / 5%);
+  --color-primary-muted: rgb(7 59 51 / 10%);
+  --color-secondary: #E91E63;
+  --color-black: #101828;
+  --color-border: rgb(16 24 40 / 10%);
+  --font-sans: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', sans-serif;
+}
