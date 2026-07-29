@@ -3,6 +3,7 @@ import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps, Paginated, Opportunity } from '@/Types'
 import { Search, Filter, ArrowRight, Calendar, MapPin, Clock } from 'lucide-react'
 import { useState } from 'react'
+import { getLocalized } from '@/lib/localization'
 
 interface FilterOption {
   name: string
@@ -56,16 +57,6 @@ const sortOptions = [
   { name: 'Oldest', slug: 'oldest' },
   { name: 'Deadline Soonest', slug: 'deadline' },
 ]
-
-function getLocalized(value: unknown): string {
-  if (typeof value === 'object' && value !== null && 'en' in value) {
-    return String((value as Record<string, string>).en)
-  }
-  if (typeof value === 'object' && value !== null && 'ar' in value) {
-    return String((value as Record<string, string>).ar)
-  }
-  return String(value ?? '')
-}
 
 function getStatusLabel(status: string): { label: string; className: string } {
   if (status === 'closed' || status === 'archived') {
@@ -161,7 +152,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
               >
                 <option value="">Opportunity Type</option>
                 {types.map((t) => (
-                  <option key={t.slug} value={t.slug}>{t.name}</option>
+                  <option key={t.slug} value={t.slug}>{getLocalized(t.name)}</option>
                 ))}
               </select>
 
@@ -172,7 +163,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
               >
                 <option value="">Country</option>
                 {countries.map((c) => (
-                  <option key={c.slug} value={c.slug}>{c.name}</option>
+                  <option key={c.slug} value={c.slug}>{getLocalized(c.name)}</option>
                 ))}
               </select>
 
@@ -183,7 +174,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
               >
                 <option value="">Category</option>
                 {categories.map((c) => (
-                  <option key={c.slug} value={c.slug}>{c.name}</option>
+                  <option key={c.slug} value={c.slug}>{getLocalized(c.name)}</option>
                 ))}
               </select>
 
@@ -253,8 +244,8 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                 const statusInfo = getStatusLabel(opportunity.status)
                 const oppTitle = getLocalized(opportunity.title)
                 const oppExcerpt = getLocalized(opportunity.excerpt)
-                const typeName = opportunity.opportunity_type?.name
-                const countryName = opportunity.country?.name
+                const typeName = getLocalized(opportunity.opportunity_type?.name)
+                const countryName = getLocalized(opportunity.country?.name)
                 const imageUrl = opportunity.featured_image?.url
 
                 return (

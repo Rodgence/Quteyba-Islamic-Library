@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\NormalizedJson;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,14 +21,14 @@ class Service extends Model
     protected function casts(): array
     {
         return [
-            'title' => 'json',
-            'short_description' => 'json',
-            'content' => 'json',
-            'deliverables' => 'json',
-            'required_documents' => 'json',
-            'process_steps' => 'json',
-            'faq' => 'json',
-            'seo_description' => 'json',
+            'title' => NormalizedJson::class,
+            'short_description' => NormalizedJson::class,
+            'content' => NormalizedJson::class,
+            'deliverables' => NormalizedJson::class,
+            'required_documents' => NormalizedJson::class,
+            'process_steps' => NormalizedJson::class,
+            'faq' => NormalizedJson::class,
+            'seo_description' => NormalizedJson::class,
             'price' => 'decimal:2',
             'is_active' => 'boolean',
         ];

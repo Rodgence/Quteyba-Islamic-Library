@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\NormalizedJson;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -17,9 +18,9 @@ class Course extends Model
     protected function casts(): array
     {
         return [
-            'name' => 'json',
-            'description' => 'json',
-            'seo_description' => 'json',
+            'name' => NormalizedJson::class,
+            'description' => NormalizedJson::class,
+            'seo_description' => NormalizedJson::class,
             'price' => 'decimal:2',
         ];
     }

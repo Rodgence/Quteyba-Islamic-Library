@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\NormalizedJson;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -25,16 +26,16 @@ class Opportunity extends Model
     protected function casts(): array
     {
         return [
-            'title' => 'json',
-            'excerpt' => 'json',
-            'content' => 'json',
-            'original_content' => 'json',
-            'benefits' => 'json',
-            'eligibility' => 'json',
-            'required_documents' => 'json',
-            'application_process' => 'json',
-            'important_notes' => 'json',
-            'seo_description' => 'json',
+            'title' => NormalizedJson::class,
+            'excerpt' => NormalizedJson::class,
+            'content' => NormalizedJson::class,
+            'original_content' => NormalizedJson::class,
+            'benefits' => NormalizedJson::class,
+            'eligibility' => NormalizedJson::class,
+            'required_documents' => NormalizedJson::class,
+            'application_process' => NormalizedJson::class,
+            'important_notes' => NormalizedJson::class,
+            'seo_description' => NormalizedJson::class,
             'is_featured' => 'boolean',
             'application_deadline' => 'date',
             'published_at' => 'datetime',

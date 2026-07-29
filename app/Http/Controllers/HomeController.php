@@ -31,9 +31,9 @@ class HomeController extends Controller
             ->get()
             ->map(fn ($s) => [
                 'id' => $s->id,
-                'title' => $s->title,
+                'title' => $this->localizedText($s->title),
                 'slug' => $s->slug,
-                'short_description' => $s->short_description,
+                'short_description' => $this->localizedText($s->short_description),
                 'icon' => $s->icon,
                 'featured_image' => $s->featuredImage ? ['url' => $s->featuredImage->url] : null,
             ]);
@@ -60,11 +60,11 @@ class HomeController extends Controller
     {
         return [
             'id' => $o->id,
-            'title' => $o->title,
+            'title' => $this->localizedText($o->title),
             'slug' => $o->slug,
-            'excerpt' => $o->excerpt,
-            'opportunity_type' => $o->opportunityType ? ['name' => $o->opportunityType->name, 'slug' => $o->opportunityType->slug] : null,
-            'country' => $o->country ? ['name' => $o->country->name, 'slug' => $o->country->slug] : null,
+            'excerpt' => $this->localizedText($o->excerpt),
+            'opportunity_type' => $o->opportunityType ? ['name' => $this->localizedText($o->opportunityType->name), 'slug' => $o->opportunityType->slug] : null,
+            'country' => $o->country ? ['name' => $this->localizedText($o->country->name), 'slug' => $o->country->slug] : null,
             'featured_image' => $o->featuredImage ? ['url' => $o->featuredImage->url, 'alt' => $o->featuredImage->alt_text] : null,
             'application_deadline' => $o->application_deadline?->format('Y-m-d'),
             'funding_type' => $o->funding_type,
@@ -72,5 +72,28 @@ class HomeController extends Controller
             'is_featured' => $o->is_featured,
             'published_at' => $o->published_at?->format('Y-m-d'),
         ];
+    }
+
+    private function localizedText(mixed $value): string
+    {
+        for ($depth = 0; $depth < 3; $depth++) {
+            if (is_array($value)) {
+                $value = $value['en'] ?? $value['ar'] ?? reset($value) ?: '';
+                continue;
+            }
+
+            if (is_string($value)) {
+                $decoded = json_decode($value, true);
+
+                if (json_last_error() === JSON_ERROR_NONE && (is_array($decoded) || is_string($decoded))) {
+                    $value = $decoded;
+                    continue;
+                }
+            }
+
+            break;
+        }
+
+        return is_scalar($value) ? (string) $value : '';
     }
 }

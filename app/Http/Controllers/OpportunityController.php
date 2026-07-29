@@ -161,7 +161,7 @@ class OpportunityController extends Controller
             'related' => $related,
             'seo' => [
                 'title' => $title,
-                'description' => $opportunity->excerpt['ar'] ?? '',
+                'description' => $opportunity->excerpt['en'] ?? $opportunity->excerpt['ar'] ?? '',
             ],
         ]);
     }

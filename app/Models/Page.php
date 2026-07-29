@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\NormalizedJson;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
@@ -15,9 +16,9 @@ class Page extends Model
     protected function casts(): array
     {
         return [
-            'title' => 'json',
-            'content' => 'json',
-            'seo_description' => 'json',
+            'title' => NormalizedJson::class,
+            'content' => NormalizedJson::class,
+            'seo_description' => NormalizedJson::class,
         ];
     }
 

@@ -24,7 +24,7 @@ class HandleInertiaRequests extends Middleware
             'ziggy' => fn () => [
                 ...$request->user()?->toArray() ?? [],
             ],
-            'locale' => 'ar',
+            'locale' => 'en',
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

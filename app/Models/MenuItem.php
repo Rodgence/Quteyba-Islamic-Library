@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\NormalizedJson;
 use Illuminate\Database\Eloquent\Model;
 
 class MenuItem extends Model
@@ -15,7 +16,7 @@ class MenuItem extends Model
     protected function casts(): array
     {
         return [
-            'title' => 'json',
+            'title' => NormalizedJson::class,
             'is_active' => 'boolean',
         ];
     }

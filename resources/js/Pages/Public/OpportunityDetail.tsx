@@ -11,13 +11,14 @@ import {
   ExternalLink,
   MessageCircle,
 } from 'lucide-react'
+import { getLocalized } from '@/lib/localization'
 
 interface RelatedOpportunity {
-  title: string
+  title: unknown
   slug: string
-  excerpt: string
-  opportunity_type: string
-  country: string
+  excerpt: unknown
+  opportunity_type: { name?: unknown } | string | null
+  country: { name?: unknown } | string | null
   featured_image: { url: string; alt_text: string | null } | null
   application_deadline: string | null
   status: string
@@ -33,16 +34,6 @@ interface SEOProps {
 interface MediaImage {
   url: string
   alt_text: string | null
-}
-
-type JsonField = string | { ar?: string; en?: string } | null | undefined
-
-function parseJsonField(field: JsonField): string {
-  if (!field) return ''
-  if (typeof field === 'string') return field
-  if (typeof field === 'object' && field.en) return field.en
-  if (typeof field === 'object' && field.ar) return field.ar
-  return ''
 }
 
 function getImageUrl(image: MediaImage | null | undefined): string | null {
@@ -79,17 +70,17 @@ export default function OpportunityDetail({
 }) {
   const opp = opportunity as Record<string, unknown>
 
-  const title = parseJsonField(opp.title as JsonField)
-  const content = parseJsonField(opp.content as JsonField)
-  const excerpt = parseJsonField(opp.excerpt as JsonField)
-  const benefits = parseJsonField(opp.benefits as JsonField)
-  const eligibility = parseJsonField(opp.eligibility as JsonField)
-  const requiredDocuments = parseJsonField(opp.required_documents as JsonField)
-  const applicationProcess = parseJsonField(opp.application_process as JsonField)
-  const importantNotes = parseJsonField(opp.important_notes as JsonField)
+  const title = getLocalized(opp.title)
+  const content = getLocalized(opp.content)
+  const excerpt = getLocalized(opp.excerpt)
+  const benefits = getLocalized(opp.benefits)
+  const eligibility = getLocalized(opp.eligibility)
+  const requiredDocuments = getLocalized(opp.required_documents)
+  const applicationProcess = getLocalized(opp.application_process)
+  const importantNotes = getLocalized(opp.important_notes)
 
-  const opportunityType = ((opp.opportunity_type as Record<string, unknown>)?.name as string) || ''
-  const countryName = ((opp.country as Record<string, unknown>)?.name as string) || ''
+  const opportunityType = getLocalized((opp.opportunity_type as Record<string, unknown>)?.name)
+  const countryName = getLocalized((opp.country as Record<string, unknown>)?.name)
   const organization = (opp.organization as string) || ''
   const fundingType = (opp.funding_type as string) || ''
   const educationLevel = (opp.education_level as string) || ''
@@ -409,6 +400,16 @@ export default function OpportunityDetail({
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => {
                 const itemDeadlineClosed = isClosed(item.application_deadline, item.status)
+                const itemTitle = getLocalized(item.title)
+                const itemExcerpt = getLocalized(item.excerpt)
+                const itemType = getLocalized(
+                  typeof item.opportunity_type === 'object'
+                    ? item.opportunity_type?.name
+                    : item.opportunity_type,
+                )
+                const itemCountry = getLocalized(
+                  typeof item.country === 'object' ? item.country?.name : item.country,
+                )
                 return (
                   <Link
                     key={item.slug}
@@ -419,7 +420,7 @@ export default function OpportunityDetail({
                       {getImageUrl(item.featured_image) ? (
                         <img
                           src={getImageUrl(item.featured_image)!}
-                          alt={getImageAlt(item.featured_image) || item.title}
+                          alt={getImageAlt(item.featured_image) || itemTitle}
                           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       ) : (
@@ -430,9 +431,9 @@ export default function OpportunityDetail({
                     </div>
                     <div className="flex flex-1 flex-col p-4">
                       <div className="mb-2 flex items-center gap-2">
-                        {item.opportunity_type && (
+                        {itemType && (
                           <span className="rounded-lg bg-[#073B33]/10 px-2 py-0.5 text-[11px] font-semibold text-[#073B33]">
-                            {item.opportunity_type}
+                            {itemType}
                           </span>
                         )}
                         {itemDeadlineClosed && (
@@ -442,16 +443,16 @@ export default function OpportunityDetail({
                         )}
                       </div>
                       <h3 className="mb-1 line-clamp-2 text-base font-bold text-gray-900 group-hover:text-[#E91E63]">
-                        {item.title}
+                        {itemTitle}
                       </h3>
-                      {item.excerpt && (
-                        <p className="mb-3 line-clamp-2 text-sm text-gray-500">{item.excerpt}</p>
+                      {itemExcerpt && (
+                        <p className="mb-3 line-clamp-2 text-sm text-gray-500">{itemExcerpt}</p>
                       )}
                       <div className="mt-auto flex items-center gap-2 text-xs text-gray-400">
-                        {item.country && (
+                        {itemCountry && (
                           <span className="flex items-center gap-1">
                             <MapPin className="h-3 w-3" />
-                            {item.country}
+                            {itemCountry}
                           </span>
                         )}
                         {item.application_deadline && (

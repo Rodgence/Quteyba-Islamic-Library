@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react'
 import { ArrowRight, BookOpen, GraduationCap, Briefcase, Globe, MessageCircle, Calendar, MapPin, Clock, Wrench } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import { Head } from '@inertiajs/react'
+import { getLocalized } from '@/lib/localization'
 
 interface HomeProps {
   featured: any[]
@@ -26,13 +27,6 @@ const steps = [
   { step: 3, title: 'Submit your application', description: 'Send your application to the granting body and track its status' },
   { step: 4, title: 'Get started', description: 'Receive your acceptance and begin your academic or professional journey' },
 ]
-
-function getLocalized(value: any): string {
-  if (typeof value === 'string') return value
-  if (value?.en) return value.en
-  if (value?.ar) return value.ar
-  return ''
-}
 
 export default function HomePage({ featured, latest, services, stats, seo }: HomeProps) {
   const statIcons = [BookOpen, Globe, GraduationCap]

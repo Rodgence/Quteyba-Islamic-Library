@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\NormalizedJson;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -11,7 +12,7 @@ class OpportunityType extends Model
 
     protected function casts(): array
     {
-        return ['name' => 'json'];
+        return ['name' => NormalizedJson::class];
     }
 
     public function opportunities(): HasMany

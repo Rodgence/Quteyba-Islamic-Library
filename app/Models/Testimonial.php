@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\NormalizedJson;
 use Illuminate\Database\Eloquent\Model;
 
 class Testimonial extends Model
@@ -14,7 +15,7 @@ class Testimonial extends Model
     protected function casts(): array
     {
         return [
-            'content' => 'json',
+            'content' => NormalizedJson::class,
             'is_active' => 'boolean',
         ];
     }
