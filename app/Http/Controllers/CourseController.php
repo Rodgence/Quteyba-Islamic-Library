@@ -28,8 +28,8 @@ class CourseController extends Controller
         return Inertia::render('Public/Courses', [
             'courses' => $courses,
             'seo' => [
-                'title' => 'الدورات | مكتبة قتيبة الإسلامية',
-                'description' => 'دورات في اللغات العربية والإنجليزية والألمانية والفرنسية والإسبانية واليابانية.',
+                'title' => 'Courses | Quteyba Islamic Library',
+                'description' => 'Courses in Arabic, English, German, French, Spanish, and Japanese.',
             ],
         ]);
     }
@@ -67,8 +67,8 @@ class CourseController extends Controller
                 'price_currency' => $c->price_currency,
             ]),
             'seo' => [
-                'title' => ($course->name['ar'] ?? '') . ' | مكتبة قتيبة الإسلامية',
-                'description' => $course->description['ar'] ?? '',
+                'title' => ($course->name['en'] ?? $course->name['ar'] ?? '') . ' | Quteyba Islamic Library',
+                'description' => $course->description['en'] ?? $course->description['ar'] ?? '',
             ],
         ]);
     }

@@ -32,7 +32,7 @@ interface Props {
 function parseAr(value: string): string {
   try {
     const parsed = JSON.parse(value)
-    return parsed?.ar || ''
+    return parsed?.en || parsed?.ar || ''
   } catch {
     return value || ''
   }
@@ -43,8 +43,8 @@ function parseJsonArray(value: string | null): string[] {
   try {
     const parsed = JSON.parse(value)
     if (Array.isArray(parsed)) {
-      return parsed.map((item: string | { ar?: string }) =>
-        typeof item === 'string' ? item : (item?.ar || '')
+      return parsed.map((item: string | { ar?: string; en?: string }) =>
+        typeof item === 'string' ? item : (item?.en || item?.ar || '')
       )
     }
     return []
@@ -62,8 +62,8 @@ function parseFaq(value: string | null): { question: string; answer: string }[] 
         const q = typeof item.question === 'string' ? JSON.parse(item.question) : item.question
         const a = typeof item.answer === 'string' ? JSON.parse(item.answer) : item.answer
         return {
-          question: q?.ar || item.question || '',
-          answer: a?.ar || item.answer || '',
+          question: q?.en || q?.ar || item.question || '',
+          answer: a?.en || a?.ar || item.answer || '',
         }
       })
     }
@@ -99,9 +99,9 @@ export default function ServiceDetailPage({ service }: Props) {
       <div className="bg-primary-light py-8">
         <div className="mx-auto max-w-7xl px-4">
           <nav className="mb-4 flex items-center gap-2 text-sm text-[#101828]/60">
-            <Link href="/" className="hover:text-[#073B33]">الرئيسية</Link>
+            <Link href="/" className="hover:text-[#073B33]">Home</Link>
             <span>/</span>
-            <Link href="/services" className="hover:text-[#073B33]">الخدمات</Link>
+            <Link href="/services" className="hover:text-[#073B33]">Services</Link>
             <span>/</span>
             <span className="text-[#101828]">{parseAr(service.title)}</span>
           </nav>
@@ -130,7 +130,7 @@ export default function ServiceDetailPage({ service }: Props) {
 
             {deliverables.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-[#101828]">المخرجات</h2>
+                <h2 className="mb-3 text-lg font-semibold text-[#101828]">Deliverables</h2>
                 <ul className="space-y-2">
                   {deliverables.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-[#101828]/70">
@@ -144,7 +144,7 @@ export default function ServiceDetailPage({ service }: Props) {
 
             {requiredDocs.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-[#101828]">المستندات المطلوبة</h2>
+                <h2 className="mb-3 text-lg font-semibold text-[#101828]">Required Documents</h2>
                 <ul className="space-y-2">
                   {requiredDocs.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-[#101828]/70">
@@ -158,7 +158,7 @@ export default function ServiceDetailPage({ service }: Props) {
 
             {processSteps.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-[#101828]">خطوات العملية</h2>
+                <h2 className="mb-3 text-lg font-semibold text-[#101828]">Process Steps</h2>
                 <ol className="space-y-3">
                   {processSteps.map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-[#101828]/70">
@@ -174,7 +174,7 @@ export default function ServiceDetailPage({ service }: Props) {
 
             {faqItems.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-[#101828]">الأسئلة الشائعة</h2>
+                <h2 className="mb-3 text-lg font-semibold text-[#101828]">Frequently Asked Questions</h2>
                 <div className="space-y-2">
                   {faqItems.map((item, i) => (
                     <div key={i} className="overflow-hidden rounded-xl border border-border">
@@ -197,15 +197,15 @@ export default function ServiceDetailPage({ service }: Props) {
             )}
 
             <div className="rounded-2xl border border-border bg-white p-6">
-              <h2 className="mb-4 text-lg font-semibold text-[#101828]">إرسال طلب خدمة</h2>
+              <h2 className="mb-4 text-lg font-semibold text-[#101828]">Request This Service</h2>
               {submitted ? (
-                <p className="text-sm font-medium text-[#073B33]">تم إرسال طلبك بنجاح. سنتواصل معك قريباً.</p>
+                <p className="text-sm font-medium text-[#073B33]">Your request has been submitted successfully. We'll be in touch soon.</p>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <input
                       type="text"
-                      placeholder="الاسم"
+                      placeholder="Name"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       required
@@ -215,7 +215,7 @@ export default function ServiceDetailPage({ service }: Props) {
                   <div>
                     <input
                       type="email"
-                      placeholder="البريد الإلكتروني"
+                      placeholder="Email"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       required
@@ -225,7 +225,7 @@ export default function ServiceDetailPage({ service }: Props) {
                   <div>
                     <input
                       type="tel"
-                      placeholder="رقم الهاتف"
+                      placeholder="Phone Number"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
                       className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
@@ -233,7 +233,7 @@ export default function ServiceDetailPage({ service }: Props) {
                   </div>
                   <div>
                     <textarea
-                      placeholder="الرسالة"
+                      placeholder="Message"
                       rows={3}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -244,7 +244,7 @@ export default function ServiceDetailPage({ service }: Props) {
                     type="submit"
                     className="w-full rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#052e28]"
                   >
-                    إرسال الطلب
+                    Send Request
                   </button>
                 </form>
               )}
@@ -254,26 +254,26 @@ export default function ServiceDetailPage({ service }: Props) {
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-6">
               <div className="rounded-2xl border border-border bg-white p-5">
-                <h3 className="mb-4 text-sm font-semibold text-[#101828]">معلومات الخدمة</h3>
+                <h3 className="mb-4 text-sm font-semibold text-[#101828]">Service Information</h3>
                 <div className="space-y-3 text-sm">
                   {service.price !== null && service.price !== undefined && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[#101828]/60">السعر</span>
+                      <span className="text-[#101828]/60">Price</span>
                       <span className="font-semibold text-[#073B33]">
-                        {service.price} {service.price_currency || 'دولار'}
+                        {service.price} {service.price_currency || 'USD'}
                       </span>
                     </div>
                   )}
                   {deliverables.length > 0 && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[#101828]/60">المخرجات</span>
-                      <span className="font-medium text-[#101828]">{deliverables.length} عناصر</span>
+                      <span className="text-[#101828]/60">Deliverables</span>
+                      <span className="font-medium text-[#101828]">{deliverables.length} items</span>
                     </div>
                   )}
                   {requiredDocs.length > 0 && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[#101828]/60">المستندات</span>
-                      <span className="font-medium text-[#101828]">{requiredDocs.length} مستندات</span>
+                      <span className="text-[#101828]/60">Documents</span>
+                      <span className="font-medium text-[#101828]">{requiredDocs.length} documents</span>
                     </div>
                   )}
                 </div>
@@ -286,7 +286,7 @@ export default function ServiceDetailPage({ service }: Props) {
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"
               >
                 <MessageCircle className="h-4 w-4" />
-                تواصل عبر واتساب
+                Contact us on WhatsApp
               </Link>
 
               <Link
@@ -294,7 +294,7 @@ export default function ServiceDetailPage({ service }: Props) {
                 className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-medium text-[#101828] transition-colors hover:bg-primary-light"
               >
                 <ArrowLeft className="h-4 w-4" />
-                جميع الخدمات
+                All Services
               </Link>
             </div>
           </aside>

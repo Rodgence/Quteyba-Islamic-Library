@@ -9,20 +9,20 @@ export default function PublicLayout({ children }: PropsWithChildren) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const navItems = [
-    { label: 'الرئيسية', href: '/' },
-    { label: 'الفرص', href: '/opportunities' },
-    { label: 'الخدمات', href: '/services' },
-    { label: 'الدورات', href: '/courses' },
-    { label: 'عن المنصة', href: '/about' },
-    { label: 'اتصل بنا', href: '/contact' },
+    { label: 'Home', href: '/' },
+    { label: 'Opportunities', href: '/opportunities' },
+    { label: 'Services', href: '/services' },
+    { label: 'Courses', href: '/courses' },
+    { label: 'About', href: '/about' },
+    { label: 'Contact Us', href: '/contact' },
   ]
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-[#101828]" dir="rtl" lang="ar">
+    <div className="flex min-h-screen flex-col bg-white text-[#101828]" dir="ltr" lang="en">
       <header className="sticky top-0 z-50 border-b border-border bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <Link href="/" className="text-xl font-bold text-primary">
-            قتيبة
+            Quteyba
           </Link>
 
           <nav className="hidden items-center gap-6 lg:flex">
@@ -41,14 +41,14 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             <Link
               href="/search"
               className="rounded-lg border border-border p-2 text-black hover:text-primary"
-              aria-label="بحث"
+              aria-label="Search"
             >
               <Search className="h-4 w-4" />
             </Link>
             <button
               className="rounded-lg border border-border p-2 lg:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="القائمة"
+              aria-label="Menu"
             >
               {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
@@ -79,31 +79,31 @@ export default function PublicLayout({ children }: PropsWithChildren) {
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <h3 className="mb-4 text-lg font-bold">قتيبة</h3>
+              <h3 className="mb-4 text-lg font-bold">Quteyba</h3>
               <p className="text-sm leading-relaxed opacity-80">
-                منصتك الموثوقة لاكتشاف أحدث فرص الدراسة والعمل والسفر حول العالم.
+                Your trusted platform for discovering the latest study, work, and travel opportunities around the world.
               </p>
             </div>
             <div>
-              <h4 className="mb-4 text-sm font-semibold">روابط سريعة</h4>
+              <h4 className="mb-4 text-sm font-semibold">Quick Links</h4>
               <div className="flex flex-col gap-2 text-sm opacity-80">
-                <Link href="/opportunities" className="hover:underline">الفرص</Link>
-                <Link href="/services" className="hover:underline">الخدمات</Link>
-                <Link href="/courses" className="hover:underline">الدورات</Link>
-                <Link href="/about" className="hover:underline">عن المنصة</Link>
+                <Link href="/opportunities" className="hover:underline">Opportunities</Link>
+                <Link href="/services" className="hover:underline">Services</Link>
+                <Link href="/courses" className="hover:underline">Courses</Link>
+                <Link href="/about" className="hover:underline">About</Link>
               </div>
             </div>
             <div>
-              <h4 className="mb-4 text-sm font-semibold">صفحات هامة</h4>
+              <h4 className="mb-4 text-sm font-semibold">Important Pages</h4>
               <div className="flex flex-col gap-2 text-sm opacity-80">
-                <Link href="/privacy-policy" className="hover:underline">سياسة الخصوصية</Link>
-                <Link href="/terms-and-conditions" className="hover:underline">الشروط والأحكام</Link>
-                <Link href="/certificates" className="hover:underline">الشهادات</Link>
-                <Link href="/advertise" className="hover:underline">الإعلان</Link>
+                <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
+                <Link href="/terms-and-conditions" className="hover:underline">Terms & Conditions</Link>
+                <Link href="/certificates" className="hover:underline">Certificates</Link>
+                <Link href="/advertise" className="hover:underline">Advertise</Link>
               </div>
             </div>
             <div>
-              <h4 className="mb-4 text-sm font-semibold">تواصل معنا</h4>
+              <h4 className="mb-4 text-sm font-semibold">Contact Us</h4>
               <Link
                 href="https://wa.me/1234567890"
                 target="_blank"
@@ -111,12 +111,12 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                 className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#20bd5a]"
               >
                 <MessageCircle className="h-4 w-4" />
-                واتساب
+                WhatsApp
               </Link>
             </div>
           </div>
           <div className="mt-8 border-t border-white/10 pt-6 text-center text-xs opacity-60">
-            جميع الحقوق محفوظة &copy; {new Date().getFullYear()} مكتبة قتيبة الإسلامية
+            All rights reserved &copy; {new Date().getFullYear()} Quteyba Islamic Library
           </div>
         </div>
       </footer>

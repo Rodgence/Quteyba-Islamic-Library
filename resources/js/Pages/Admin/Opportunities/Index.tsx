@@ -23,14 +23,17 @@ interface Props {
 }
 
 const statusMap: Record<string, { label: string; className: string }> = {
-  published: { label: 'منشورة', className: 'bg-emerald-50 text-emerald-600' },
-  draft: { label: 'مسودة', className: 'bg-amber-50 text-amber-600' },
-  closed: { label: 'مغلقة', className: 'bg-red-50 text-red-600' },
-  archived: { label: 'مؤرشفة', className: 'bg-gray-50 text-gray-500' },
-  scheduled: { label: 'مجدولة', className: 'bg-blue-50 text-blue-600' },
+  published: { label: 'Published', className: 'bg-emerald-50 text-emerald-600' },
+  draft: { label: 'Draft', className: 'bg-amber-50 text-amber-600' },
+  closed: { label: 'Closed', className: 'bg-red-50 text-red-600' },
+  archived: { label: 'Archived', className: 'bg-gray-50 text-gray-500' },
+  scheduled: { label: 'Scheduled', className: 'bg-blue-50 text-blue-600' },
 }
 
 function getLocalized(value: unknown): string {
+  if (typeof value === 'object' && value !== null && 'en' in value) {
+    return String((value as Record<string, string>).en)
+  }
   if (typeof value === 'object' && value !== null && 'ar' in value) {
     return String((value as Record<string, string>).ar)
   }
@@ -39,7 +42,7 @@ function getLocalized(value: unknown): string {
 
 function formatDate(date: string | null): string {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' })
+  return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
 export default function OpportunitiesIndex({ opportunities, filters }: Props) {
@@ -78,14 +81,14 @@ export default function OpportunitiesIndex({ opportunities, filters }: Props) {
   }
 
   const handleDelete = (id: number) => {
-    if (confirm('هل أنت متأكد من حذف هذه الفرصة؟')) {
+    if (confirm('Are you sure you want to delete this opportunity?')) {
       router.delete(`/admin/opportunities/${id}`)
     }
   }
 
   const handleBulkDelete = () => {
     if (selectedIds.size === 0) return
-    if (confirm(`هل أنت متأكد من حذف ${selectedIds.size} فرصة؟`)) {
+    if (confirm(`Are you sure you want to delete ${selectedIds.size} opportunities?`)) {
       router.post('/admin/opportunities/bulk-delete', { ids: Array.from(selectedIds) })
     }
   }
@@ -99,30 +102,30 @@ export default function OpportunitiesIndex({ opportunities, filters }: Props) {
   }
 
   return (
-    <AdminLayout title="الفرص">
+    <AdminLayout title="Opportunities">
       <div className="mx-auto max-w-7xl px-4 py-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-xl font-bold text-[#101828]">الفرص</h1>
+          <h1 className="text-xl font-bold text-[#101828]">Opportunities</h1>
           <Link
             href="/admin/opportunities/create"
             className="inline-flex items-center gap-2 rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#052a25]"
           >
             <Plus className="h-4 w-4" />
-            إضافة فرصة
+            Add Opportunity
           </Link>
         </div>
 
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <div className="relative flex-1 min-w-[200px]">
-            <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#101828]/40" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#101828]/40" />
             <input
               type="text"
-              placeholder="بحث..."
+              placeholder="Search..."
               defaultValue={filters.search}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleSearch((e.target as HTMLInputElement).value)
               }}
-              className="w-full rounded-xl border border-[#e0e0e0] bg-white py-2.5 pr-9 pl-4 text-sm text-[#101828] placeholder:text-[#101828]/40 focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
+              className="w-full rounded-xl border border-[#e0e0e0] bg-white py-2.5 pl-9 pr-4 text-sm text-[#101828] placeholder:text-[#101828]/40 focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
             />
           </div>
           <select
@@ -130,7 +133,7 @@ export default function OpportunitiesIndex({ opportunities, filters }: Props) {
             onChange={(e) => handleStatusFilter(e.target.value)}
             className="rounded-xl border border-[#e0e0e0] bg-white px-3 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
           >
-            <option value="">كل الحالات</option>
+            <option value="">All Statuses</option>
             {Object.entries(statusMap).map(([value, { label }]) => (
               <option key={value} value={value}>{label}</option>
             ))}
@@ -140,14 +143,14 @@ export default function OpportunitiesIndex({ opportunities, filters }: Props) {
         {selectedIds.size > 0 && (
           <div className="mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-[#073B33]/20 bg-[#073B33]/5 p-3">
             <span className="text-sm text-[#101828]">
-              تم تحديد {selectedIds.size} فرصة
+              {selectedIds.size} opportunities selected
             </span>
             <select
               value={bulkStatus}
               onChange={(e) => setBulkStatus(e.target.value)}
               className="rounded-lg border border-[#e0e0e0] bg-white px-2 py-1.5 text-xs text-[#101828]"
             >
-              <option value="">تغيير الحالة...</option>
+              <option value="">Change status...</option>
               {Object.entries(statusMap).map(([value, { label }]) => (
                 <option key={value} value={value}>{label}</option>
               ))}
@@ -157,13 +160,13 @@ export default function OpportunitiesIndex({ opportunities, filters }: Props) {
               disabled={!bulkStatus}
               className="rounded-lg bg-[#073B33] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-40"
             >
-              تطبيق
+              Apply
             </button>
             <button
               onClick={handleBulkDelete}
               className="rounded-lg bg-[#E91E63] px-3 py-1.5 text-xs font-medium text-white"
             >
-              حذف المحدد
+              Delete Selected
             </button>
           </div>
         )}
@@ -172,13 +175,13 @@ export default function OpportunitiesIndex({ opportunities, filters }: Props) {
           {opportunities.data.length === 0 ? (
             <div className="py-16 text-center">
               <Search className="mx-auto mb-3 h-10 w-10 text-[#073B33]/15" />
-              <p className="text-sm text-[#101828]/50">لا توجد فرص</p>
+              <p className="text-sm text-[#101828]/50">No opportunities found</p>
             </div>
           ) : (
             <table className="w-full text-sm">
               <thead className="border-b border-[#e0e0e0] bg-[#f9f9f9]">
                 <tr>
-                  <th className="px-4 py-3 text-right">
+                  <th className="px-4 py-3 text-left">
                     <input
                       type="checkbox"
                       checked={selectedIds.size === opportunities.data.length && opportunities.data.length > 0}
@@ -186,13 +189,13 @@ export default function OpportunitiesIndex({ opportunities, filters }: Props) {
                       className="h-4 w-4 rounded border-[#e0e0e0] text-[#073B33] focus:ring-[#073B33]"
                     />
                   </th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">العنوان</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">النوع</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">الدولة</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">الحالة</th>
-                  <th className="px-4 py-3 text-center font-medium text-[#101828]">مميزة</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">التاريخ</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">إجراءات</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Title</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Type</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Country</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Status</th>
+                  <th className="px-4 py-3 text-center font-medium text-[#101828]">Featured</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Date</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#e0e0e0]">

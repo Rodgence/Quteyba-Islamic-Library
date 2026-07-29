@@ -17,7 +17,7 @@ interface Props {
 }
 
 const handleDelete = (id: number) => {
-  if (!confirm('هل أنت متأكد من حذف هذا التحويل؟')) return
+  if (!confirm('Are you sure you want to delete this redirect?')) return
   router.delete(`/admin/redirects/${id}`)
 }
 
@@ -28,20 +28,20 @@ export default function RedirectsIndex({ redirects }: Props) {
     <AdminLayout>
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[#073B33]">التحويلات</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">Redirects</h1>
         </div>
 
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-right">
-                <th className="px-4 py-3 font-medium text-gray-600">من</th>
-                <th className="px-4 py-3 font-medium text-gray-600">إلى</th>
-                <th className="px-4 py-3 font-medium text-gray-600">كود الحالة</th>
-                <th className="px-4 py-3 font-medium text-gray-600">نشط</th>
-                <th className="px-4 py-3 font-medium text-gray-600">عدد الزيارات</th>
-                <th className="px-4 py-3 font-medium text-gray-600">التاريخ</th>
-                <th className="px-4 py-3 font-medium text-gray-600">إجراءات</th>
+              <tr className="border-b border-gray-100 bg-gray-50 text-left">
+                <th className="px-4 py-3 font-medium text-gray-600">From</th>
+                <th className="px-4 py-3 font-medium text-gray-600">To</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Status Code</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Active</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Hits</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Date</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -64,26 +64,26 @@ export default function RedirectsIndex({ redirects }: Props) {
                         ? 'bg-green-100 text-green-700'
                         : 'bg-gray-100 text-gray-500'
                     }`}>
-                      {redirect.is_active ? 'نشط' : 'غير نشط'}
+                      {redirect.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-900">{redirect.hit_count}</td>
                   <td className="px-4 py-3 text-gray-500" dir="ltr">
-                    {new Date(redirect.created_at).toLocaleDateString('ar-SA')}
+                    {new Date(redirect.created_at).toLocaleDateString('en-US')}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleDelete(redirect.id)}
                         className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
-                        title="حذف"
+                        title="Delete"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => router.get(`/admin/redirects/${redirect.id}/edit`)}
                         className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-[#073B33]"
-                        title="تعديل"
+                        title="Edit"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
@@ -94,7 +94,7 @@ export default function RedirectsIndex({ redirects }: Props) {
               {(!Array.isArray(items) || items.length === 0) && (
                 <tr>
                   <td className="px-4 py-8 text-center text-gray-400" colSpan={7}>
-                    لا توجد تحويلات مضافة بعد
+                    No redirects added yet
                   </td>
                 </tr>
               )}

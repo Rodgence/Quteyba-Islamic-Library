@@ -20,7 +20,7 @@ class ServiceRequestController extends Controller
 
         $rateKey = 'service-request:' . $request->ip();
         if (RateLimiter::tooManyAttempts($rateKey, 5)) {
-            return back()->withErrors(['email' => 'محاولات كثيرة. يرجى المحاولة لاحقاً.']);
+            return back()->withErrors(['email' => 'Too many attempts. Please try again later.']);
         }
         RateLimiter::hit($rateKey, 3600);
 
@@ -33,6 +33,6 @@ class ServiceRequestController extends Controller
             'ip_address' => $request->ip(),
         ]);
 
-        return back()->with('success', 'تم إرسال طلبك بنجاح. سنتواصل معك قريباً.');
+        return back()->with('success', 'Your request has been submitted successfully. We will be in touch soon.');
     }
 }

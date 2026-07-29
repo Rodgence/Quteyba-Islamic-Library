@@ -88,8 +88,8 @@ class OpportunityController extends Controller
             'categories' => $categories,
             'filters' => $request->only(['search', 'type', 'country', 'category', 'funding', 'education', 'status_filter', 'sort']),
             'seo' => [
-                'title' => 'الفرص | مكتبة قتيبة الإسلامية',
-                'description' => 'تصفح جميع الفرص المتاحة من منح دراسية ووظائف وتدريب وتأشيرات حول العالم.',
+                'title' => 'Opportunities | Quteyba Islamic Library',
+                'description' => 'Browse all available scholarships, jobs, internships, and visa opportunities from around the world.',
             ],
         ]);
     }
@@ -154,7 +154,7 @@ class OpportunityController extends Controller
             'updated_at' => $opportunity->updated_at->format('Y-m-d'),
         ];
 
-        $title = ($opportunity->title['ar'] ?? '') . ' | مكتبة قتيبة الإسلامية';
+        $title = ($opportunity->title['en'] ?? $opportunity->title['ar'] ?? '') . ' | Quteyba Islamic Library';
 
         return Inertia::render('Public/OpportunityDetail', [
             'opportunity' => $formatted,

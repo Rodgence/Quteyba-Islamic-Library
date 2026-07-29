@@ -26,24 +26,24 @@ interface DashboardProps {
 }
 
 const statCards = [
-  { key: 'opportunities' as const, label: 'إجمالي الفرص', icon: Briefcase },
-  { key: 'published' as const, label: 'منشورة', icon: CheckCircle },
-  { key: 'draft' as const, label: 'مسودات', icon: FileText },
-  { key: 'messages' as const, label: 'رسائل غير مقروءة', icon: MessageSquare },
-  { key: 'requests' as const, label: 'طلبات جديدة', icon: HelpCircle },
+  { key: 'opportunities' as const, label: 'Total Opportunities', icon: Briefcase },
+  { key: 'published' as const, label: 'Published', icon: CheckCircle },
+  { key: 'draft' as const, label: 'Drafts', icon: FileText },
+  { key: 'messages' as const, label: 'Unread Messages', icon: MessageSquare },
+  { key: 'requests' as const, label: 'New Requests', icon: HelpCircle },
 ]
 
 const quickLinks = [
-  { label: 'إضافة فرصة جديدة', href: '/admin/opportunities/create', icon: Plus },
-  { label: 'عرض جميع الفرص', href: '/admin/opportunities', icon: Eye },
-  { label: 'إضافة صفحة جديدة', href: '/admin/pages/create', icon: FileText },
+  { label: 'Add New Opportunity', href: '/admin/opportunities/create', icon: Plus },
+  { label: 'View All Opportunities', href: '/admin/opportunities', icon: Eye },
+  { label: 'Add New Page', href: '/admin/pages/create', icon: FileText },
 ]
 
 export default function Dashboard({ stats }: DashboardProps) {
   return (
-    <AdminLayout title="لوحة التحكم">
+    <AdminLayout title="Dashboard">
       <div className="mx-auto max-w-7xl px-4 py-6">
-        <h1 className="mb-6 text-xl font-bold text-[#101828]">لوحة التحكم</h1>
+        <h1 className="mb-6 text-xl font-bold text-[#101828]">Dashboard</h1>
 
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {statCards.map((card) => {
@@ -58,7 +58,7 @@ export default function Dashboard({ stats }: DashboardProps) {
                   <Icon className="h-5 w-5 text-[#073B33]" />
                 </div>
                 <div className="text-2xl font-bold text-[#073B33]">
-                  {(stats[card.key] ?? 0).toLocaleString('ar-EG')}
+                  {(stats[card.key] ?? 0).toLocaleString('en-US')}
                 </div>
               </div>
             )
@@ -66,7 +66,7 @@ export default function Dashboard({ stats }: DashboardProps) {
         </div>
 
         <div className="mb-8">
-          <h2 className="mb-4 text-lg font-semibold text-[#101828]">روابط سريعة</h2>
+          <h2 className="mb-4 text-lg font-semibold text-[#101828]">Quick Links</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {quickLinks.map((link) => (
               <Link
@@ -82,10 +82,10 @@ export default function Dashboard({ stats }: DashboardProps) {
         </div>
 
         <div>
-          <h2 className="mb-4 text-lg font-semibold text-[#101828]">آخر النشاطات</h2>
+          <h2 className="mb-4 text-lg font-semibold text-[#101828]">Recent Activity</h2>
           <div className="rounded-2xl border border-[#e0e0e0] bg-white p-8 text-center">
             <Clock className="mx-auto mb-3 h-10 w-10 text-[#073B33]/15" />
-            <p className="text-sm text-[#101828]/50">قيد التطوير</p>
+            <p className="text-sm text-[#101828]/50">Coming soon</p>
           </div>
         </div>
       </div>

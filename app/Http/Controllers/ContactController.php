@@ -14,8 +14,8 @@ class ContactController extends Controller
     {
         return Inertia::render('Public/Contact', [
             'seo' => [
-                'title' => 'اتصل بنا | مكتبة قتيبة الإسلامية',
-                'description' => 'تواصل مع فريق مكتبة قتيبة الإسلامية للاستفسارات والمساعدة.',
+                'title' => 'Contact Us | Quteyba Islamic Library',
+                'description' => 'Get in touch with the Quteyba Islamic Library team for inquiries and support.',
             ],
         ]);
     }
@@ -32,7 +32,7 @@ class ContactController extends Controller
 
         $rateKey = 'contact:' . $request->ip();
         if (RateLimiter::tooManyAttempts($rateKey, 3)) {
-            return back()->withErrors(['email' => 'محاولات كثيرة. يرجى المحاولة لاحقاً.']);
+            return back()->withErrors(['email' => 'Too many attempts. Please try again later.']);
         }
         RateLimiter::hit($rateKey, 3600);
 
@@ -45,7 +45,7 @@ class ContactController extends Controller
             'ip_address' => $request->ip(),
         ]);
 
-        return back()->with('success', 'تم إرسال رسالتك بنجاح. سنتواصل معك قريباً.');
+        return back()->with('success', 'Your message has been sent successfully. We will be in touch soon.');
     }
 
     public function subscribe(Request $request)
@@ -56,7 +56,7 @@ class ContactController extends Controller
 
         $rateKey = 'subscribe:' . $request->ip();
         if (RateLimiter::tooManyAttempts($rateKey, 3)) {
-            return back()->withErrors(['email' => 'محاولات كثيرة. يرجى المحاولة لاحقاً.']);
+            return back()->withErrors(['email' => 'Too many attempts. Please try again later.']);
         }
         RateLimiter::hit($rateKey, 3600);
 
@@ -69,6 +69,6 @@ class ContactController extends Controller
             ]
         );
 
-        return back()->with('success', 'تم الاشتراك بنجاح.');
+        return back()->with('success', 'Subscribed successfully.');
     }
 }

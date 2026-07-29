@@ -1,7 +1,7 @@
 import { Link, usePage, router } from '@inertiajs/react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps, Paginated, Opportunity } from '@/Types'
-import { Search, Filter, ArrowLeft, Calendar, MapPin, Clock } from 'lucide-react'
+import { Search, Filter, ArrowRight, Calendar, MapPin, Clock } from 'lucide-react'
 import { useState } from 'react'
 
 interface FilterOption {
@@ -30,34 +30,37 @@ interface Props {
 }
 
 const fundingOptions = [
-  { name: 'الكل', slug: '' },
-  { name: 'منحة كاملة', slug: 'full' },
-  { name: 'منحة جزئية', slug: 'partial' },
-  { name: 'براتب', slug: 'salary' },
-  { name: 'بدون تمويل', slug: 'none' },
+  { name: 'All', slug: '' },
+  { name: 'Full Funding', slug: 'full' },
+  { name: 'Partial Funding', slug: 'partial' },
+  { name: 'Salaried', slug: 'salary' },
+  { name: 'No Funding', slug: 'none' },
 ]
 
 const educationOptions = [
-  { name: 'الكل', slug: '' },
-  { name: 'بكالوريوس', slug: 'bachelor' },
-  { name: 'ماجستير', slug: 'master' },
-  { name: 'دكتوراه', slug: 'phd' },
-  { name: 'دبلوم', slug: 'diploma' },
+  { name: 'All', slug: '' },
+  { name: "Bachelor's", slug: 'bachelor' },
+  { name: "Master's", slug: 'master' },
+  { name: 'PhD', slug: 'phd' },
+  { name: 'Diploma', slug: 'diploma' },
 ]
 
 const statusOptions = [
-  { name: 'الكل', slug: '' },
-  { name: 'مفتوحة', slug: 'open' },
-  { name: 'مغلقة', slug: 'closed' },
+  { name: 'All', slug: '' },
+  { name: 'Open', slug: 'open' },
+  { name: 'Closed', slug: 'closed' },
 ]
 
 const sortOptions = [
-  { name: 'الأحدث', slug: 'newest' },
-  { name: 'الأقدم', slug: 'oldest' },
-  { name: 'الأقرب موعداً', slug: 'deadline' },
+  { name: 'Newest', slug: 'newest' },
+  { name: 'Oldest', slug: 'oldest' },
+  { name: 'Deadline Soonest', slug: 'deadline' },
 ]
 
 function getLocalized(value: unknown): string {
+  if (typeof value === 'object' && value !== null && 'en' in value) {
+    return String((value as Record<string, string>).en)
+  }
   if (typeof value === 'object' && value !== null && 'ar' in value) {
     return String((value as Record<string, string>).ar)
   }
@@ -66,14 +69,14 @@ function getLocalized(value: unknown): string {
 
 function getStatusLabel(status: string): { label: string; className: string } {
   if (status === 'closed' || status === 'archived') {
-    return { label: 'مغلقة', className: 'bg-red-50 text-red-600' }
+    return { label: 'Closed', className: 'bg-red-50 text-red-600' }
   }
-  return { label: 'مفتوحة', className: 'bg-emerald-50 text-emerald-600' }
+  return { label: 'Open', className: 'bg-emerald-50 text-emerald-600' }
 }
 
 function formatDate(date: string | null): string {
   if (!date) return ''
-  return new Date(date).toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' })
+  return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
 export default function OpportunitiesPage({ opportunities, types, countries, categories, filters, seo }: Props) {
@@ -110,8 +113,8 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
     <PublicLayout>
       <section className="bg-[#073B33] text-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16">
-          <h1 className="text-2xl font-bold sm:text-3xl">الفرص</h1>
-          <p className="mt-2 text-sm opacity-80">اكتشف أحدث المنح الدراسية وفرص العمل والتدريب من مصادر موثوقة</p>
+          <h1 className="text-2xl font-bold sm:text-3xl">Opportunities</h1>
+          <p className="mt-2 text-sm opacity-80">Discover the latest scholarships, jobs, and internships from trusted sources</p>
         </div>
       </section>
 
@@ -119,15 +122,15 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
         <div className="mx-auto max-w-7xl px-4 py-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
             <div className="relative flex-1">
-              <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#101828]/40" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#101828]/40" />
               <input
                 type="text"
-                placeholder="ابحث عن فرصة..."
+                placeholder="Search for an opportunity..."
                 defaultValue={filters.search}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') updateFilter('search', (e.target as HTMLInputElement).value)
                 }}
-                className="w-full rounded-xl border border-border bg-white py-2.5 pr-9 pl-4 text-sm text-[#101828] placeholder:text-[#101828]/40 focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
+                className="w-full rounded-xl border border-border bg-white py-2.5 pl-9 pr-4 text-sm text-[#101828] placeholder:text-[#101828]/40 focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
               />
             </div>
 
@@ -137,7 +140,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                 className="inline-flex items-center gap-2 rounded-xl border border-border bg-white px-4 py-2.5 text-sm font-medium text-[#101828] transition-colors hover:bg-[#073B33]/5 lg:hidden"
               >
                 <Filter className="h-4 w-4" />
-                تصفية
+                Filter
               </button>
 
               {hasActiveFilters && (
@@ -145,7 +148,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                   onClick={clearFilters}
                   className="rounded-xl px-4 py-2.5 text-sm text-[#E91E63] transition-colors hover:bg-[#E91E63]/5"
                 >
-                  إلغاء التصفية
+                  Clear Filters
                 </button>
               )}
             </div>
@@ -156,7 +159,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                 onChange={(e) => updateFilter('type', e.target.value)}
                 className="rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
               >
-                <option value="">نوع الفرصة</option>
+                <option value="">Opportunity Type</option>
                 {types.map((t) => (
                   <option key={t.slug} value={t.slug}>{t.name}</option>
                 ))}
@@ -167,7 +170,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                 onChange={(e) => updateFilter('country', e.target.value)}
                 className="rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
               >
-                <option value="">الدولة</option>
+                <option value="">Country</option>
                 {countries.map((c) => (
                   <option key={c.slug} value={c.slug}>{c.name}</option>
                 ))}
@@ -178,7 +181,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                 onChange={(e) => updateFilter('category', e.target.value)}
                 className="rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
               >
-                <option value="">التصنيف</option>
+                <option value="">Category</option>
                 {categories.map((c) => (
                   <option key={c.slug} value={c.slug}>{c.name}</option>
                 ))}
@@ -189,7 +192,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                 onChange={(e) => updateFilter('funding', e.target.value)}
                 className="rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
               >
-                <option value="">نوع التمويل</option>
+                <option value="">Funding Type</option>
                 {fundingOptions.map((o) => (
                   <option key={o.slug} value={o.slug}>{o.name}</option>
                 ))}
@@ -200,7 +203,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                 onChange={(e) => updateFilter('education', e.target.value)}
                 className="rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
               >
-                <option value="">المستوى الدراسي</option>
+                <option value="">Education Level</option>
                 {educationOptions.map((o) => (
                   <option key={o.slug} value={o.slug}>{o.name}</option>
                 ))}
@@ -211,7 +214,7 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                 onChange={(e) => updateFilter('status_filter', e.target.value)}
                 className="rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20"
               >
-                <option value="">الحالة</option>
+                <option value="">Status</option>
                 {statusOptions.map((o) => (
                   <option key={o.slug} value={o.slug}>{o.name}</option>
                 ))}
@@ -235,14 +238,14 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
         <div className="mx-auto max-w-7xl px-4">
           <div className="mb-6 flex items-center justify-between">
             <p className="text-sm text-[#101828]/60">
-              {opportunities.total} نتيجة
+              {opportunities.total} results
             </p>
           </div>
 
           {opportunities.data.length === 0 ? (
             <div className="rounded-2xl border border-border bg-white py-16 text-center">
               <Search className="mx-auto mb-3 h-10 w-10 text-[#073B33]/15" />
-              <p className="text-sm text-[#101828]/50">لا توجد فرص تطابق معايير البحث</p>
+              <p className="text-sm text-[#101828]/50">No opportunities match your search criteria</p>
             </div>
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -274,12 +277,12 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
                       )}
 
                       {typeName && (
-                        <span className="absolute right-3 top-3 rounded-lg bg-[#E91E63] px-2.5 py-1 text-xs font-semibold text-white">
+                        <span className="absolute left-3 top-3 rounded-lg bg-[#E91E63] px-2.5 py-1 text-xs font-semibold text-white">
                           {typeName}
                         </span>
                       )}
 
-                      <span className={`absolute left-3 top-3 rounded-lg px-2.5 py-1 text-xs font-semibold ${statusInfo.className}`}>
+                      <span className={`absolute right-3 top-3 rounded-lg px-2.5 py-1 text-xs font-semibold ${statusInfo.className}`}>
                         {statusInfo.label}
                       </span>
                     </Link>
@@ -321,10 +324,10 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
 
                         <Link
                           href={`/opportunities/${opportunity.slug}`}
-                          className="mr-auto inline-flex items-center gap-1 font-semibold text-[#E91E63] transition-colors hover:text-[#c2185b]"
+                          className="ml-auto inline-flex items-center gap-1 font-semibold text-[#E91E63] transition-colors hover:text-[#c2185b]"
                         >
-                          التفاصيل
-                          <ArrowLeft className="h-3 w-3" />
+                          Details
+                          <ArrowRight className="h-3 w-3" />
                         </Link>
                       </div>
                     </div>

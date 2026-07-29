@@ -40,8 +40,8 @@ type JsonField = string | { ar?: string; en?: string } | null | undefined
 function parseJsonField(field: JsonField): string {
   if (!field) return ''
   if (typeof field === 'string') return field
-  if (typeof field === 'object' && field.ar) return field.ar
   if (typeof field === 'object' && field.en) return field.en
+  if (typeof field === 'object' && field.ar) return field.ar
   return ''
 }
 
@@ -55,7 +55,7 @@ function getImageAlt(image: MediaImage | null | undefined): string | null {
 
 function formatDate(dateString: string | null): string {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString('ar-SA', {
+  return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -135,14 +135,14 @@ export default function OpportunityDetail({
         {seo?.canonical_url && <link rel="canonical" href={seo.canonical_url} />}
       </Head>
 
-      <div className="mx-auto max-w-7xl px-4 py-6" dir="rtl" lang="ar">
+      <div className="mx-auto max-w-7xl px-4 py-6" dir="ltr" lang="en">
         <nav className="mb-6 flex items-center gap-2 text-sm text-gray-500">
           <Link href="/" className="hover:text-[#073B33]">
-            الرئيسية
+            Home
           </Link>
           <span>/</span>
           <Link href="/opportunities" className="hover:text-[#073B33]">
-            الفرص
+            Opportunities
           </Link>
           <span>/</span>
           <span className="truncate text-gray-700">{title}</span>
@@ -168,7 +168,7 @@ export default function OpportunityDetail({
               )}
               {status === 'closed' || deadlineClosed ? (
                 <span className="inline-flex items-center rounded-xl bg-red-50 px-3 py-1 text-xs font-semibold text-red-600">
-                  انتهى موعد التقديم
+                  Application closed
                 </span>
               ) : null}
             </div>
@@ -198,7 +198,7 @@ export default function OpportunityDetail({
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4 text-[#E91E63]" />
                   <span>
-                    نُشر في {new Date(publishedAt).toLocaleDateString('ar-SA')}
+                    Published on {new Date(publishedAt).toLocaleDateString('en-US')}
                   </span>
                 </span>
               )}
@@ -211,17 +211,17 @@ export default function OpportunityDetail({
                 [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:text-xl [&_h2]:font-bold
                 [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:text-lg [&_h3]:font-semibold
                 [&_p]:mb-4 [&_p]:leading-relaxed
-                [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pr-5
-                [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pr-5"
+                [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-5
+                [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-5"
               dangerouslySetInnerHTML={{ __html: content }}
             />
 
             <div className="mt-10 space-y-10 border-t border-gray-100 pt-8">
               {benefits && (
                 <section>
-                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">الفوائد</h2>
+                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">Benefits</h2>
                   <div
-                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pr-5 [&_li]:my-1"
+                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
                     dangerouslySetInnerHTML={{ __html: benefits }}
                   />
                 </section>
@@ -229,9 +229,9 @@ export default function OpportunityDetail({
 
               {eligibility && (
                 <section>
-                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">شروط التقديم</h2>
+                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">Eligibility</h2>
                   <div
-                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pr-5 [&_li]:my-1"
+                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
                     dangerouslySetInnerHTML={{ __html: eligibility }}
                   />
                 </section>
@@ -239,9 +239,9 @@ export default function OpportunityDetail({
 
               {requiredDocuments && (
                 <section>
-                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">المستندات المطلوبة</h2>
+                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">Required Documents</h2>
                   <div
-                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pr-5 [&_li]:my-1"
+                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
                     dangerouslySetInnerHTML={{ __html: requiredDocuments }}
                   />
                 </section>
@@ -249,9 +249,9 @@ export default function OpportunityDetail({
 
               {applicationProcess && (
                 <section>
-                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">كيفية التقديم</h2>
+                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">How to Apply</h2>
                   <div
-                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pr-5 [&_li]:my-1"
+                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
                     dangerouslySetInnerHTML={{ __html: applicationProcess }}
                   />
                 </section>
@@ -259,9 +259,9 @@ export default function OpportunityDetail({
 
               {importantNotes && (
                 <section>
-                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">ملاحظات هامة</h2>
+                  <h2 className="mb-4 text-xl font-bold text-[#073B33]">Important Notes</h2>
                   <div
-                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pr-5 [&_li]:my-1"
+                    className="prose prose-lg max-w-none text-gray-800 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
                     dangerouslySetInnerHTML={{ __html: importantNotes }}
                   />
                 </section>
@@ -274,7 +274,7 @@ export default function OpportunityDetail({
                 className="inline-flex items-center gap-2 text-sm font-medium text-[#E91E63] hover:underline"
               >
                 <ArrowLeft className="h-4 w-4" />
-                العودة إلى الفرص
+                Back to Opportunities
               </Link>
             </div>
           </article>
@@ -283,11 +283,11 @@ export default function OpportunityDetail({
             <div className="lg:sticky lg:top-24">
               <div className="space-y-5 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
                 <div>
-                  <h3 className="mb-3 text-sm font-semibold text-gray-400">تفاصيل الفرصة</h3>
+                  <h3 className="mb-3 text-sm font-semibold text-gray-400">Opportunity Details</h3>
                   <div className="space-y-3">
                     {opportunityType && (
                       <div>
-                        <span className="text-xs text-gray-400">نوع الفرصة</span>
+                        <span className="text-xs text-gray-400">Opportunity Type</span>
                         <p className="text-sm font-medium text-gray-800">{opportunityType}</p>
                       </div>
                     )}
@@ -295,7 +295,7 @@ export default function OpportunityDetail({
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-[#E91E63]" />
                         <div>
-                          <span className="text-xs text-gray-400">البلد</span>
+                          <span className="text-xs text-gray-400">Country</span>
                           <p className="text-sm font-medium text-gray-800">{countryName}</p>
                         </div>
                       </div>
@@ -304,14 +304,14 @@ export default function OpportunityDetail({
                       <div className="flex items-center gap-2">
                         <Building className="h-4 w-4 text-[#E91E63]" />
                         <div>
-                          <span className="text-xs text-gray-400">الجهة المنظمة</span>
+                          <span className="text-xs text-gray-400">Organization</span>
                           <p className="text-sm font-medium text-gray-800">{organization}</p>
                         </div>
                       </div>
                     )}
                     {fundingType && (
                       <div>
-                        <span className="text-xs text-gray-400">نوع التمويل</span>
+                        <span className="text-xs text-gray-400">Funding Type</span>
                         <p className="text-sm font-medium text-gray-800">{fundingType}</p>
                       </div>
                     )}
@@ -319,14 +319,14 @@ export default function OpportunityDetail({
                       <div className="flex items-center gap-2">
                         <GraduationCap className="h-4 w-4 text-[#E91E63]" />
                         <div>
-                          <span className="text-xs text-gray-400">المستوى التعليمي</span>
+                          <span className="text-xs text-gray-400">Education Level</span>
                           <p className="text-sm font-medium text-gray-800">{educationLevel}</p>
                         </div>
                       </div>
                     )}
                     {employmentType && (
                       <div>
-                        <span className="text-xs text-gray-400">نوع التوظيف</span>
+                        <span className="text-xs text-gray-400">Employment Type</span>
                         <p className="text-sm font-medium text-gray-800">{employmentType}</p>
                       </div>
                     )}
@@ -334,7 +334,7 @@ export default function OpportunityDetail({
                       <div className="flex items-center gap-2">
                         <DollarSign className="h-4 w-4 text-[#E91E63]" />
                         <div>
-                          <span className="text-xs text-gray-400">الراتب</span>
+                          <span className="text-xs text-gray-400">Salary</span>
                           <p className="text-sm font-medium text-gray-800">
                             {salaryAmount.toLocaleString()} {salaryCurrency}{' '}
                             {salaryPeriod && `/ ${salaryPeriod}`}
@@ -347,12 +347,12 @@ export default function OpportunityDetail({
 
                 {applicationDeadline && (
                   <div className="rounded-xl bg-[#073B33]/5 px-4 py-3">
-                    <span className="text-xs text-gray-400">آخر موعد للتقديم</span>
+                    <span className="text-xs text-gray-400">Application Deadline</span>
                     <p className="text-sm font-bold text-gray-800">
                       {formatDate(applicationDeadline)}
                     </p>
                     {deadlineClosed && (
-                      <p className="mt-1 text-xs font-semibold text-red-600">انتهى موعد التقديم</p>
+                      <p className="mt-1 text-xs font-semibold text-red-600">Application closed</p>
                     )}
                   </div>
                 )}
@@ -365,7 +365,7 @@ export default function OpportunityDetail({
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#E91E63] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[#c2185b]"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    تقديم الطلب
+                    Apply Now
                   </a>
                 )}
 
@@ -377,7 +377,7 @@ export default function OpportunityDetail({
                     className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    المصدر الرسمي
+                    Official Source
                   </a>
                 )}
 
@@ -388,7 +388,7 @@ export default function OpportunityDetail({
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[#20bd5a]"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  تواصل معنا عبر واتساب
+                  Contact us on WhatsApp
                 </a>
 
                 <button
@@ -396,7 +396,7 @@ export default function OpportunityDetail({
                   className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
                 >
                   <Share2 className="h-4 w-4" />
-                  مشاركة الفرصة
+                  Share Opportunity
                 </button>
               </div>
             </div>
@@ -405,7 +405,7 @@ export default function OpportunityDetail({
 
         {related.length > 0 && (
           <section className="mt-16">
-            <h2 className="mb-6 text-2xl font-bold text-[#073B33]">فرص ذات صلة</h2>
+            <h2 className="mb-6 text-2xl font-bold text-[#073B33]">Related Opportunities</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => {
                 const itemDeadlineClosed = isClosed(item.application_deadline, item.status)
@@ -424,7 +424,7 @@ export default function OpportunityDetail({
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-[#073B33]/5 text-sm text-gray-400">
-                          قتيبة
+                          Quteyba
                         </div>
                       )}
                     </div>
@@ -437,7 +437,7 @@ export default function OpportunityDetail({
                         )}
                         {itemDeadlineClosed && (
                           <span className="rounded-lg bg-red-50 px-2 py-0.5 text-[11px] font-semibold text-red-600">
-                            انتهى التقديم
+                            Closed
                           </span>
                         )}
                       </div>

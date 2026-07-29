@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react'
-import { ArrowLeft, BookOpen, GraduationCap, Briefcase, Globe, MessageCircle, Calendar, MapPin, Clock, Wrench } from 'lucide-react'
+import { ArrowRight, BookOpen, GraduationCap, Briefcase, Globe, MessageCircle, Calendar, MapPin, Clock, Wrench } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import { Head } from '@inertiajs/react'
 
@@ -12,23 +12,24 @@ interface HomeProps {
 }
 
 const categoryLinks = [
-  { name: 'منح دراسية', icon: GraduationCap, href: '/opportunities?type=scholarship' },
-  { name: 'وظائف', icon: Briefcase, href: '/opportunities?type=job' },
-  { name: 'تدريب', icon: BookOpen, href: '/opportunities?type=internship' },
-  { name: 'تأشيرات', icon: Globe, href: '/opportunities?type=visa' },
-  { name: 'مؤتمرات', icon: Globe, href: '/opportunities?type=conference' },
-  { name: 'تطوع', icon: Globe, href: '/opportunities?type=volunteering' },
+  { name: 'Scholarships', icon: GraduationCap, href: '/opportunities?type=scholarship' },
+  { name: 'Jobs', icon: Briefcase, href: '/opportunities?type=job' },
+  { name: 'Internships', icon: BookOpen, href: '/opportunities?type=internship' },
+  { name: 'Visas', icon: Globe, href: '/opportunities?type=visa' },
+  { name: 'Conferences', icon: Globe, href: '/opportunities?type=conference' },
+  { name: 'Volunteering', icon: Globe, href: '/opportunities?type=volunteering' },
 ]
 
 const steps = [
-  { step: 1, title: 'ابحث عن فرصتك', description: 'تصفح آلاف الفرص المتاحة حسب مجالك واهتماماتك' },
-  { step: 2, title: 'جهز طلبك', description: 'استخدم خدماتنا لتجهيز مستنداتك وترجمتها بشكل احترافي' },
-  { step: 3, title: 'قدم طلبك', description: 'أرسل طلبك للجهة المانحة وتابع حالة طلبك' },
-  { step: 4, title: 'انطلق', description: 'احصل على القبول وابدأ رحلتك الدراسية أو المهنية' },
+  { step: 1, title: 'Find your opportunity', description: 'Browse thousands of available opportunities by field and interest' },
+  { step: 2, title: 'Prepare your application', description: 'Use our services to prepare and professionally translate your documents' },
+  { step: 3, title: 'Submit your application', description: 'Send your application to the granting body and track its status' },
+  { step: 4, title: 'Get started', description: 'Receive your acceptance and begin your academic or professional journey' },
 ]
 
 function getLocalized(value: any): string {
   if (typeof value === 'string') return value
+  if (value?.en) return value.en
   if (value?.ar) return value.ar
   return ''
 }
@@ -47,24 +48,24 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:py-28">
           <div className="max-w-2xl">
             <h1 className="mb-4 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-              فرصتك للدراسة والعمل والسفر تبدأ من هنا
+              Your opportunity to study, work, and travel starts here
             </h1>
             <p className="mb-8 text-base leading-relaxed opacity-90 sm:text-lg">
-              اكتشف أحدث المنح الدراسية وفرص العمل والتدريب والتأشيرات من مصادر موثوقة حول العالم.
+              Discover the latest scholarships, jobs, internships, and visa opportunities from trusted sources around the world.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/opportunities"
                 className="inline-flex items-center gap-2 rounded-lg bg-[#E91E63] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#c2185b]"
               >
-                تصفح جميع الفرص
-                <ArrowLeft className="h-4 w-4" />
+                Browse all opportunities
+                <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
               >
-                تواصل معنا
+                Contact Us
               </Link>
             </div>
           </div>
@@ -79,7 +80,7 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
               return (
                 <div key={stat.label} className="text-center">
                   <Icon className="mx-auto mb-2 h-6 w-6 text-[#E91E63]" />
-                  <div className="text-2xl font-bold text-[#073B33]">{stat.value.toLocaleString('ar-EG')}+</div>
+                  <div className="text-2xl font-bold text-[#073B33]">{stat.value.toLocaleString('en-US')}+</div>
                   <div className="text-sm text-[#101828]/60">{stat.label}</div>
                 </div>
               )
@@ -92,13 +93,13 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
         <section className="bg-white py-16">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mb-8 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-[#073B33]">أحدث الفرص</h2>
+              <h2 className="text-2xl font-bold text-[#073B33]">Latest Opportunities</h2>
               <Link
                 href="/opportunities"
                 className="inline-flex items-center gap-1 rounded-lg border border-[#E91E63] px-4 py-2 text-sm font-semibold text-[#E91E63] transition-colors hover:bg-[#E91E63]/5"
               >
-                عرض الكل
-                <ArrowLeft className="h-3 w-3" />
+                View all
+                <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -157,13 +158,13 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
         <section className="bg-primary-light py-16">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mb-8 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-[#073B33]">خدماتنا</h2>
+              <h2 className="text-2xl font-bold text-[#073B33]">Our Services</h2>
               <Link
                 href="/services"
                 className="inline-flex items-center gap-1 rounded-lg border border-[#E91E63] px-4 py-2 text-sm font-semibold text-[#E91E63] transition-colors hover:bg-[#E91E63]/5"
               >
-                عرض الكل
-                <ArrowLeft className="h-3 w-3" />
+                View all
+                <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -191,7 +192,7 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
 
       <section className="bg-white py-16">
         <div className="mx-auto max-w-7xl px-4">
-          <h2 className="mb-8 text-center text-2xl font-bold text-[#073B33]">تصفح الفرص حسب النوع</h2>
+          <h2 className="mb-8 text-center text-2xl font-bold text-[#073B33]">Browse Opportunities by Type</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {categoryLinks.map((cat) => (
               <Link
@@ -210,7 +211,7 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
       {featured && featured.length > 0 && (
         <section className="bg-primary-light py-16">
           <div className="mx-auto max-w-7xl px-4">
-            <h2 className="mb-8 text-2xl font-bold text-[#073B33]">فرص مميزة</h2>
+            <h2 className="mb-8 text-2xl font-bold text-[#073B33]">Featured Opportunities</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((opp) => (
                 <Link
@@ -249,7 +250,7 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
 
       <section className="bg-white py-16">
         <div className="mx-auto max-w-7xl px-4">
-          <h2 className="mb-10 text-center text-2xl font-bold text-[#073B33]">كيف تبدأ؟</h2>
+          <h2 className="mb-10 text-center text-2xl font-bold text-[#073B33]">How to get started?</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s) => (
               <div key={s.step} className="relative text-center">
@@ -266,8 +267,8 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
 
       <section className="bg-[#073B33] py-16 text-white">
         <div className="mx-auto max-w-7xl px-4 text-center">
-          <h2 className="mb-4 text-2xl font-bold">هل تحتاج إلى مساعدة؟</h2>
-          <p className="mb-6 text-sm opacity-80">تواصل معنا عبر واتساب للحصول على استشارة مجانية</p>
+          <h2 className="mb-4 text-2xl font-bold">Need some help?</h2>
+          <p className="mb-6 text-sm opacity-80">Contact us via WhatsApp for a free consultation</p>
           <Link
             href="https://wa.me/255714241700"
             target="_blank"
@@ -275,7 +276,7 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
             className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"
           >
             <MessageCircle className="h-5 w-5" />
-            تواصل عبر واتساب
+            Contact us on WhatsApp
           </Link>
         </div>
       </section>

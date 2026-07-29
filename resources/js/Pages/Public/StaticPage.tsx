@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react'
-import { ChevronLeft, FileText } from 'lucide-react'
+import { ChevronRight, FileText } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { Page } from '@/Types'
 
@@ -14,9 +14,9 @@ export default function StaticPage({ page, seo }: StaticPageProps) {
       <div className="mx-auto max-w-4xl px-4 py-12">
         <nav className="mb-6 flex items-center gap-2 text-sm text-[#101828]/50">
           <Link href="/" className="hover:text-[#073B33] transition-colors">
-            الرئيسية
+            Home
           </Link>
-          <ChevronLeft className="h-3 w-3" />
+          <ChevronRight className="h-3 w-3" />
           <span className="text-[#073B33] font-medium">{page.title}</span>
         </nav>
 
@@ -31,7 +31,7 @@ export default function StaticPage({ page, seo }: StaticPageProps) {
           ) : (
             <div className="rounded-2xl border border-border bg-white p-12 text-center">
               <FileText className="mx-auto mb-3 h-10 w-10 text-[#073B33]/20" />
-              <p className="text-sm text-[#101828]/60">لا يوجد محتوى متاح حالياً.</p>
+              <p className="text-sm text-[#101828]/60">No content available at this time.</p>
             </div>
           )}
         </article>

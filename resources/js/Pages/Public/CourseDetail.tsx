@@ -32,25 +32,25 @@ interface Props {
 function parseAr(value: string): string {
   try {
     const parsed = JSON.parse(value)
-    return parsed?.ar || ''
+    return parsed?.en || parsed?.ar || ''
   } catch {
     return value || ''
   }
 }
 
 const statusLabels: Record<string, string> = {
-  open: 'التسجيل متاح',
-  closed: 'التسجيل مغلق',
-  soon: 'قريباً',
+  open: 'Registration Open',
+  closed: 'Registration Closed',
+  soon: 'Coming Soon',
 }
 
 const infoItems = (course: CourseItem) => [
-  { icon: Globe, label: 'اللغة', value: parseAr(course.language) },
-  { icon: GraduationCap, label: 'المستوى', value: parseAr(course.level) },
-  { icon: Clock, label: 'المدة', value: course.duration ? parseAr(course.duration) : '—' },
-  { icon: BookOpen, label: 'طريقة التقديم', value: parseAr(course.delivery_method) },
-  { icon: User, label: 'المدرس', value: course.instructor ? parseAr(course.instructor) : '—' },
-  { icon: DollarSign, label: 'السعر', value: course.price !== null && course.price !== undefined ? `${course.price} ${course.price_currency || 'دولار'}` : 'مجاناً' },
+  { icon: Globe, label: 'Language', value: parseAr(course.language) },
+  { icon: GraduationCap, label: 'Level', value: parseAr(course.level) },
+  { icon: Clock, label: 'Duration', value: course.duration ? parseAr(course.duration) : '—' },
+  { icon: BookOpen, label: 'Delivery Method', value: parseAr(course.delivery_method) },
+  { icon: User, label: 'Instructor', value: course.instructor ? parseAr(course.instructor) : '—' },
+  { icon: DollarSign, label: 'Price', value: course.price !== null && course.price !== undefined ? `${course.price} ${course.price_currency || 'USD'}` : 'Free' },
 ]
 
 export default function CourseDetailPage({ course, related }: Props) {
@@ -65,9 +65,9 @@ export default function CourseDetailPage({ course, related }: Props) {
       <div className="bg-primary-light py-8">
         <div className="mx-auto max-w-7xl px-4">
           <nav className="mb-4 flex items-center gap-2 text-sm text-[#101828]/60">
-            <Link href="/" className="hover:text-[#073B33]">الرئيسية</Link>
+            <Link href="/" className="hover:text-[#073B33]">Home</Link>
             <span>/</span>
-            <Link href="/courses" className="hover:text-[#073B33]">الدورات</Link>
+            <Link href="/courses" className="hover:text-[#073B33]">Courses</Link>
             <span>/</span>
             <span className="text-[#101828]">{parseAr(course.name)}</span>
           </nav>
@@ -118,7 +118,7 @@ export default function CourseDetailPage({ course, related }: Props) {
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-6">
               <div className="rounded-2xl border border-border bg-white p-5">
-                <h3 className="mb-4 text-sm font-semibold text-[#101828]">معلومات الدورة</h3>
+                <h3 className="mb-4 text-sm font-semibold text-[#101828]">Course Information</h3>
                 <div className="space-y-3 text-sm">
                   {infoItems(course).map((item, i) => (
                     <div key={i} className="flex items-center justify-between">
@@ -134,7 +134,7 @@ export default function CourseDetailPage({ course, related }: Props) {
                 className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-medium text-[#101828] transition-colors hover:bg-primary-light"
               >
                 <ArrowLeft className="h-4 w-4" />
-                جميع الدورات
+                All Courses
               </Link>
             </div>
           </aside>
@@ -142,7 +142,7 @@ export default function CourseDetailPage({ course, related }: Props) {
 
         {related.length > 0 && (
           <div className="mt-16">
-            <h2 className="mb-6 text-xl font-bold text-[#073B33]">دورات ذات صلة</h2>
+            <h2 className="mb-6 text-xl font-bold text-[#073B33]">Related Courses</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => (
                 <Link

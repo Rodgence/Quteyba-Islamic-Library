@@ -30,7 +30,7 @@ export default function MediaIndex({ media }: Props) {
     <AdminLayout>
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[#073B33]">المكتبة الإعلامية</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">Media Library</h1>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -56,7 +56,7 @@ export default function MediaIndex({ media }: Props) {
                 </p>
                 <div className="mt-1 flex items-center justify-between text-xs text-gray-500">
                   <span>{formatBytes(item.size)}</span>
-                  <span dir="ltr">{new Date(item.created_at).toLocaleDateString('ar-SA')}</span>
+                  <span dir="ltr">{new Date(item.created_at).toLocaleDateString('en-US')}</span>
                 </div>
               </div>
             </div>
@@ -65,7 +65,7 @@ export default function MediaIndex({ media }: Props) {
 
         {(!Array.isArray(items) || items.length === 0) && (
           <div className="rounded-xl border border-gray-200 bg-white py-12 text-center text-gray-400">
-            لا توجد وسائط مضافة بعد
+            No media added yet
           </div>
         )}
       </div>

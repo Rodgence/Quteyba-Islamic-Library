@@ -1,7 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import type { Opportunity } from '@/Types'
-import { ArrowRight } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 
 interface SelectOption {
   id: number
@@ -16,6 +16,9 @@ interface Props {
 }
 
 function getLocalized(value: unknown): string {
+  if (typeof value === 'object' && value !== null && 'en' in value) {
+    return String((value as Record<string, string>).en)
+  }
   if (typeof value === 'object' && value !== null && 'ar' in value) {
     return String((value as Record<string, string>).ar)
   }
@@ -30,11 +33,11 @@ function getFieldValue(value: unknown): string {
 }
 
 const statusOptions = [
-  { value: 'draft', label: 'مسودة' },
-  { value: 'scheduled', label: 'مجدولة' },
-  { value: 'published', label: 'منشورة' },
-  { value: 'closed', label: 'مغلقة' },
-  { value: 'archived', label: 'مؤرشفة' },
+  { value: 'draft', label: 'Draft' },
+  { value: 'scheduled', label: 'Scheduled' },
+  { value: 'published', label: 'Published' },
+  { value: 'closed', label: 'Closed' },
+  { value: 'archived', label: 'Archived' },
 ]
 
 const inputClass =
@@ -71,39 +74,39 @@ export default function OpportunityForm({ opportunity, types, categories, countr
   }
 
   return (
-    <AdminLayout title={isEdit ? 'تعديل فرصة' : 'إضافة فرصة'}>
+    <AdminLayout title={isEdit ? 'Edit Opportunity' : 'Add Opportunity'}>
       <div className="mx-auto max-w-3xl px-4 py-6">
         <div className="mb-6 flex items-center gap-3">
           <Link
             href="/admin/opportunities"
             className="rounded-lg p-2 text-[#101828]/50 transition-colors hover:bg-[#073B33]/10 hover:text-[#073B33]"
           >
-            <ArrowRight className="h-5 w-5" />
+            <ArrowLeft className="h-5 w-5" />
           </Link>
           <h1 className="text-xl font-bold text-[#101828]">
-            {isEdit ? 'تعديل فرصة' : 'إضافة فرصة'}
+            {isEdit ? 'Edit Opportunity' : 'Add Opportunity'}
           </h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="rounded-2xl border border-[#e0e0e0] bg-white p-5">
-            <h2 className="mb-4 text-base font-semibold text-[#101828]">المعلومات الأساسية</h2>
+            <h2 className="mb-4 text-base font-semibold text-[#101828]">Basic Information</h2>
 
             <div className="space-y-4">
               <div>
-                <label className={labelClass}>العنوان (JSON - النص العربي)</label>
+                <label className={labelClass}>Title (JSON)</label>
                 <textarea
                   value={data.title}
                   onChange={(e) => setData('title', e.target.value)}
                   rows={2}
-                  placeholder='{"ar": "نص عربي"}'
+                  placeholder='{"en": "Opportunity title"}'
                   className={inputClass}
                 />
                 {errors.title && <p className="mt-1 text-xs text-[#E91E63]">{errors.title}</p>}
               </div>
 
               <div>
-                <label className={labelClass}>الرابط (slug)</label>
+                <label className={labelClass}>Slug</label>
                 <input
                   type="text"
                   value={data.slug}
@@ -114,24 +117,24 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>الملخص (JSON - النص العربي)</label>
+                <label className={labelClass}>Excerpt (JSON)</label>
                 <textarea
                   value={data.excerpt}
                   onChange={(e) => setData('excerpt', e.target.value)}
                   rows={2}
-                  placeholder='{"ar": "ملخص بالعربية"}'
+                  placeholder='{"en": "Short excerpt"}'
                   className={inputClass}
                 />
                 {errors.excerpt && <p className="mt-1 text-xs text-[#E91E63]">{errors.excerpt}</p>}
               </div>
 
               <div>
-                <label className={labelClass}>المحتوى (HTML)</label>
+                <label className={labelClass}>Content (HTML)</label>
                 <textarea
                   value={data.content}
                   onChange={(e) => setData('content', e.target.value)}
                   rows={8}
-                  placeholder="<p>محتوى الفرصة...</p>"
+                  placeholder="<p>Opportunity content...</p>"
                   className={inputClass}
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}
@@ -140,17 +143,17 @@ export default function OpportunityForm({ opportunity, types, categories, countr
           </div>
 
           <div className="rounded-2xl border border-[#e0e0e0] bg-white p-5">
-            <h2 className="mb-4 text-base font-semibold text-[#101828]">التصنيف</h2>
+            <h2 className="mb-4 text-base font-semibold text-[#101828]">Classification</h2>
 
             <div className="grid gap-4 sm:grid-cols-3">
               <div>
-                <label className={labelClass}>نوع الفرصة</label>
+                <label className={labelClass}>Opportunity Type</label>
                 <select
                   value={data.opportunity_type_id}
                   onChange={(e) => setData('opportunity_type_id', e.target.value)}
                   className={inputClass}
                 >
-                  <option value="">اختر النوع</option>
+                  <option value="">Select Type</option>
                   {types.map((t) => (
                     <option key={t.id} value={t.id}>
                       {getLocalized(t.name)}
@@ -163,13 +166,13 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>التصنيف</label>
+                <label className={labelClass}>Category</label>
                 <select
                   value={data.category_id}
                   onChange={(e) => setData('category_id', e.target.value)}
                   className={inputClass}
                 >
-                  <option value="">اختر التصنيف</option>
+                  <option value="">Select Category</option>
                   {categories.map((c) => (
                     <option key={c.id} value={c.id}>
                       {getLocalized(c.name)}
@@ -182,13 +185,13 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>الدولة</label>
+                <label className={labelClass}>Country</label>
                 <select
                   value={data.country_id}
                   onChange={(e) => setData('country_id', e.target.value)}
                   className={inputClass}
                 >
-                  <option value="">اختر الدولة</option>
+                  <option value="">Select Country</option>
                   {countries.map((c) => (
                     <option key={c.id} value={c.id}>
                       {getLocalized(c.name)}
@@ -203,7 +206,7 @@ export default function OpportunityForm({ opportunity, types, categories, countr
 
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div>
-                <label className={labelClass}>الجهة المنظمة</label>
+                <label className={labelClass}>Organization</label>
                 <input
                   type="text"
                   value={data.organization}
@@ -213,7 +216,7 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>نوع التمويل</label>
+                <label className={labelClass}>Funding Type</label>
                 <input
                   type="text"
                   value={data.funding_type}
@@ -225,11 +228,11 @@ export default function OpportunityForm({ opportunity, types, categories, countr
           </div>
 
           <div className="rounded-2xl border border-[#e0e0e0] bg-white p-5">
-            <h2 className="mb-4 text-base font-semibold text-[#101828]">التقديم والنشر</h2>
+            <h2 className="mb-4 text-base font-semibold text-[#101828]">Application & Publishing</h2>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className={labelClass}>آخر موعد للتقديم</label>
+                <label className={labelClass}>Application Deadline</label>
                 <input
                   type="date"
                   value={data.application_deadline}
@@ -239,7 +242,7 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>رابط التقديم</label>
+                <label className={labelClass}>Application URL</label>
                 <input
                   type="url"
                   value={data.application_url}
@@ -250,7 +253,7 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>الحالة</label>
+                <label className={labelClass}>Status</label>
                 <select
                   value={data.status}
                   onChange={(e) => setData('status', e.target.value as Opportunity['status'])}
@@ -266,7 +269,7 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>تاريخ النشر</label>
+                <label className={labelClass}>Published At</label>
                 <input
                   type="datetime-local"
                   value={data.published_at}
@@ -284,7 +287,7 @@ export default function OpportunityForm({ opportunity, types, categories, countr
                   className="h-4 w-4 rounded border-[#e0e0e0] text-[#073B33] focus:ring-[#073B33]"
                 />
                 <label htmlFor="is_featured" className="text-sm font-medium text-[#101828]">
-                  فرصة مميزة
+                  Featured Opportunity
                 </label>
               </div>
             </div>
@@ -296,13 +299,13 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               disabled={processing}
               className="rounded-xl bg-[#073B33] px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#052a25] disabled:opacity-50"
             >
-              {isEdit ? 'تحديث' : 'حفظ'}
+              {isEdit ? 'Update' : 'Save'}
             </button>
             <Link
               href="/admin/opportunities"
               className="rounded-xl border border-[#e0e0e0] px-6 py-2.5 text-sm font-medium text-[#101828] transition-colors hover:bg-[#f0f0f0]"
             >
-              إلغاء
+              Cancel
             </Link>
           </div>
         </form>

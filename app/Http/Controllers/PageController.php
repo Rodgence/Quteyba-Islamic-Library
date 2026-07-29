@@ -18,8 +18,8 @@ class PageController extends Controller
                 'content' => $page->content,
             ],
             'seo' => [
-                'title' => $page->seo_title ?? ($page->title['ar'] ?? '') . ' | مكتبة قتيبة الإسلامية',
-                'description' => $page->seo_description['ar'] ?? '',
+                'title' => $page->seo_title ?? ($page->title['en'] ?? $page->title['ar'] ?? '') . ' | Quteyba Islamic Library',
+                'description' => $page->seo_description['en'] ?? $page->seo_description['ar'] ?? '',
             ],
         ]);
     }

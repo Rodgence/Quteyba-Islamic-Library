@@ -29,17 +29,17 @@ export default function UsersIndex({ users }: Props) {
     <AdminLayout>
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[#073B33]">المستخدمون</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">Users</h1>
         </div>
 
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-right">
-                <th className="px-4 py-3 font-medium text-gray-600">الاسم</th>
-                <th className="px-4 py-3 font-medium text-gray-600">البريد الإلكتروني</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الصلاحيات</th>
-                <th className="px-4 py-3 font-medium text-gray-600">تاريخ التسجيل</th>
+              <tr className="border-b border-gray-100 bg-gray-50 text-left">
+                <th className="px-4 py-3 font-medium text-gray-600">Name</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Email</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Roles</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Registered</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -64,14 +64,14 @@ export default function UsersIndex({ users }: Props) {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-gray-500" dir="ltr">
-                    {new Date(user.created_at).toLocaleDateString('ar-SA')}
+                    {new Date(user.created_at).toLocaleDateString('en-US')}
                   </td>
                 </tr>
               ))}
               {(!Array.isArray(items) || items.length === 0) && (
                 <tr>
                   <td className="px-4 py-8 text-center text-gray-400" colSpan={4}>
-                    لا يوجد مستخدمون بعد
+                    No users yet
                   </td>
                 </tr>
               )}

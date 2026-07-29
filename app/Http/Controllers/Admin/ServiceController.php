@@ -35,7 +35,7 @@ class ServiceController extends Controller
         Service::create($validated);
 
         return redirect()->route('admin.services.index')
-            ->with('success', 'تم إنشاء الخدمة بنجاح.');
+            ->with('success', 'Service created successfully.');
     }
 
     public function update(Request $request, Service $service)
@@ -55,7 +55,7 @@ class ServiceController extends Controller
         $service->update($validated);
 
         return redirect()->route('admin.services.index')
-            ->with('success', 'تم تحديث الخدمة بنجاح.');
+            ->with('success', 'Service updated successfully.');
     }
 
     public function destroy(Service $service)
@@ -63,6 +63,6 @@ class ServiceController extends Controller
         $service->delete();
 
         return redirect()->route('admin.services.index')
-            ->with('success', 'تم حذف الخدمة بنجاح.');
+            ->with('success', 'Service deleted successfully.');
     }
 }

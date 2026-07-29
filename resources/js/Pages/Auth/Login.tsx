@@ -16,18 +16,18 @@ export default function Login() {
     post('/login', {
       onError: (errs) => {
         if (Object.keys(errs).length === 0) {
-          setFormError('بيانات الدخول غير صحيحة')
+          setFormError('Invalid login credentials')
         }
       },
     })
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-primary-light px-4" dir="rtl" lang="ar">
+    <div className="flex min-h-screen items-center justify-center bg-primary-light px-4" dir="ltr" lang="en">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-sm">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-primary">مكتبة قتيبة الإسلامية</h1>
-          <p className="mt-2 text-sm text-[#101828]/60">لوحة التحكم</p>
+          <h1 className="text-2xl font-bold text-primary">Quteyba Islamic Library</h1>
+          <p className="mt-2 text-sm text-[#101828]/60">Dashboard</p>
         </div>
 
         {formError && (
@@ -39,7 +39,7 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div>
             <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[#101828]">
-              البريد الإلكتروني
+              Email
             </label>
             <input
               id="email"
@@ -58,7 +58,7 @@ export default function Login() {
 
           <div>
             <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-[#101828]">
-              كلمة المرور
+              Password
             </label>
             <input
               id="password"
@@ -83,7 +83,7 @@ export default function Login() {
               className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
             />
             <label htmlFor="remember" className="text-sm text-[#101828]/70">
-              تذكرني
+              Remember me
             </label>
           </div>
 
@@ -92,7 +92,7 @@ export default function Login() {
             disabled={processing}
             className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
           >
-            {processing ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
+            {processing ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
       </div>

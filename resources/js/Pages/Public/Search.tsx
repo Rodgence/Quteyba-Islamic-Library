@@ -24,7 +24,7 @@ export default function Search({ seo }: SearchProps) {
             <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-[#073B33]">
               <SearchIcon className="h-10 w-10 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-[#073B33]">بحث</h1>
+            <h1 className="text-3xl font-bold text-[#073B33]">Search</h1>
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -33,13 +33,13 @@ export default function Search({ seo }: SearchProps) {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="ابحث عن فرصتك..."
-                className="w-full rounded-2xl border-2 border-border bg-white py-5 pr-16 pl-6 text-lg text-[#101828] placeholder:text-[#101828]/35 shadow-sm transition-colors focus:border-[#073B33] focus:outline-none focus:ring-4 focus:ring-[#073B33]/10"
+                placeholder="Search for your opportunity..."
+                className="w-full rounded-2xl border-2 border-border bg-white py-5 pl-16 pr-6 text-lg text-[#101828] placeholder:text-[#101828]/35 shadow-sm transition-colors focus:border-[#073B33] focus:outline-none focus:ring-4 focus:ring-[#073B33]/10"
               />
               <button
                 type="submit"
-                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-xl bg-[#073B33] p-3 text-white transition-colors hover:bg-[#052b26]"
-                aria-label="بحث"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl bg-[#073B33] p-3 text-white transition-colors hover:bg-[#052b26]"
+                aria-label="Search"
               >
                 <SearchIcon className="h-6 w-6" />
               </button>
@@ -47,7 +47,7 @@ export default function Search({ seo }: SearchProps) {
           </form>
 
           <p className="mt-4 text-sm text-[#101828]/40">
-            ابحث عن المنح الدراسية، الوظائف، التدريب، والمزيد
+            Search for scholarships, jobs, internships, and more
           </p>
         </div>
       </div>

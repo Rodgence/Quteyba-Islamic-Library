@@ -1,20 +1,20 @@
-# متطلبات استيراد ووردبريس
+# WordPress Import Requirements
 
-## حالة البيانات
+## Data Status
 
-لم يتم العثور على ملفات تصدير ووردبريس في `storage/app/import/wordpress/`.
+No WordPress export files were found in `storage/app/import/wordpress/`.
 
-## الملفات المطلوبة
+## Required Files
 
-لتشغيل عملية الاستيراد، ضع الملفات التالية في `storage/app/import/wordpress/`:
+To run the import process, place the following files in `storage/app/import/wordpress/`:
 
-1. **WordPress XML export** (`.xml`) - تصدير XML من ووردبريس
-2. **WordPress SQL dump** (`.sql`) - نسخة احتياطية من قاعدة البيانات
-3. **uploads archive** (`.zip` أو `.tar.gz`) - مجلد wp-content/uploads
+1. **WordPress XML export** (`.xml`) - XML export from WordPress
+2. **WordPress SQL dump** (`.sql`) - Database backup
+3. **uploads archive** (`.zip` or `.tar.gz`) - the wp-content/uploads folder
 
-بدلاً من ذلك، يمكن استخدام WordPress REST API إذا كان الموقع القديم لا يزال متاحاً.
+Alternatively, the WordPress REST API can be used if the old site is still available.
 
-## أوامر الاستيراد المدعومة
+## Supported Import Commands
 
 ```bash
 php artisan wordpress:import --source=xml
@@ -26,16 +26,16 @@ php artisan wordpress:import --only=media
 php artisan wordpress:import --resume
 ```
 
-## قائمة المحتوى المتوقع
+## Expected Content List
 
-بناءً على فئات الموقع المعروفة:
-- منح دراسية (Scholarships)
-- وظائف (Jobs)
-- تدريب (Internships/Training)
-- تأشيرات (Visas)
-- برامج سفر (Travel Programmes)
-- مؤتمرات (Conferences)
-- مسابقات (Competitions)
-- خدمات
-- دورات
-- صفحات ثابتة
+Based on the site's known categories:
+- Scholarships
+- Jobs
+- Internships/Training
+- Visas
+- Travel Programmes
+- Conferences
+- Competitions
+- Services
+- Courses
+- Static pages

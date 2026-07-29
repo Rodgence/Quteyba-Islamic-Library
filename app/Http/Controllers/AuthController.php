@@ -28,7 +28,7 @@ class AuthController extends Controller
         }
 
         throw ValidationException::withMessages([
-            'email' => 'بيانات الدخول غير صحيحة.',
+            'email' => 'Invalid login credentials.',
         ]);
     }
 

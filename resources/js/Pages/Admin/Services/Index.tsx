@@ -25,7 +25,7 @@ const getAr = (json: string | null): string => {
   if (!json) return '-'
   try {
     const parsed = JSON.parse(json)
-    return parsed.ar || json
+    return parsed.en || parsed.ar || json
   } catch {
     return json
   }
@@ -34,9 +34,9 @@ const getAr = (json: string | null): string => {
 const statusBadge = (status: string) => {
   switch (status) {
     case 'published':
-      return <span className="inline-flex rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">منشور</span>
+      return <span className="inline-flex rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Published</span>
     case 'draft':
-      return <span className="inline-flex rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700">مسودة</span>
+      return <span className="inline-flex rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700">Draft</span>
     default:
       return <span className="inline-flex rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">{status}</span>
   }
@@ -47,7 +47,7 @@ export default function ServicesIndex({ services }: Props) {
   const [editingId, setEditingId] = useState<number | null>(null)
 
   const { data, setData, post, processing, reset, errors } = useForm({
-    title: '{"ar":""}',
+    title: '{"en":""}',
     slug: '',
     short_description: '',
     content: '',
@@ -116,7 +116,7 @@ export default function ServicesIndex({ services }: Props) {
   }
 
   const handleDelete = (id: number) => {
-    if (!confirm('هل أنت متأكد من حذف هذه الخدمة؟')) return
+    if (!confirm('Are you sure you want to delete this service?')) return
     router.delete(`/admin/services/${id}`)
   }
 
@@ -143,18 +143,18 @@ export default function ServicesIndex({ services }: Props) {
       <div className={compact ? 'grid gap-2' : 'grid gap-3'}>
         <div className={compact ? 'grid gap-2 sm:grid-cols-2' : 'grid gap-3 sm:grid-cols-2'}>
           <div>
-            <label className={labelClass}>العنوان (JSON)</label>
+            <label className={labelClass}>Title (JSON)</label>
             <textarea
               value={data.title as string}
               onChange={(e) => setData('title', e.target.value)}
-              placeholder='{"ar":"اسم الخدمة"}'
+              placeholder='{"en":"Service name"}'
               className={inputClass}
               rows={compact ? 2 : 2}
             />
             {errors.title && <p className="mt-1 text-xs text-red-500">{errors.title}</p>}
           </div>
           <div>
-            <label className={labelClass}>الرابط المختصر</label>
+            <label className={labelClass}>Slug</label>
             <input
               type="text"
               value={data.slug as string}
@@ -166,17 +166,17 @@ export default function ServicesIndex({ services }: Props) {
         </div>
         <div className={compact ? 'grid gap-2 sm:grid-cols-2' : 'grid gap-3 sm:grid-cols-2'}>
           <div>
-            <label className={labelClass}>الوصف المختصر (JSON)</label>
+            <label className={labelClass}>Short Description (JSON)</label>
             <textarea
               value={data.short_description as string}
               onChange={(e) => setData('short_description', e.target.value)}
-              placeholder='{"ar":"وصف مختصر"}'
+              placeholder='{"en":"Short description"}'
               className={inputClass}
               rows={2}
             />
           </div>
           <div>
-            <label className={labelClass}>الأيقونة</label>
+            <label className={labelClass}>Icon</label>
             <input
               type="text"
               value={data.icon as string}
@@ -187,18 +187,18 @@ export default function ServicesIndex({ services }: Props) {
           </div>
         </div>
         <div>
-          <label className={labelClass}>المحتوى (JSON)</label>
+          <label className={labelClass}>Content (JSON)</label>
           <textarea
             value={data.content as string}
             onChange={(e) => setData('content', e.target.value)}
-            placeholder='{"ar":"المحتوى..."}'
+            placeholder='{"en":"Content..."}'
             className={inputClass}
             rows={compact ? 4 : 6}
           />
         </div>
         <div className={compact ? 'grid gap-2 sm:grid-cols-3' : 'grid gap-3 sm:grid-cols-3'}>
           <div>
-            <label className={labelClass}>رابط واتساب</label>
+            <label className={labelClass}>WhatsApp URL</label>
             <input
               type="text"
               value={data.whatsapp_url as string}
@@ -207,18 +207,18 @@ export default function ServicesIndex({ services }: Props) {
             />
           </div>
           <div>
-            <label className={labelClass}>الحالة</label>
+            <label className={labelClass}>Status</label>
             <select
               value={data.status as string}
               onChange={(e) => setData('status', e.target.value)}
               className={inputClass}
             >
-              <option value="draft">مسودة</option>
-              <option value="published">منشور</option>
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
             </select>
           </div>
           <div>
-            <label className={labelClass}>ترتيب العرض</label>
+            <label className={labelClass}>Display Order</label>
             <input
               type="number"
               value={data.display_order as string}
@@ -235,14 +235,14 @@ export default function ServicesIndex({ services }: Props) {
     <AdminLayout>
       <div className="mx-auto max-w-5xl p-4 lg:p-6">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[#073B33]">الخدمات</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">Services</h1>
           {!adding && (
             <button
               onClick={() => setAdding(true)}
               className="inline-flex items-center gap-2 rounded-xl bg-[#073B33] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#052b26]"
             >
               <Plus className="h-4 w-4" />
-              إضافة خدمة
+              Add Service
             </button>
           )}
         </div>
@@ -257,7 +257,7 @@ export default function ServicesIndex({ services }: Props) {
                 className="inline-flex items-center gap-1 rounded-xl bg-[#073B33] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#052b26] disabled:opacity-50"
               >
                 <Check className="h-4 w-4" />
-                حفظ
+                Save
               </button>
               <button
                 onClick={() => {
@@ -267,7 +267,7 @@ export default function ServicesIndex({ services }: Props) {
                 className="inline-flex items-center gap-1 rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
               >
                 <X className="h-4 w-4" />
-                إلغاء
+                Cancel
               </button>
             </div>
           </div>
@@ -276,14 +276,14 @@ export default function ServicesIndex({ services }: Props) {
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-right">
-                <th className="px-4 py-3 font-medium text-gray-600">العنوان</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الرابط المختصر</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الأيقونة</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الحالة</th>
-                <th className="px-4 py-3 font-medium text-gray-600">نشط</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الترتيب</th>
-                <th className="px-4 py-3 font-medium text-gray-600">إجراءات</th>
+              <tr className="border-b border-gray-100 bg-gray-50 text-left">
+                <th className="px-4 py-3 font-medium text-gray-600">Title</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Slug</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Icon</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Status</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Active</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Order</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -304,14 +304,14 @@ export default function ServicesIndex({ services }: Props) {
                           className="inline-flex items-center gap-1 rounded-xl bg-[#073B33] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[#052b26] disabled:opacity-50"
                         >
                           <Check className="h-3 w-3" />
-                          حفظ
+                          Save
                         </button>
                         <button
                           onClick={cancelEdit}
                           className="inline-flex items-center gap-1 rounded-xl border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50"
                         >
                           <X className="h-3 w-3" />
-                          إلغاء
+                          Cancel
                         </button>
                       </div>
                     </td>
@@ -333,7 +333,7 @@ export default function ServicesIndex({ services }: Props) {
                         <button
                           onClick={() => handleActiveToggle(service)}
                           className="rounded-lg p-1 transition-colors hover:bg-gray-100"
-                          title={service.is_active ? 'نشط' : 'غير نشط'}
+                          title={service.is_active ? 'Active' : 'Inactive'}
                         >
                           {service.is_active ? (
                             <ToggleRight className="h-5 w-5 text-green-600" />
@@ -350,14 +350,14 @@ export default function ServicesIndex({ services }: Props) {
                           <button
                             onClick={() => startEdit(service)}
                             className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-[#073B33]"
-                            title="تعديل"
+                            title="Edit"
                           >
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(service.id)}
                             className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
-                            title="حذف"
+                            title="Delete"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -370,7 +370,7 @@ export default function ServicesIndex({ services }: Props) {
               {services.length === 0 && (
                 <tr>
                   <td className="px-4 py-12 text-center text-gray-400" colSpan={7}>
-                    لا توجد خدمات
+                    No services found
                   </td>
                 </tr>
               )}

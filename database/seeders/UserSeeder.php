@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
         $superAdmin = User::firstOrCreate(
             ['email' => 'admin@quteybaislamiclibrary.com'],
             [
-                'name' => 'المشرف العام',
+                'name' => 'Super Admin',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'editor@quteybaislamiclibrary.com'],
             [
-                'name' => 'مدير المحتوى',
+                'name' => 'Content Manager',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]

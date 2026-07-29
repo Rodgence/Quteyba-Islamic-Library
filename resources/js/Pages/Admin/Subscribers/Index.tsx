@@ -19,16 +19,16 @@ export default function SubscribersIndex({ subscribers }: Props) {
     <AdminLayout>
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[#073B33]">المشتركون</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">Subscribers</h1>
         </div>
 
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-right">
-                <th className="px-4 py-3 font-medium text-gray-600">البريد الإلكتروني</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الحالة</th>
-                <th className="px-4 py-3 font-medium text-gray-600">تاريخ الاشتراك</th>
+              <tr className="border-b border-gray-100 bg-gray-50 text-left">
+                <th className="px-4 py-3 font-medium text-gray-600">Email</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Status</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Subscribed On</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -43,12 +43,12 @@ export default function SubscribersIndex({ subscribers }: Props) {
                         ? 'bg-green-100 text-green-700'
                         : 'bg-gray-100 text-gray-500'
                     }`}>
-                      {subscriber.is_active ? 'نشط' : 'غير نشط'}
+                      {subscriber.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-500" dir="ltr">
                     {subscriber.subscribed_at
-                      ? new Date(subscriber.subscribed_at).toLocaleDateString('ar-SA')
+                      ? new Date(subscriber.subscribed_at).toLocaleDateString('en-US')
                       : '-'}
                   </td>
                 </tr>
@@ -56,7 +56,7 @@ export default function SubscribersIndex({ subscribers }: Props) {
               {(!Array.isArray(items) || items.length === 0) && (
                 <tr>
                   <td className="px-4 py-8 text-center text-gray-400" colSpan={3}>
-                    لا يوجد مشتركون بعد
+                    No subscribers yet
                   </td>
                 </tr>
               )}

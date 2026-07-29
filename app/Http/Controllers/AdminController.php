@@ -42,7 +42,7 @@ class AdminTypesController extends Controller
         ]);
 
         OpportunityType::create($validated);
-        return back()->with('success', 'تم إنشاء النوع بنجاح.');
+        return back()->with('success', 'Type created successfully.');
     }
 
     public function update(Request $request, OpportunityType $type)
@@ -52,13 +52,13 @@ class AdminTypesController extends Controller
             'slug' => 'required|string|unique:opportunity_types,slug,' . $type->id,
             'icon' => 'nullable|string',
         ]));
-        return back()->with('success', 'تم تحديث النوع.');
+        return back()->with('success', 'Type updated.');
     }
 
     public function destroy(OpportunityType $type)
     {
         $type->delete();
-        return back()->with('success', 'تم حذف النوع.');
+        return back()->with('success', 'Type deleted.');
     }
 }
 
@@ -83,7 +83,7 @@ class AdminCountriesController extends Controller
             'slug' => 'required|string|unique:countries',
             'code' => 'required|string|size:3|unique:countries',
         ]));
-        return back()->with('success', 'تم إنشاء الدولة.');
+        return back()->with('success', 'Country created.');
     }
 
     public function update(Request $request, Country $country)
@@ -93,13 +93,13 @@ class AdminCountriesController extends Controller
             'slug' => 'required|string|unique:countries,slug,' . $country->id,
             'code' => 'required|string|size:3|unique:countries,code,' . $country->id,
         ]));
-        return back()->with('success', 'تم تحديث الدولة.');
+        return back()->with('success', 'Country updated.');
     }
 
     public function destroy(Country $country)
     {
         $country->delete();
-        return back()->with('success', 'تم حذف الدولة.');
+        return back()->with('success', 'Country deleted.');
     }
 }
 
@@ -123,6 +123,6 @@ class AdminCategoriesController extends Controller
             'name' => 'required|json',
             'slug' => 'required|string|unique:categories',
         ]));
-        return back()->with('success', 'تم إنشاء التصنيف.');
+        return back()->with('success', 'Category created.');
     }
 }

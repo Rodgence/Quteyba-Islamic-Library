@@ -40,7 +40,7 @@ class PageController extends Controller
 
         Page::create($validated);
 
-        return redirect()->route('admin.pages.index')->with('success', 'تم إنشاء الصفحة بنجاح.');
+        return redirect()->route('admin.pages.index')->with('success', 'Page created successfully.');
     }
 
     public function edit(Page $page)
@@ -59,12 +59,12 @@ class PageController extends Controller
 
         $page->update($validated);
 
-        return redirect()->route('admin.pages.index')->with('success', 'تم تحديث الصفحة بنجاح.');
+        return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully.');
     }
 
     public function destroy(Page $page)
     {
         $page->delete();
-        return redirect()->route('admin.pages.index')->with('success', 'تم حذف الصفحة بنجاح.');
+        return redirect()->route('admin.pages.index')->with('success', 'Page deleted successfully.');
     }
 }

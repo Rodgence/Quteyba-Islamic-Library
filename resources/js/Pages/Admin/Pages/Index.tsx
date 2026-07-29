@@ -8,33 +8,33 @@ interface Props {
 }
 
 const statusMap: Record<string, { label: string; className: string }> = {
-  published: { label: 'منشورة', className: 'bg-emerald-50 text-emerald-600' },
-  draft: { label: 'مسودة', className: 'bg-amber-50 text-amber-600' },
+  published: { label: 'Published', className: 'bg-emerald-50 text-emerald-600' },
+  draft: { label: 'Draft', className: 'bg-amber-50 text-amber-600' },
 }
 
 function formatDate(date: string | null): string {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' })
+  return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
 export default function PagesIndex({ pages }: Props) {
   const handleDelete = (id: number) => {
-    if (confirm('هل أنت متأكد من حذف هذه الصفحة؟')) {
+    if (confirm('Are you sure you want to delete this page?')) {
       router.delete(`/admin/pages/${id}`)
     }
   }
 
   return (
-    <AdminLayout title="الصفحات">
+    <AdminLayout title="Pages">
       <div className="mx-auto max-w-7xl px-4 py-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-xl font-bold text-[#101828]">الصفحات</h1>
+          <h1 className="text-xl font-bold text-[#101828]">Pages</h1>
           <Link
             href="/admin/pages/create"
             className="inline-flex items-center gap-2 rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#052a25]"
           >
             <Plus className="h-4 w-4" />
-            إضافة صفحة
+            Add Page
           </Link>
         </div>
 
@@ -42,17 +42,17 @@ export default function PagesIndex({ pages }: Props) {
           {pages.data.length === 0 ? (
             <div className="py-16 text-center">
               <Search className="mx-auto mb-3 h-10 w-10 text-[#073B33]/15" />
-              <p className="text-sm text-[#101828]/50">لا توجد صفحات</p>
+              <p className="text-sm text-[#101828]/50">No pages found</p>
             </div>
           ) : (
             <table className="w-full text-sm">
               <thead className="border-b border-[#e0e0e0] bg-[#f9f9f9]">
                 <tr>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">العنوان</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">الرابط</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">الحالة</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">التاريخ</th>
-                  <th className="px-4 py-3 text-right font-medium text-[#101828]">إجراءات</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Title</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">URL</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Status</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Date</th>
+                  <th className="px-4 py-3 text-left font-medium text-[#101828]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#e0e0e0]">

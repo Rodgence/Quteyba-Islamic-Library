@@ -43,7 +43,7 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
-    return new Intl.DateTimeFormat('ar-SA', {
+    return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -57,7 +57,7 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-[#073B33]">الرسائل</h1>
+            <h1 className="text-2xl font-bold text-[#073B33]">Messages</h1>
             {unreadCount > 0 && (
               <span className="inline-flex items-center rounded-full bg-[#E91E63] px-2.5 py-0.5 text-xs font-bold text-white">
                 {unreadCount}
@@ -75,7 +75,7 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
                 : 'border border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
             }`}
           >
-            الكل
+            All
           </button>
           <button
             onClick={() => applyFilter('unread')}
@@ -86,7 +86,7 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
             }`}
           >
             <Mail className="h-3.5 w-3.5" />
-            غير مقروءة
+            Unread
           </button>
           <button
             onClick={() => applyFilter('read')}
@@ -97,20 +97,20 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
             }`}
           >
             <MailOpen className="h-3.5 w-3.5" />
-            مقروءة
+            Read
           </button>
         </div>
 
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-right">
-                <th className="px-4 py-3 font-medium text-gray-600">الاسم</th>
-                <th className="px-4 py-3 font-medium text-gray-600">البريد الإلكتروني</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الموضوع</th>
-                <th className="px-4 py-3 font-medium text-gray-600">التاريخ</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الحالة</th>
-                <th className="px-4 py-3 font-medium text-gray-600">إجراءات</th>
+              <tr className="border-b border-gray-100 bg-gray-50 text-left">
+                <th className="px-4 py-3 font-medium text-gray-600">Name</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Email</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Subject</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Date</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Status</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -124,7 +124,7 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
                       {message.name}
                     </span>
                     {!message.is_read && (
-                      <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-[#E91E63]" />
+                      <span className="ml-1.5 inline-block h-2 w-2 rounded-full bg-[#E91E63]" />
                     )}
                   </td>
                   <td className="px-4 py-3 text-gray-500">{message.email}</td>
@@ -134,12 +134,12 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
                     {message.is_read ? (
                       <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
                         <MailOpen className="h-3 w-3" />
-                        مقروءة
+                        Read
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 rounded-full bg-[#E91E63]/10 px-2 py-0.5 text-xs font-medium text-[#E91E63]">
                         <Mail className="h-3 w-3" />
-                        غير مقروءة
+                        Unread
                       </span>
                     )}
                   </td>
@@ -147,7 +147,7 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
                     <Link
                       href={`/admin/messages/${message.id}`}
                       className="inline-flex items-center gap-1 rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-[#073B33]"
-                      title="عرض"
+                      title="View"
                     >
                       <Eye className="h-4 w-4" />
                     </Link>
@@ -157,7 +157,7 @@ export default function MessagesIndex({ messages, filters, unreadCount }: Props)
               {messages.data.length === 0 && (
                 <tr>
                   <td className="px-4 py-8 text-center text-gray-400" colSpan={6}>
-                    لا توجد رسائل
+                    No messages
                   </td>
                 </tr>
               )}

@@ -10,18 +10,18 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => json_encode(['ar' => 'بكالوريوس']), 'slug' => 'bachelor', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'ماجستير']), 'slug' => 'master', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'دكتوراه']), 'slug' => 'phd', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'لغات']), 'slug' => 'languages', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'الهندسة']), 'slug' => 'engineering', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'الطب']), 'slug' => 'medicine', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'إدارة أعمال']), 'slug' => 'business', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'تقنية المعلومات']), 'slug' => 'it', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'العلوم']), 'slug' => 'science', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'القانون']), 'slug' => 'law', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'التربية']), 'slug' => 'education', 'parent_id' => null],
-            ['name' => json_encode(['ar' => 'الفنون']), 'slug' => 'arts', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Bachelor']), 'slug' => 'bachelor', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Master']), 'slug' => 'master', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'PhD']), 'slug' => 'phd', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Languages']), 'slug' => 'languages', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Engineering']), 'slug' => 'engineering', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Medicine']), 'slug' => 'medicine', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Business Administration']), 'slug' => 'business', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Information Technology']), 'slug' => 'it', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Science']), 'slug' => 'science', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Law']), 'slug' => 'law', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Education']), 'slug' => 'education', 'parent_id' => null],
+            ['name' => json_encode(['en' => 'Arts']), 'slug' => 'arts', 'parent_id' => null],
         ];
 
         foreach ($categories as $category) {

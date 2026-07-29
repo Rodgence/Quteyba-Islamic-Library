@@ -16,11 +16,11 @@ interface Props {
 }
 
 const groupLabels: Record<string, string> = {
-  general: 'عام',
-  contact: 'معلومات الاتصال',
-  social: 'وسائل التواصل',
-  seo: 'تحسين محركات البحث',
-  appearance: 'المظهر',
+  general: 'General',
+  contact: 'Contact Information',
+  social: 'Social Media',
+  seo: 'SEO',
+  appearance: 'Appearance',
 }
 
 export default function SettingsIndex({ settings }: Props) {
@@ -28,7 +28,7 @@ export default function SettingsIndex({ settings }: Props) {
     <AdminLayout>
       <div className="mx-auto max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#073B33]">الإعدادات</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">Settings</h1>
         </div>
 
         <div className="space-y-6">

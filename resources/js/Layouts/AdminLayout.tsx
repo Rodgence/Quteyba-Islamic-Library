@@ -26,14 +26,14 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: 'لوحة التحكم', href: '/admin', icon: LayoutDashboard },
-  { label: 'الفرص', href: '/admin/opportunities', icon: Briefcase, activePattern: 'opportunities' },
-  { label: 'الصفحات', href: '/admin/pages', icon: FileText, activePattern: 'pages' },
-  { label: 'الخدمات', href: '/admin/services', icon: Package, activePattern: 'services' },
-  { label: 'الدورات', href: '/admin/courses', icon: GraduationCap, activePattern: 'courses' },
-  { label: 'الرسائل', href: '/admin/messages', icon: MessageSquare, activePattern: 'messages' },
-  { label: 'طلبات التواصل', href: '/admin/contact-requests', icon: HelpCircle, activePattern: 'contact' },
-  { label: 'الإعدادات', href: '/admin/settings', icon: Settings, activePattern: 'settings' },
+  { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { label: 'Opportunities', href: '/admin/opportunities', icon: Briefcase, activePattern: 'opportunities' },
+  { label: 'Pages', href: '/admin/pages', icon: FileText, activePattern: 'pages' },
+  { label: 'Services', href: '/admin/services', icon: Package, activePattern: 'services' },
+  { label: 'Courses', href: '/admin/courses', icon: GraduationCap, activePattern: 'courses' },
+  { label: 'Messages', href: '/admin/messages', icon: MessageSquare, activePattern: 'messages' },
+  { label: 'Contact Requests', href: '/admin/contact-requests', icon: HelpCircle, activePattern: 'contact' },
+  { label: 'Settings', href: '/admin/settings', icon: Settings, activePattern: 'settings' },
 ]
 
 export default function AdminLayout({ children, title }: PropsWithChildren<{ title?: string }>) {
@@ -53,17 +53,17 @@ export default function AdminLayout({ children, title }: PropsWithChildren<{ tit
   }
 
   return (
-    <div dir="rtl" lang="ar" className="flex h-screen overflow-hidden bg-[#f5f5f5]">
-      <Head title={title || 'لوحة التحكم'} />
+    <div dir="ltr" lang="en" className="flex h-screen overflow-hidden bg-[#f5f5f5]">
+      <Head title={title || 'Dashboard'} />
 
       <aside
-        className={`fixed inset-y-0 right-0 z-50 w-64 transform border-l border-[#e0e0e0] bg-[#073B33] text-white transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-[#e0e0e0] bg-[#073B33] text-white transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
           <Link href="/admin" className="text-lg font-bold">
-            قتيبة
+            Quteyba
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -120,7 +120,7 @@ export default function AdminLayout({ children, title }: PropsWithChildren<{ tit
               className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-[#101828]/60 transition-colors hover:bg-[#f0f0f0] hover:text-[#E91E63]"
             >
               <LogOut className="h-4 w-4" />
-              خروج
+              Log out
             </button>
           </div>
         </header>

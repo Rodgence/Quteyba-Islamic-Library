@@ -30,16 +30,16 @@ interface Props {
 function parseAr(value: string): string {
   try {
     const parsed = JSON.parse(value)
-    return parsed?.ar || ''
+    return parsed?.en || parsed?.ar || ''
   } catch {
     return value || ''
   }
 }
 
 const statusLabels: Record<string, string> = {
-  open: 'متاح',
-  closed: 'مغلق',
-  soon: 'قريباً',
+  open: 'Open',
+  closed: 'Closed',
+  soon: 'Coming Soon',
 }
 
 const statusStyles: Record<string, string> = {
@@ -53,7 +53,7 @@ export default function CoursesPage({ courses }: Props) {
     <PublicLayout>
       <div className="bg-primary-light py-12">
         <div className="mx-auto max-w-7xl px-4">
-          <h1 className="text-2xl font-bold text-[#073B33]">الدورات</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">Courses</h1>
         </div>
       </div>
 
@@ -104,14 +104,14 @@ export default function CoursesPage({ courses }: Props) {
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-[#073B33]">
                     {course.price !== null && course.price !== undefined
-                      ? `${course.price} ${course.price_currency || 'دولار'}`
-                      : 'مجاناً'}
+                      ? `${course.price} ${course.price_currency || 'USD'}`
+                      : 'Free'}
                   </span>
                   <Link
                     href={`/courses/${course.slug}`}
                     className="rounded-xl bg-[#E91E63] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#c2185b]"
                   >
-                    التفاصيل
+                    Details
                   </Link>
                 </div>
               </div>

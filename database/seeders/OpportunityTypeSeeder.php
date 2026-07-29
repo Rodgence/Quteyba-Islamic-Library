@@ -10,15 +10,15 @@ class OpportunityTypeSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            ['name' => json_encode(['ar' => 'منحة دراسية']), 'slug' => 'scholarship', 'icon' => 'GraduationCap'],
-            ['name' => json_encode(['ar' => 'وظيفة']), 'slug' => 'job', 'icon' => 'Briefcase'],
-            ['name' => json_encode(['ar' => 'تدريب']), 'slug' => 'internship', 'icon' => 'Building2'],
-            ['name' => json_encode(['ar' => 'تدريب مهني']), 'slug' => 'training', 'icon' => 'Wrench'],
-            ['name' => json_encode(['ar' => 'تطوع']), 'slug' => 'volunteering', 'icon' => 'Heart'],
-            ['name' => json_encode(['ar' => 'تأشيرة']), 'slug' => 'visa', 'icon' => 'Plane'],
-            ['name' => json_encode(['ar' => 'برنامج سفر']), 'slug' => 'travel-programme', 'icon' => 'Globe'],
-            ['name' => json_encode(['ar' => 'مؤتمر']), 'slug' => 'conference', 'icon' => 'Users'],
-            ['name' => json_encode(['ar' => 'مسابقة']), 'slug' => 'competition', 'icon' => 'Trophy'],
+            ['name' => json_encode(['en' => 'Scholarship']), 'slug' => 'scholarship', 'icon' => 'GraduationCap'],
+            ['name' => json_encode(['en' => 'Job']), 'slug' => 'job', 'icon' => 'Briefcase'],
+            ['name' => json_encode(['en' => 'Internship']), 'slug' => 'internship', 'icon' => 'Building2'],
+            ['name' => json_encode(['en' => 'Vocational Training']), 'slug' => 'training', 'icon' => 'Wrench'],
+            ['name' => json_encode(['en' => 'Volunteering']), 'slug' => 'volunteering', 'icon' => 'Heart'],
+            ['name' => json_encode(['en' => 'Visa']), 'slug' => 'visa', 'icon' => 'Plane'],
+            ['name' => json_encode(['en' => 'Travel Programme']), 'slug' => 'travel-programme', 'icon' => 'Globe'],
+            ['name' => json_encode(['en' => 'Conference']), 'slug' => 'conference', 'icon' => 'Users'],
+            ['name' => json_encode(['en' => 'Competition']), 'slug' => 'competition', 'icon' => 'Trophy'],
         ];
 
         foreach ($types as $type) {

@@ -77,7 +77,7 @@ class OpportunityController extends Controller
         $opportunity = Opportunity::create($validated);
 
         return redirect()->route('admin.opportunities.index')
-            ->with('success', 'تم إنشاء الفرصة بنجاح.');
+            ->with('success', 'Opportunity created successfully.');
     }
 
     public function edit(Opportunity $opportunity)
@@ -112,7 +112,7 @@ class OpportunityController extends Controller
         $opportunity->update($validated);
 
         return redirect()->route('admin.opportunities.index')
-            ->with('success', 'تم تحديث الفرصة بنجاح.');
+            ->with('success', 'Opportunity updated successfully.');
     }
 
     public function destroy(Opportunity $opportunity)
@@ -120,7 +120,7 @@ class OpportunityController extends Controller
         $opportunity->delete();
 
         return redirect()->route('admin.opportunities.index')
-            ->with('success', 'تم حذف الفرصة بنجاح.');
+            ->with('success', 'Opportunity deleted successfully.');
     }
 
     public function bulkDelete(Request $request)
@@ -129,7 +129,7 @@ class OpportunityController extends Controller
         Opportunity::whereIn('id', $ids)->delete();
 
         return redirect()->route('admin.opportunities.index')
-            ->with('success', 'تم حذف الفرص المحددة.');
+            ->with('success', 'Selected opportunities deleted.');
     }
 
     public function bulkUpdateStatus(Request $request)
@@ -142,6 +142,6 @@ class OpportunityController extends Controller
         Opportunity::whereIn('id', $request->ids)->update(['status' => $request->status]);
 
         return redirect()->route('admin.opportunities.index')
-            ->with('success', 'تم تحديث حالة الفرص المحددة.');
+            ->with('success', 'Status of selected opportunities updated.');
     }
 }

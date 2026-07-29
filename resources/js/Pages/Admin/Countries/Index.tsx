@@ -70,7 +70,7 @@ export default function CountriesIndex({ countries }: Props) {
   }
 
   const handleDelete = (id: number) => {
-    if (!confirm('هل أنت متأكد من حذف هذه الدولة؟')) return
+    if (!confirm('Are you sure you want to delete this country?')) return
     router.delete(`/admin/countries/${id}`)
   }
 
@@ -78,14 +78,14 @@ export default function CountriesIndex({ countries }: Props) {
     <AdminLayout>
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[#073B33]">الدول</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">Countries</h1>
           {!adding && (
             <button
               onClick={() => setAdding(true)}
               className="inline-flex items-center gap-2 rounded-xl bg-[#073B33] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#052b26]"
             >
               <Plus className="h-4 w-4" />
-              إضافة دولة
+              Add Country
             </button>
           )}
         </div>
@@ -94,11 +94,11 @@ export default function CountriesIndex({ countries }: Props) {
           <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4">
             <div className="grid gap-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">الاسم (JSON)</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Name (JSON)</label>
                 <textarea
                   value={data.name}
                   onChange={(e) => setData('name', e.target.value)}
-                  placeholder='{"ar":"اسم الدولة"}'
+                  placeholder='{"en":"Country Name"}'
                   className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-[#073B33] focus:outline-none"
                   rows={2}
                 />
@@ -106,7 +106,7 @@ export default function CountriesIndex({ countries }: Props) {
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">الرابط المختصر</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Slug</label>
                   <input
                     type="text"
                     value={data.slug}
@@ -116,7 +116,7 @@ export default function CountriesIndex({ countries }: Props) {
                   {errors.slug && <p className="mt-1 text-xs text-red-500">{errors.slug}</p>}
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">كود الدولة</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Country Code</label>
                   <input
                     type="text"
                     value={data.code}
@@ -133,7 +133,7 @@ export default function CountriesIndex({ countries }: Props) {
                   className="inline-flex items-center gap-1 rounded-xl bg-[#073B33] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#052b26] disabled:opacity-50"
                 >
                   <Check className="h-4 w-4" />
-                  حفظ
+                  Save
                 </button>
                 <button
                   onClick={() => {
@@ -152,12 +152,12 @@ export default function CountriesIndex({ countries }: Props) {
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-right">
-                <th className="px-4 py-3 font-medium text-gray-600">الاسم</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الكود</th>
-                <th className="px-4 py-3 font-medium text-gray-600">الرابط المختصر</th>
-                <th className="px-4 py-3 font-medium text-gray-600">عدد الفرص</th>
-                <th className="px-4 py-3 font-medium text-gray-600">إجراءات</th>
+              <tr className="border-b border-gray-100 bg-gray-50 text-left">
+                <th className="px-4 py-3 font-medium text-gray-600">Name</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Code</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Slug</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Opportunities</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -168,7 +168,7 @@ export default function CountriesIndex({ countries }: Props) {
                       <td className="px-4 py-3" colSpan={5}>
                         <div className="grid gap-3 sm:grid-cols-3">
                           <div>
-                            <label className="mb-1 block text-xs font-medium text-gray-500">الاسم (JSON)</label>
+                            <label className="mb-1 block text-xs font-medium text-gray-500">Name (JSON)</label>
                             <textarea
                               value={editData.name}
                               onChange={(e) => setEditData('name', e.target.value)}
@@ -177,7 +177,7 @@ export default function CountriesIndex({ countries }: Props) {
                             />
                           </div>
                           <div>
-                            <label className="mb-1 block text-xs font-medium text-gray-500">الرابط المختصر</label>
+                            <label className="mb-1 block text-xs font-medium text-gray-500">Slug</label>
                             <input
                               type="text"
                               value={editData.slug}
@@ -186,7 +186,7 @@ export default function CountriesIndex({ countries }: Props) {
                             />
                           </div>
                           <div>
-                            <label className="mb-1 block text-xs font-medium text-gray-500">الكود</label>
+                            <label className="mb-1 block text-xs font-medium text-gray-500">Code</label>
                             <input
                               type="text"
                               value={editData.code}
@@ -202,14 +202,14 @@ export default function CountriesIndex({ countries }: Props) {
                             className="inline-flex items-center gap-1 rounded-xl bg-[#073B33] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[#052b26] disabled:opacity-50"
                           >
                             <Check className="h-3 w-3" />
-                            حفظ
+                            Save
                           </button>
                           <button
                             onClick={cancelEdit}
                             className="inline-flex items-center gap-1 rounded-xl border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50"
                           >
                             <X className="h-3 w-3" />
-                            إلغاء
+                            Cancel
                           </button>
                         </div>
                       </td>
@@ -235,14 +235,14 @@ export default function CountriesIndex({ countries }: Props) {
                           <button
                             onClick={() => startEdit(country)}
                             className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-[#073B33]"
-                            title="تعديل"
+                            title="Edit"
                           >
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(country.id)}
                             className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
-                            title="حذف"
+                            title="Delete"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -255,7 +255,7 @@ export default function CountriesIndex({ countries }: Props) {
               {countries.length === 0 && (
                 <tr>
                   <td className="px-4 py-8 text-center text-gray-400" colSpan={5}>
-                    لا توجد دول مضافة بعد
+                    No countries added yet
                   </td>
                 </tr>
               )}
