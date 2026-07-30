@@ -49,7 +49,7 @@ export default function TypesIndex({ types }: Props) {
   const startEdit = (type: Type) => {
     setEditingId(type.id)
     setEditData({
-      name: typeof type.name === 'string' ? type.name : JSON.stringify(type.name),
+      name: type.name,
       slug: type.slug,
       icon: type.icon || '',
     })
@@ -94,11 +94,11 @@ export default function TypesIndex({ types }: Props) {
           <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4">
             <div className="grid gap-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">Name (JSON)</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Name</label>
                 <textarea
                   value={data.name}
                   onChange={(e) => setData('name', e.target.value)}
-                  placeholder='{"en":"Type Name"}'
+                  placeholder="Type name"
                   className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-[#073B33] focus:outline-none"
                   rows={2}
                 />
@@ -166,7 +166,7 @@ export default function TypesIndex({ types }: Props) {
                       <td className="px-4 py-3" colSpan={4}>
                         <div className="grid gap-3 sm:grid-cols-3">
                           <div>
-                            <label className="mb-1 block text-xs font-medium text-gray-500">Name (JSON)</label>
+                            <label className="mb-1 block text-xs font-medium text-gray-500">Name</label>
                             <textarea
                               value={editData.name}
                               onChange={(e) => setEditData('name', e.target.value)}
@@ -215,7 +215,7 @@ export default function TypesIndex({ types }: Props) {
                   ) : (
                     <>
                       <td className="px-4 py-3 font-medium text-gray-900">
-                        {typeof type.name === 'string' ? type.name : type.name}
+                        {type.name}
                       </td>
                       <td className="px-4 py-3 text-gray-500">{type.slug}</td>
                       <td className="px-4 py-3">

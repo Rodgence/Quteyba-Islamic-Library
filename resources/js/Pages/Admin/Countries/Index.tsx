@@ -49,7 +49,7 @@ export default function CountriesIndex({ countries }: Props) {
   const startEdit = (country: Country) => {
     setEditingId(country.id)
     setEditData({
-      name: typeof country.name === 'string' ? country.name : JSON.stringify(country.name),
+      name: country.name,
       slug: country.slug,
       code: country.code,
     })
@@ -94,11 +94,11 @@ export default function CountriesIndex({ countries }: Props) {
           <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4">
             <div className="grid gap-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">Name (JSON)</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Name</label>
                 <textarea
                   value={data.name}
                   onChange={(e) => setData('name', e.target.value)}
-                  placeholder='{"en":"Country Name"}'
+                  placeholder="Country name"
                   className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-[#073B33] focus:outline-none"
                   rows={2}
                 />
@@ -168,7 +168,7 @@ export default function CountriesIndex({ countries }: Props) {
                       <td className="px-4 py-3" colSpan={5}>
                         <div className="grid gap-3 sm:grid-cols-3">
                           <div>
-                            <label className="mb-1 block text-xs font-medium text-gray-500">Name (JSON)</label>
+                            <label className="mb-1 block text-xs font-medium text-gray-500">Name</label>
                             <textarea
                               value={editData.name}
                               onChange={(e) => setEditData('name', e.target.value)}
@@ -217,7 +217,7 @@ export default function CountriesIndex({ countries }: Props) {
                   ) : (
                     <>
                       <td className="px-4 py-3 font-medium text-gray-900">
-                        {typeof country.name === 'string' ? country.name : country.name}
+                        {country.name}
                       </td>
                       <td className="px-4 py-3">
                         <span className="inline-flex rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">

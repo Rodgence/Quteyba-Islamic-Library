@@ -32,11 +32,17 @@ class OpportunityController extends Controller
         return Inertia::render('Admin/Opportunities/Index', [
             'opportunities' => $opportunities->through(fn ($o) => [
                 'id' => $o->id,
-                'title' => $o->title,
+                'title' => $this->localizedText($o->title),
                 'slug' => $o->slug,
                 'status' => $o->status,
-                'type' => $o->opportunityType?->name,
-                'country' => $o->country?->name,
+                'opportunity_type' => $o->opportunityType ? [
+                    'name' => $this->localizedText($o->opportunityType->name),
+                    'slug' => $o->opportunityType->slug,
+                ] : null,
+                'country' => $o->country ? [
+                    'name' => $this->localizedText($o->country->name),
+                    'slug' => $o->country->slug,
+                ] : null,
                 'is_featured' => $o->is_featured,
                 'published_at' => $o->published_at?->format('Y-m-d'),
                 'created_at' => $o->created_at->format('Y-m-d'),
@@ -49,19 +55,19 @@ class OpportunityController extends Controller
     {
         return Inertia::render('Admin/Opportunities/Form', [
             'opportunity' => null,
-            'types' => OpportunityType::orderBy('id')->get(),
-            'categories' => Category::orderBy('id')->get(),
-            'countries' => Country::orderBy('id')->get(),
+            'types' => $this->selectOptions(OpportunityType::orderBy('id')->get()),
+            'categories' => $this->selectOptions(Category::orderBy('id')->get()),
+            'countries' => $this->selectOptions(Country::orderBy('id')->get()),
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|json',
+            'title' => 'required|string|max:1000',
             'slug' => 'required|string|unique:opportunities',
-            'excerpt' => 'nullable|json',
-            'content' => 'nullable|json',
+            'excerpt' => 'nullable|string|max:5000',
+            'content' => 'nullable|string',
             'opportunity_type_id' => 'nullable|exists:opportunity_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'country_id' => 'nullable|exists:countries,id',
@@ -74,7 +80,11 @@ class OpportunityController extends Controller
             'published_at' => 'nullable|date',
         ]);
 
-        $opportunity = Opportunity::create($validated);
+        $validated['title'] = $this->localizedPayload($validated['title']);
+        $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null);
+
+        Opportunity::create($validated);
 
         return redirect()->route('admin.opportunities.index')
             ->with('success', 'Opportunity created successfully.');
@@ -83,20 +93,27 @@ class OpportunityController extends Controller
     public function edit(Opportunity $opportunity)
     {
         return Inertia::render('Admin/Opportunities/Form', [
-            'opportunity' => $opportunity->load(['tags']),
-            'types' => OpportunityType::orderBy('id')->get(),
-            'categories' => Category::orderBy('id')->get(),
-            'countries' => Country::orderBy('id')->get(),
+            'opportunity' => [
+                ...$opportunity->toArray(),
+                'title' => $this->localizedText($opportunity->title),
+                'excerpt' => $this->localizedText($opportunity->excerpt),
+                'content' => $this->localizedText($opportunity->content),
+                'application_deadline' => $opportunity->application_deadline?->format('Y-m-d'),
+                'published_at' => $opportunity->published_at?->format('Y-m-d\TH:i'),
+            ],
+            'types' => $this->selectOptions(OpportunityType::orderBy('id')->get()),
+            'categories' => $this->selectOptions(Category::orderBy('id')->get()),
+            'countries' => $this->selectOptions(Country::orderBy('id')->get()),
         ]);
     }
 
     public function update(Request $request, Opportunity $opportunity)
     {
         $validated = $request->validate([
-            'title' => 'required|json',
+            'title' => 'required|string|max:1000',
             'slug' => 'required|string|unique:opportunities,slug,' . $opportunity->id,
-            'excerpt' => 'nullable|json',
-            'content' => 'nullable|json',
+            'excerpt' => 'nullable|string|max:5000',
+            'content' => 'nullable|string',
             'opportunity_type_id' => 'nullable|exists:opportunity_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'country_id' => 'nullable|exists:countries,id',
@@ -108,6 +125,10 @@ class OpportunityController extends Controller
             'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
         ]);
+
+        $validated['title'] = $this->localizedPayload($validated['title'], $opportunity->title);
+        $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null, $opportunity->excerpt);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $opportunity->content);
 
         $opportunity->update($validated);
 
@@ -143,5 +164,13 @@ class OpportunityController extends Controller
 
         return redirect()->route('admin.opportunities.index')
             ->with('success', 'Status of selected opportunities updated.');
+    }
+
+    private function selectOptions($items)
+    {
+        return $items->map(fn ($item) => [
+            'id' => $item->id,
+            'name' => $this->localizedText($item->name),
+        ]);
     }
 }

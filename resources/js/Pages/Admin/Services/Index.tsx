@@ -21,16 +21,6 @@ interface Props {
   services: Service[]
 }
 
-const getAr = (json: string | null): string => {
-  if (!json) return '-'
-  try {
-    const parsed = JSON.parse(json)
-    return parsed.en || parsed.ar || json
-  } catch {
-    return json
-  }
-}
-
 const statusBadge = (status: string) => {
   switch (status) {
     case 'published':
@@ -47,7 +37,7 @@ export default function ServicesIndex({ services }: Props) {
   const [editingId, setEditingId] = useState<number | null>(null)
 
   const { data, setData, post, processing, reset, errors } = useForm({
-    title: '{"en":""}',
+    title: '',
     slug: '',
     short_description: '',
     content: '',
@@ -89,10 +79,10 @@ export default function ServicesIndex({ services }: Props) {
   const startEdit = (service: Service) => {
     setEditingId(service.id)
     setEditData({
-      title: typeof service.title === 'string' ? service.title : JSON.stringify(service.title),
+      title: service.title,
       slug: service.slug,
-      short_description: typeof service.short_description === 'string' ? service.short_description : (service.short_description ? JSON.stringify(service.short_description) : ''),
-      content: typeof service.content === 'string' ? service.content : (service.content ? JSON.stringify(service.content) : ''),
+      short_description: service.short_description || '',
+      content: service.content || '',
       icon: service.icon || '',
       whatsapp_url: service.whatsapp_url || '',
       status: service.status,
@@ -143,11 +133,11 @@ export default function ServicesIndex({ services }: Props) {
       <div className={compact ? 'grid gap-2' : 'grid gap-3'}>
         <div className={compact ? 'grid gap-2 sm:grid-cols-2' : 'grid gap-3 sm:grid-cols-2'}>
           <div>
-            <label className={labelClass}>Title (JSON)</label>
+            <label className={labelClass}>Title</label>
             <textarea
               value={data.title as string}
               onChange={(e) => setData('title', e.target.value)}
-              placeholder='{"en":"Service name"}'
+              placeholder="Service name"
               className={inputClass}
               rows={compact ? 2 : 2}
             />
@@ -166,11 +156,11 @@ export default function ServicesIndex({ services }: Props) {
         </div>
         <div className={compact ? 'grid gap-2 sm:grid-cols-2' : 'grid gap-3 sm:grid-cols-2'}>
           <div>
-            <label className={labelClass}>Short Description (JSON)</label>
+            <label className={labelClass}>Short Description</label>
             <textarea
               value={data.short_description as string}
               onChange={(e) => setData('short_description', e.target.value)}
-              placeholder='{"en":"Short description"}'
+              placeholder="Short description"
               className={inputClass}
               rows={2}
             />
@@ -187,11 +177,11 @@ export default function ServicesIndex({ services }: Props) {
           </div>
         </div>
         <div>
-          <label className={labelClass}>Content (JSON)</label>
+          <label className={labelClass}>Content (HTML)</label>
           <textarea
             value={data.content as string}
             onChange={(e) => setData('content', e.target.value)}
-            placeholder='{"en":"Content..."}'
+            placeholder="<p>Service content...</p>"
             className={inputClass}
             rows={compact ? 4 : 6}
           />
@@ -318,7 +308,7 @@ export default function ServicesIndex({ services }: Props) {
                   ) : (
                     <>
                       <td className="px-4 py-3 font-medium text-gray-900">
-                        {getAr(service.title)}
+                        {service.title}
                       </td>
                       <td className="px-4 py-3 text-gray-500 dir-ltr text-left font-mono text-xs">
                         {service.slug}

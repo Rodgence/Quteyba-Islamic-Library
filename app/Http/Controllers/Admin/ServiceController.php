@@ -14,23 +14,32 @@ class ServiceController extends Controller
         $services = Service::ordered()->withCount('serviceRequests')->get();
 
         return Inertia::render('Admin/Services/Index', [
-            'services' => $services,
+            'services' => $services->map(fn ($service) => [
+                ...$service->toArray(),
+                'title' => $this->localizedText($service->title),
+                'short_description' => $this->localizedText($service->short_description),
+                'content' => $this->localizedText($service->content),
+            ]),
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|json',
+            'title' => 'required|string|max:1000',
             'slug' => 'required|string|unique:services',
-            'short_description' => 'nullable|json',
-            'content' => 'nullable|json',
+            'short_description' => 'nullable|string|max:5000',
+            'content' => 'nullable|string',
             'icon' => 'nullable|string|max:255',
             'whatsapp_url' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published',
             'is_active' => 'boolean',
             'display_order' => 'nullable|integer',
         ]);
+
+        $validated['title'] = $this->localizedPayload($validated['title']);
+        $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null);
 
         Service::create($validated);
 
@@ -40,17 +49,29 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $service)
     {
+        if (! $request->has('title')) {
+            $service->update($request->validate([
+                'is_active' => 'required|boolean',
+            ]));
+
+            return back()->with('success', 'Service status updated.');
+        }
+
         $validated = $request->validate([
-            'title' => 'required|json',
+            'title' => 'required|string|max:1000',
             'slug' => 'required|string|unique:services,slug,' . $service->id,
-            'short_description' => 'nullable|json',
-            'content' => 'nullable|json',
+            'short_description' => 'nullable|string|max:5000',
+            'content' => 'nullable|string',
             'icon' => 'nullable|string|max:255',
             'whatsapp_url' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published',
             'is_active' => 'boolean',
             'display_order' => 'nullable|integer',
         ]);
+
+        $validated['title'] = $this->localizedPayload($validated['title'], $service->title);
+        $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null, $service->short_description);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $service->content);
 
         $service->update($validated);
 

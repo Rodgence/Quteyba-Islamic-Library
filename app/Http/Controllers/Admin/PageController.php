@@ -16,7 +16,7 @@ class PageController extends Controller
         return Inertia::render('Admin/Pages/Index', [
             'pages' => $pages->through(fn ($p) => [
                 'id' => $p->id,
-                'title' => $p->title,
+                'title' => $this->localizedText($p->title),
                 'slug' => $p->slug,
                 'status' => $p->status,
                 'created_at' => $p->created_at->format('Y-m-d'),
@@ -32,11 +32,14 @@ class PageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|json',
+            'title' => 'required|string|max:1000',
             'slug' => 'required|string|unique:pages',
-            'content' => 'required|json',
+            'content' => 'required|string',
             'status' => 'required|in:draft,published',
         ]);
+
+        $validated['title'] = $this->localizedPayload($validated['title']);
+        $validated['content'] = $this->localizedPayload($validated['content']);
 
         Page::create($validated);
 
@@ -45,17 +48,26 @@ class PageController extends Controller
 
     public function edit(Page $page)
     {
-        return Inertia::render('Admin/Pages/Form', ['page' => $page]);
+        return Inertia::render('Admin/Pages/Form', [
+            'page' => [
+                ...$page->toArray(),
+                'title' => $this->localizedText($page->title),
+                'content' => $this->localizedText($page->content),
+            ],
+        ]);
     }
 
     public function update(Request $request, Page $page)
     {
         $validated = $request->validate([
-            'title' => 'required|json',
+            'title' => 'required|string|max:1000',
             'slug' => 'required|string|unique:pages,slug,' . $page->id,
-            'content' => 'required|json',
+            'content' => 'required|string',
             'status' => 'required|in:draft,published',
         ]);
+
+        $validated['title'] = $this->localizedPayload($validated['title'], $page->title);
+        $validated['content'] = $this->localizedPayload($validated['content'], $page->content);
 
         $page->update($validated);
 

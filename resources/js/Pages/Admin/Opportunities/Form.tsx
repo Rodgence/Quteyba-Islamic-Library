@@ -2,6 +2,7 @@ import { Head, Link, useForm } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import type { Opportunity } from '@/Types'
 import { ArrowLeft } from 'lucide-react'
+import { getLocalized } from '@/lib/localization'
 
 interface SelectOption {
   id: number
@@ -9,27 +10,14 @@ interface SelectOption {
 }
 
 interface Props {
-  opportunity: Opportunity | null
+  opportunity: (Opportunity & {
+    opportunity_type_id?: number | null
+    category_id?: number | null
+    country_id?: number | null
+  }) | null
   types: SelectOption[]
   categories: SelectOption[]
   countries: SelectOption[]
-}
-
-function getLocalized(value: unknown): string {
-  if (typeof value === 'object' && value !== null && 'en' in value) {
-    return String((value as Record<string, string>).en)
-  }
-  if (typeof value === 'object' && value !== null && 'ar' in value) {
-    return String((value as Record<string, string>).ar)
-  }
-  return String(value ?? '')
-}
-
-function getFieldValue(value: unknown): string {
-  if (typeof value === 'object' && value !== null && 'ar' in value) {
-    return JSON.stringify(value)
-  }
-  return String(value ?? '')
 }
 
 const statusOptions = [
@@ -48,13 +36,13 @@ export default function OpportunityForm({ opportunity, types, categories, countr
   const isEdit = opportunity !== null
 
   const { data, setData, post, put, processing, errors } = useForm({
-    title: getFieldValue(opportunity?.title ?? ''),
+    title: getLocalized(opportunity?.title ?? ''),
     slug: opportunity?.slug ?? '',
-    excerpt: getFieldValue(opportunity?.excerpt ?? ''),
-    content: getFieldValue(opportunity?.content ?? ''),
-    opportunity_type_id: String(opportunity?.opportunity_type?.id ?? ''),
-    category_id: String(opportunity?.category?.id ?? ''),
-    country_id: String(opportunity?.country?.id ?? ''),
+    excerpt: getLocalized(opportunity?.excerpt ?? ''),
+    content: getLocalized(opportunity?.content ?? ''),
+    opportunity_type_id: String(opportunity?.opportunity_type_id ?? opportunity?.opportunity_type?.id ?? ''),
+    category_id: String(opportunity?.category_id ?? opportunity?.category?.id ?? ''),
+    country_id: String(opportunity?.country_id ?? opportunity?.country?.id ?? ''),
     organization: opportunity?.organization ?? '',
     funding_type: opportunity?.funding_type ?? '',
     application_deadline: opportunity?.application_deadline ?? '',
@@ -94,12 +82,12 @@ export default function OpportunityForm({ opportunity, types, categories, countr
 
             <div className="space-y-4">
               <div>
-                <label className={labelClass}>Title (JSON)</label>
+                <label className={labelClass}>Title</label>
                 <textarea
                   value={data.title}
                   onChange={(e) => setData('title', e.target.value)}
                   rows={2}
-                  placeholder='{"en": "Opportunity title"}'
+                  placeholder="Opportunity title"
                   className={inputClass}
                 />
                 {errors.title && <p className="mt-1 text-xs text-[#E91E63]">{errors.title}</p>}
@@ -117,12 +105,12 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>Excerpt (JSON)</label>
+                <label className={labelClass}>Excerpt</label>
                 <textarea
                   value={data.excerpt}
                   onChange={(e) => setData('excerpt', e.target.value)}
                   rows={2}
-                  placeholder='{"en": "Short excerpt"}'
+                  placeholder="Short excerpt"
                   className={inputClass}
                 />
                 {errors.excerpt && <p className="mt-1 text-xs text-[#E91E63]">{errors.excerpt}</p>}

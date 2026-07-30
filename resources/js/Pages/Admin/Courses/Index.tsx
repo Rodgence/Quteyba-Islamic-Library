@@ -1,6 +1,7 @@
 import { router } from '@inertiajs/react'
 import { Trash2, Pencil } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
+import { getLocalized } from '@/lib/localization'
 
 interface Course {
   id: number
@@ -14,15 +15,6 @@ interface Course {
 
 interface Props {
   courses: Course[]
-}
-
-const getAr = (json: string) => {
-  try {
-    const parsed = JSON.parse(json)
-    return parsed.en || parsed.ar || json
-  } catch {
-    return json
-  }
 }
 
 const statusBadge = (status: string) => {
@@ -67,12 +59,12 @@ export default function CoursesIndex({ courses }: Props) {
               {courses.map((course) => (
                 <tr key={course.id} className="transition-colors hover:bg-gray-50/50">
                   <td className="px-4 py-3 font-medium text-gray-900">
-                    {getAr(course.name)}
+                    {getLocalized(course.name)}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">{course.language}</td>
+                  <td className="px-4 py-3 text-gray-500">{getLocalized(course.language)}</td>
                   <td className="px-4 py-3">
                     <span className="inline-flex rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
-                      {course.level}
+                      {getLocalized(course.level)}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-900">

@@ -2,6 +2,7 @@ import { Head, Link, useForm } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import type { Page } from '@/Types'
 import { ArrowLeft } from 'lucide-react'
+import { getLocalized } from '@/lib/localization'
 
 interface Props {
   page: Page | null
@@ -16,20 +17,13 @@ const inputClass =
   'w-full rounded-xl border border-[#e0e0e0] bg-white px-4 py-2.5 text-sm text-[#101828] placeholder:text-[#101828]/40 focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]/20'
 const labelClass = 'mb-1.5 block text-sm font-medium text-[#101828]'
 
-function getFieldValue(value: unknown): string {
-  if (typeof value === 'object' && value !== null && 'ar' in value) {
-    return JSON.stringify(value)
-  }
-  return String(value ?? '')
-}
-
 export default function PageForm({ page }: Props) {
   const isEdit = page !== null
 
   const { data, setData, post, put, processing, errors } = useForm({
-    title: getFieldValue(page?.title ?? ''),
+    title: getLocalized(page?.title ?? ''),
     slug: page?.slug ?? '',
-    content: getFieldValue(page?.content ?? ''),
+    content: getLocalized(page?.content ?? ''),
     status: page?.status ?? 'draft',
   })
 
@@ -63,12 +57,12 @@ export default function PageForm({ page }: Props) {
 
             <div className="space-y-4">
               <div>
-                <label className={labelClass}>Title (JSON)</label>
+                <label className={labelClass}>Title</label>
                 <textarea
                   value={data.title}
                   onChange={(e) => setData('title', e.target.value)}
                   rows={2}
-                  placeholder='{"en": "Page title"}'
+                  placeholder="Page title"
                   className={inputClass}
                 />
                 {errors.title && <p className="mt-1 text-xs text-[#E91E63]">{errors.title}</p>}
@@ -86,12 +80,12 @@ export default function PageForm({ page }: Props) {
               </div>
 
               <div>
-                <label className={labelClass}>Content (JSON - HTML)</label>
+                <label className={labelClass}>Content (HTML)</label>
                 <textarea
                   value={data.content}
                   onChange={(e) => setData('content', e.target.value)}
                   rows={10}
-                  placeholder='{"en": "<p>Page content...</p>"}'
+                  placeholder="<p>Page content...</p>"
                   className={inputClass}
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}

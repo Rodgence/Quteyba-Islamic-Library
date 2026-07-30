@@ -91,6 +91,8 @@ Route::prefix('admin')->middleware(['auth', 'role_or_permission:access admin'])-
     // Categories
     Route::get('/categories', [App\Http\Controllers\AdminCategoriesController::class, 'index'])->name('categories.index');
     Route::post('/categories', [App\Http\Controllers\AdminCategoriesController::class, 'store'])->name('categories.store');
+    Route::put('/categories/{category}', [App\Http\Controllers\AdminCategoriesController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [App\Http\Controllers\AdminCategoriesController::class, 'destroy'])->name('categories.destroy');
 
     // Messages
     Route::get('/messages', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('messages.index');

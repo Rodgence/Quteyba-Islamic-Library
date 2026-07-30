@@ -46,7 +46,7 @@ export default function CategoriesIndex({ categories }: Props) {
   const startEdit = (category: Category) => {
     setEditingId(category.id)
     setEditData({
-      name: typeof category.name === 'string' ? category.name : JSON.stringify(category.name),
+      name: category.name,
       slug: category.slug,
     })
   }
@@ -85,11 +85,11 @@ export default function CategoriesIndex({ categories }: Props) {
           <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4">
             <div className="grid gap-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">Name (JSON)</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Name</label>
                 <textarea
                   value={data.name}
                   onChange={(e) => setData('name', e.target.value)}
-                  placeholder='{"en":"Category Name"}'
+                  placeholder="Category name"
                   className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-[#073B33] focus:outline-none"
                   rows={2}
                 />
@@ -146,7 +146,7 @@ export default function CategoriesIndex({ categories }: Props) {
                       <td className="px-4 py-3" colSpan={4}>
                         <div className="grid gap-3 sm:grid-cols-2">
                           <div>
-                            <label className="mb-1 block text-xs font-medium text-gray-500">Name (JSON)</label>
+                            <label className="mb-1 block text-xs font-medium text-gray-500">Name</label>
                             <textarea
                               value={editData.name}
                               onChange={(e) => setEditData('name', e.target.value)}
@@ -186,7 +186,7 @@ export default function CategoriesIndex({ categories }: Props) {
                   ) : (
                     <>
                       <td className="px-4 py-3 font-medium text-gray-900">
-                        {typeof category.name === 'string' ? category.name : category.name}
+                        {category.name}
                       </td>
                       <td className="px-4 py-3 text-gray-500">{category.slug}</td>
                       <td className="px-4 py-3">

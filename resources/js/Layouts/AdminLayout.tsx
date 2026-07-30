@@ -5,7 +5,6 @@ import {
   Briefcase,
   FileText,
   MessageSquare,
-  HelpCircle,
   Settings,
   LogOut,
   Menu,
@@ -32,7 +31,6 @@ const navItems: NavItem[] = [
   { label: 'Services', href: '/admin/services', icon: Package, activePattern: 'services' },
   { label: 'Courses', href: '/admin/courses', icon: GraduationCap, activePattern: 'courses' },
   { label: 'Messages', href: '/admin/messages', icon: MessageSquare, activePattern: 'messages' },
-  { label: 'Contact Requests', href: '/admin/contact-requests', icon: HelpCircle, activePattern: 'contact' },
   { label: 'Settings', href: '/admin/settings', icon: Settings, activePattern: 'settings' },
 ]
 
