@@ -37,8 +37,14 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
         <meta name="description" content={seo.description} />
       </Head>
 
-      <section className="relative bg-[#073B33] text-white">
-        <div className="absolute inset-0 bg-black/40" />
+      <section className="relative overflow-hidden bg-black text-white">
+        <img
+          src="/hero.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/65" />
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:py-28">
           <div className="max-w-2xl">
             <h1 className="mb-4 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
