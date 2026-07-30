@@ -136,12 +136,12 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               </div>
 
               <div>
-                <label className={labelClass}>Content (HTML)</label>
+                <label className={labelClass}>Description</label>
                 <textarea
                   value={data.content}
                   onChange={(e) => setData('content', e.target.value)}
                   rows={8}
-                  placeholder="<p>Opportunity content...</p>"
+                  placeholder="Write the opportunity description..."
                   className={inputClass}
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}

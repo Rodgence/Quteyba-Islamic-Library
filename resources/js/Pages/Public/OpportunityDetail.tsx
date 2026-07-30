@@ -196,17 +196,9 @@ export default function OpportunityDetail({
               )}
             </div>
 
-            <div
-              className="prose prose-lg max-w-none leading-relaxed text-gray-800 
-                prose-headings:text-[#073B33] prose-a:text-[#E91E63] 
-                prose-img:rounded-xl prose-li:my-1
-                [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:text-xl [&_h2]:font-bold
-                [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:text-lg [&_h3]:font-semibold
-                [&_p]:mb-4 [&_p]:leading-relaxed
-                [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-5
-                [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-5"
-              dangerouslySetInnerHTML={{ __html: content }}
-            />
+            <div className="whitespace-pre-line text-base leading-8 text-gray-800 sm:text-lg">
+              {content}
+            </div>
 
             <div className="mt-10 space-y-10 border-t border-gray-100 pt-8">
               {benefits && (

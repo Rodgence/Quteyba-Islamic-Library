@@ -90,7 +90,9 @@ class OpportunityController extends Controller
         $validated['featured_image_id'] = $featuredImage?->id;
         $validated['title'] = $this->localizedPayload($validated['title']);
         $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null);
-        $validated['content'] = $this->localizedPayload($validated['content'] ?? null);
+        $validated['content'] = $this->localizedPayload(
+            isset($validated['content']) ? $this->plainText($validated['content']) : null
+        );
 
         Opportunity::create($validated);
 
@@ -107,7 +109,7 @@ class OpportunityController extends Controller
                 ...$opportunity->toArray(),
                 'title' => $this->localizedText($opportunity->title),
                 'excerpt' => $this->localizedText($opportunity->excerpt),
-                'content' => $this->localizedText($opportunity->content),
+                'content' => $this->plainText($opportunity->content),
                 'application_deadline' => $opportunity->application_deadline?->format('Y-m-d'),
                 'published_at' => $opportunity->published_at?->format('Y-m-d\TH:i'),
                 'featured_image' => $opportunity->featuredImage ? [
@@ -160,7 +162,10 @@ class OpportunityController extends Controller
 
         $validated['title'] = $this->localizedPayload($validated['title'], $opportunity->title);
         $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null, $opportunity->excerpt);
-        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $opportunity->content);
+        $validated['content'] = $this->localizedPayload(
+            isset($validated['content']) ? $this->plainText($validated['content']) : null,
+            $opportunity->content
+        );
 
         $opportunity->update($validated);
 

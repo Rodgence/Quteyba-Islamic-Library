@@ -127,7 +127,7 @@ class OpportunityController extends Controller
             'title' => $opportunity->title,
             'slug' => $opportunity->slug,
             'excerpt' => $opportunity->excerpt,
-            'content' => $opportunity->content,
+            'content' => $this->plainText($opportunity->content),
             'opportunity_type' => $opportunity->opportunityType ? ['name' => $opportunity->opportunityType->name, 'slug' => $opportunity->opportunityType->slug] : null,
             'category' => $opportunity->category ? ['name' => $opportunity->category->name, 'slug' => $opportunity->category->slug] : null,
             'country' => $opportunity->country ? ['name' => $opportunity->country->name, 'slug' => $opportunity->country->slug] : null,
