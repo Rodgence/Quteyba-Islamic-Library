@@ -108,23 +108,6 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
         </div>
       </section>
 
-      <section className="border-b border-border bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-12">
-          <div className="grid grid-cols-3 gap-6">
-            {stats.map((stat, i) => {
-              const Icon = statIcons[i] || BookOpen
-              return (
-                <div key={stat.label} className="text-center">
-                  <Icon className="mx-auto mb-2 h-6 w-6 text-[#E91E63]" />
-                  <div className="text-2xl font-bold text-[#073B33]">{stat.value.toLocaleString('en-US')}+</div>
-                  <div className="text-sm text-[#101828]/60">{stat.label}</div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
       {latest && latest.length > 0 && (
         <section className="bg-white py-16">
           <div className="mx-auto max-w-7xl px-4">
@@ -327,6 +310,23 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
             <MessageCircle className="h-5 w-5" />
             Contact us on WhatsApp
           </Link>
+        </div>
+      </section>
+
+      <section className="border-y border-border bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-12">
+          <div className="grid grid-cols-3 gap-6">
+            {stats.map((stat, i) => {
+              const Icon = statIcons[i] || BookOpen
+              return (
+                <div key={stat.label} className="text-center">
+                  <Icon className="mx-auto mb-2 h-6 w-6 text-[#E91E63]" />
+                  <div className="text-2xl font-bold text-[#073B33]">{stat.value.toLocaleString('en-US')}+</div>
+                  <div className="text-sm text-[#101828]/60">{stat.label}</div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </section>
     </PublicLayout>
