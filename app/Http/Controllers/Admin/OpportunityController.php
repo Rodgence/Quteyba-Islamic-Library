@@ -78,8 +78,16 @@ class OpportunityController extends Controller
             'status' => 'required|in:draft,scheduled,published,closed,archived',
             'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
+            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+            'featured_image_alt' => 'nullable|string|max:255',
+            'remove_featured_image' => 'nullable|boolean',
         ]);
 
+        $featuredImage = $request->file('featured_image')
+            ? $this->storeFeaturedImage($request)
+            : null;
+        unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
+        $validated['featured_image_id'] = $featuredImage?->id;
         $validated['title'] = $this->localizedPayload($validated['title']);
         $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null);
         $validated['content'] = $this->localizedPayload($validated['content'] ?? null);
@@ -92,6 +100,8 @@ class OpportunityController extends Controller
 
     public function edit(Opportunity $opportunity)
     {
+        $opportunity->load('featuredImage');
+
         return Inertia::render('Admin/Opportunities/Form', [
             'opportunity' => [
                 ...$opportunity->toArray(),
@@ -100,6 +110,10 @@ class OpportunityController extends Controller
                 'content' => $this->localizedText($opportunity->content),
                 'application_deadline' => $opportunity->application_deadline?->format('Y-m-d'),
                 'published_at' => $opportunity->published_at?->format('Y-m-d\TH:i'),
+                'featured_image' => $opportunity->featuredImage ? [
+                    'url' => $opportunity->featuredImage->url,
+                    'alt_text' => $opportunity->featuredImage->alt_text,
+                ] : null,
             ],
             'types' => $this->selectOptions(OpportunityType::orderBy('id')->get()),
             'categories' => $this->selectOptions(Category::orderBy('id')->get()),
@@ -124,7 +138,25 @@ class OpportunityController extends Controller
             'status' => 'required|in:draft,scheduled,published,closed,archived',
             'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
+            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+            'featured_image_alt' => 'nullable|string|max:255',
+            'remove_featured_image' => 'nullable|boolean',
         ]);
+
+        $featuredImage = $request->file('featured_image')
+            ? $this->storeFeaturedImage($request)
+            : null;
+        unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
+
+        if ($featuredImage) {
+            $validated['featured_image_id'] = $featuredImage->id;
+        } elseif ($request->boolean('remove_featured_image')) {
+            $validated['featured_image_id'] = null;
+        } elseif ($opportunity->featuredImage) {
+            $opportunity->featuredImage->update([
+                'alt_text' => $request->input('featured_image_alt'),
+            ]);
+        }
 
         $validated['title'] = $this->localizedPayload($validated['title'], $opportunity->title);
         $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null, $opportunity->excerpt);
@@ -171,6 +203,22 @@ class OpportunityController extends Controller
         return $items->map(fn ($item) => [
             'id' => $item->id,
             'name' => $this->localizedText($item->name),
+        ]);
+    }
+
+    private function storeFeaturedImage(Request $request): Media
+    {
+        $file = $request->file('featured_image');
+        $path = $file->store('opportunities', 'public');
+
+        return Media::create([
+            'name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+            'file_name' => $file->getClientOriginalName(),
+            'mime_type' => $file->getMimeType() ?: $file->getClientMimeType(),
+            'size' => $file->getSize(),
+            'disk' => 'public',
+            'path' => $path,
+            'alt_text' => $request->input('featured_image_alt'),
         ]);
     }
 }

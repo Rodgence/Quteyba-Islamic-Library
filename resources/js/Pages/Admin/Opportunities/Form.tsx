@@ -1,7 +1,8 @@
-import { Head, Link, useForm } from '@inertiajs/react'
+import { Link, useForm } from '@inertiajs/react'
+import { useEffect, useState } from 'react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import type { Opportunity } from '@/Types'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ImagePlus, X } from 'lucide-react'
 import { getLocalized } from '@/lib/localization'
 
 interface SelectOption {
@@ -34,8 +35,10 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-[#101828]'
 
 export default function OpportunityForm({ opportunity, types, categories, countries }: Props) {
   const isEdit = opportunity !== null
+  const [previewUrl, setPreviewUrl] = useState<string | null>(opportunity?.featured_image?.url ?? null)
 
-  const { data, setData, post, put, processing, errors } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
+    _method: isEdit ? 'put' : 'post',
     title: getLocalized(opportunity?.title ?? ''),
     slug: opportunity?.slug ?? '',
     excerpt: getLocalized(opportunity?.excerpt ?? ''),
@@ -50,15 +53,31 @@ export default function OpportunityForm({ opportunity, types, categories, countr
     status: opportunity?.status ?? 'draft',
     is_featured: opportunity?.is_featured ?? false,
     published_at: opportunity?.published_at ?? '',
+    featured_image: null as File | null,
+    featured_image_alt: opportunity?.featured_image?.alt_text ?? '',
+    remove_featured_image: false,
   })
+
+  useEffect(() => {
+    if (!data.featured_image) return
+
+    const objectUrl = URL.createObjectURL(data.featured_image)
+    setPreviewUrl(objectUrl)
+
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [data.featured_image])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (isEdit) {
-      put(`/admin/opportunities/${opportunity.id}`)
-    } else {
-      post('/admin/opportunities')
-    }
+    post(isEdit ? `/admin/opportunities/${opportunity.id}` : '/admin/opportunities', {
+      forceFormData: true,
+    })
+  }
+
+  const handleRemoveImage = () => {
+    setData('featured_image', null)
+    setData('remove_featured_image', true)
+    setPreviewUrl(null)
   }
 
   return (
@@ -126,6 +145,67 @@ export default function OpportunityForm({ opportunity, types, categories, countr
                   className={inputClass}
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-[#e0e0e0] bg-white p-5">
+            <h2 className="mb-4 text-base font-semibold text-[#101828]">Featured Image</h2>
+            <div className="grid gap-5 sm:grid-cols-[240px_1fr]">
+              <div className="overflow-hidden rounded-xl border border-dashed border-gray-300 bg-gray-50">
+                {previewUrl ? (
+                  <img
+                    src={previewUrl}
+                    alt="Featured image preview"
+                    className="aspect-video h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex aspect-video items-center justify-center text-gray-400">
+                    <ImagePlus className="h-10 w-10" />
+                  </div>
+                )}
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className={labelClass}>Upload Image</label>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0] ?? null
+                      setData('featured_image', file)
+                      if (file) setData('remove_featured_image', false)
+                    }}
+                    className="block w-full rounded-xl border border-[#e0e0e0] bg-white text-sm text-gray-600 file:mr-4 file:border-0 file:bg-[#073B33] file:px-4 file:py-2.5 file:text-sm file:font-medium file:text-white hover:file:bg-[#052a25]"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">JPG, PNG, WebP, or GIF. Maximum size: 5 MB.</p>
+                  {errors.featured_image && (
+                    <p className="mt-1 text-xs text-[#E91E63]">{errors.featured_image}</p>
+                  )}
+                </div>
+                <div>
+                  <label className={labelClass}>Alternative Text</label>
+                  <input
+                    type="text"
+                    value={data.featured_image_alt}
+                    onChange={(event) => setData('featured_image_alt', event.target.value)}
+                    className={inputClass}
+                    placeholder="Describe the image"
+                  />
+                  {errors.featured_image_alt && (
+                    <p className="mt-1 text-xs text-[#E91E63]">{errors.featured_image_alt}</p>
+                  )}
+                </div>
+                {previewUrl && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-red-600 hover:text-red-700"
+                  >
+                    <X className="h-4 w-4" />
+                    Remove featured image
+                  </button>
+                )}
               </div>
             </div>
           </div>

@@ -26,6 +26,7 @@ class HomeController extends Controller
             ->map(fn ($o) => $this->formatOpportunity($o));
 
         $services = Service::published()
+            ->with('featuredImage')
             ->ordered()
             ->limit(3)
             ->get()
@@ -35,7 +36,10 @@ class HomeController extends Controller
                 'slug' => $s->slug,
                 'short_description' => $this->localizedText($s->short_description),
                 'icon' => $s->icon,
-                'featured_image' => $s->featuredImage ? ['url' => $s->featuredImage->url] : null,
+                'featured_image' => $s->featuredImage ? [
+                    'url' => $s->featuredImage->url,
+                    'alt' => $s->featuredImage->alt_text,
+                ] : null,
             ]);
 
         $stats = [

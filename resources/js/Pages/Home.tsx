@@ -1,5 +1,19 @@
 import { Link } from '@inertiajs/react'
-import { ArrowRight, BookOpen, GraduationCap, Briefcase, Globe, MessageCircle, Calendar, MapPin, Clock, Wrench } from 'lucide-react'
+import {
+  ArrowRight,
+  BookOpen,
+  GraduationCap,
+  Briefcase,
+  Globe,
+  MessageCircle,
+  Calendar,
+  MapPin,
+  Clock,
+  Wrench,
+  Plane,
+  Users,
+  Heart,
+} from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import { Head } from '@inertiajs/react'
 import { getLocalized } from '@/lib/localization'
@@ -16,9 +30,9 @@ const categoryLinks = [
   { name: 'Scholarships', icon: GraduationCap, href: '/opportunities?type=scholarship' },
   { name: 'Jobs', icon: Briefcase, href: '/opportunities?type=job' },
   { name: 'Internships', icon: BookOpen, href: '/opportunities?type=internship' },
-  { name: 'Visas', icon: Globe, href: '/opportunities?type=visa' },
-  { name: 'Conferences', icon: Globe, href: '/opportunities?type=conference' },
-  { name: 'Volunteering', icon: Globe, href: '/opportunities?type=volunteering' },
+  { name: 'Visas', icon: Plane, href: '/opportunities?type=visa' },
+  { name: 'Conferences', icon: Users, href: '/opportunities?type=conference' },
+  { name: 'Volunteering', icon: Heart, href: '/opportunities?type=volunteering' },
 ]
 
 const steps = [
@@ -68,6 +82,28 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
                 Contact Us
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-border bg-white py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <h2 className="mb-8 text-center text-2xl font-bold text-[#073B33]">
+            Browse Opportunities by Type
+          </h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {categoryLinks.map(({ name, icon: Icon, href }) => (
+              <Link
+                key={name}
+                href={href}
+                className="group flex min-h-28 flex-col items-center justify-center rounded-2xl border border-border bg-white px-3 py-6 text-center transition-all hover:-translate-y-1 hover:border-[#E91E63]/50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E91E63] focus-visible:ring-offset-2"
+              >
+                <Icon className="mb-4 h-7 w-7 text-[#E91E63] transition-transform group-hover:scale-110" />
+                <span className="text-sm font-semibold text-[#101828] group-hover:text-[#073B33]">
+                  {name}
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -172,17 +208,30 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
                 <Link
                   key={s.id}
                   href={`/services/${s.slug}`}
-                  className="group overflow-hidden rounded-2xl border border-border bg-white p-6 transition-colors hover:border-[#073B33]/30"
+                  className="group overflow-hidden rounded-2xl border border-border bg-white transition-colors hover:border-[#073B33]/30"
                 >
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#E91E63]/10 text-[#E91E63]">
-                    <Wrench className="h-5 w-5" />
+                  {s.featured_image?.url && (
+                    <div className="aspect-video overflow-hidden bg-primary-light">
+                      <img
+                        src={s.featured_image.url}
+                        alt={s.featured_image.alt || getLocalized(s.title)}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    {!s.featured_image?.url && (
+                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#E91E63]/10 text-[#E91E63]">
+                        <Wrench className="h-5 w-5" />
+                      </div>
+                    )}
+                    <h3 className="mb-2 text-base font-semibold text-[#101828] group-hover:text-[#073B33]">
+                      {getLocalized(s.title)}
+                    </h3>
+                    <p className="line-clamp-3 text-sm leading-relaxed text-[#101828]/60">
+                      {getLocalized(s.short_description)}
+                    </p>
                   </div>
-                  <h3 className="mb-2 text-base font-semibold text-[#101828] group-hover:text-[#073B33]">
-                    {getLocalized(s.title)}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-[#101828]/60 line-clamp-3">
-                    {getLocalized(s.short_description)}
-                  </p>
                 </Link>
               ))}
             </div>
