@@ -81,6 +81,11 @@ class OpportunityController extends Controller
         $countries = \App\Models\Country::orderBy('id')->get()->map(fn ($c) => ['name' => $c->name, 'slug' => $c->slug]);
         $categories = \App\Models\Category::orderBy('id')->get()->map(fn ($c) => ['name' => $c->name, 'slug' => $c->slug]);
 
+        $selectedType = $request->filled('type')
+            ? \App\Models\OpportunityType::where('slug', $request->input('type'))->first()
+            : null;
+        $selectedTypeName = $selectedType ? $this->localizedText($selectedType->name) : null;
+
         return Inertia::render('Public/Opportunities', [
             'opportunities' => $opportunities,
             'types' => $types,
@@ -88,8 +93,10 @@ class OpportunityController extends Controller
             'categories' => $categories,
             'filters' => $request->only(['search', 'type', 'country', 'category', 'funding', 'education', 'status_filter', 'sort']),
             'seo' => [
-                'title' => 'Opportunities | Quteyba Islamic Library',
-                'description' => 'Browse all available scholarships, jobs, internships, and visa opportunities from around the world.',
+                'title' => ($selectedTypeName ?: 'Opportunities') . ' | Quteyba Islamic Library',
+                'description' => $selectedTypeName
+                    ? "Browse the latest {$selectedTypeName} posts from Quteyba Islamic Library."
+                    : 'Browse all available scholarships, jobs, internships, and visa opportunities from around the world.',
             ],
         ]);
     }
@@ -162,6 +169,11 @@ class OpportunityController extends Controller
             'seo' => [
                 'title' => $title,
                 'description' => $opportunity->excerpt['en'] ?? $opportunity->excerpt['ar'] ?? '',
+                'og_image' => $opportunity->featuredImage
+                    ? url($opportunity->featuredImage->url)
+                    : url('/logo.png'),
+                'canonical_url' => route('opportunities.show', ['slug' => $opportunity->slug]),
+                'og_type' => 'article',
             ],
         ]);
     }

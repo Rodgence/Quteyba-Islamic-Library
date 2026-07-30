@@ -1,6 +1,6 @@
-import { Link, usePage, router } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import PublicLayout from '@/Layouts/PublicLayout'
-import type { SharedProps, Paginated, Opportunity } from '@/Types'
+import type { Paginated, Opportunity } from '@/Types'
 import { Search, Filter, ArrowRight, Calendar, MapPin, Clock } from 'lucide-react'
 import { useState } from 'react'
 import { getLocalized } from '@/lib/localization'
@@ -72,6 +72,10 @@ function formatDate(date: string | null): string {
 
 export default function OpportunitiesPage({ opportunities, types, countries, categories, filters, seo }: Props) {
   const [showFilters, setShowFilters] = useState(false)
+  const selectedType = types.find((type) => type.slug === filters.type)
+  const pageTitle = selectedType ? getLocalized(selectedType.name) : 'Opportunities'
+  const seoTitle = typeof seo.title === 'string' ? seo.title : pageTitle
+  const seoDescription = typeof seo.description === 'string' ? seo.description : ''
 
   const updateFilter = (key: string, value: string) => {
     const params: Record<string, string | undefined> = {}
@@ -102,10 +106,17 @@ export default function OpportunitiesPage({ opportunities, types, countries, cat
 
   return (
     <PublicLayout>
+      <Head title={seoTitle}>
+        {seoDescription && <meta name="description" content={seoDescription} />}
+      </Head>
       <section className="bg-[#073B33] text-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16">
-          <h1 className="text-2xl font-bold sm:text-3xl">Opportunities</h1>
-          <p className="mt-2 text-sm opacity-80">Discover the latest scholarships, jobs, and internships from trusted sources</p>
+          <h1 className="text-2xl font-bold sm:text-3xl">{pageTitle}</h1>
+          <p className="mt-2 text-sm opacity-80">
+            {selectedType
+              ? `Browse the latest ${pageTitle.toLowerCase()} posts from trusted sources`
+              : 'Discover the latest scholarships, jobs, and internships from trusted sources'}
+          </p>
         </div>
       </section>
 

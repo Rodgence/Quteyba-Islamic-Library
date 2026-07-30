@@ -5,4 +5,5 @@ export const socialLinks = {
   youtube: 'https://youtube.com/@maktabatuabuuquteyba',
   x: 'https://x.com/abqtbz',
   facebook: 'https://www.facebook.com/profile.php?id=61562092804047',
+  support: '/contact',
 } as const

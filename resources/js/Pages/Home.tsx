@@ -13,6 +13,10 @@ import {
   Plane,
   Users,
   Heart,
+  Award,
+  Languages,
+  LayoutGrid,
+  BadgeCheck,
 } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import { Head } from '@inertiajs/react'
@@ -33,6 +37,10 @@ const categoryLinks = [
   { name: 'Visas', icon: Plane, href: '/opportunities?type=visa' },
   { name: 'Conferences', icon: Users, href: '/opportunities?type=conference' },
   { name: 'Volunteering', icon: Heart, href: '/opportunities?type=volunteering' },
+  { name: 'Certificate', icon: Award, href: '/opportunities?type=certificate' },
+  { name: 'Document Translation', icon: Languages, href: '/opportunities?type=document-translation' },
+  { name: 'Opportunities', icon: LayoutGrid, href: '/opportunities' },
+  { name: 'Premium Jobs', icon: BadgeCheck, href: '/opportunities?type=premium-job' },
 ]
 
 const steps = [
@@ -91,7 +99,7 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
           <h2 className="mb-8 text-center text-2xl font-bold text-[#073B33]">
             Browse Opportunities by Type
           </h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {categoryLinks.map(({ name, icon: Icon, href }) => (
               <Link
                 key={name}
@@ -225,7 +233,7 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
       <section className="bg-white py-16">
         <div className="mx-auto max-w-7xl px-4">
           <h2 className="mb-8 text-center text-2xl font-bold text-[#073B33]">Browse Opportunities by Type</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {categoryLinks.map((cat) => (
               <Link
                 key={cat.name}

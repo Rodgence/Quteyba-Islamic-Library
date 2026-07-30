@@ -30,6 +30,7 @@ interface SEOProps {
   description?: string
   og_image?: string
   canonical_url?: string
+  og_type?: string
 }
 
 interface MediaImage {
@@ -104,6 +105,7 @@ export default function OpportunityDetail({
   const seoDescription = seo?.description || excerpt
 
   const whatsappUrl = socialLinks.whatsapp
+  const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${title}\n${seo?.canonical_url || ''}`)}`
 
   const handleShare = async () => {
     const url = window.location.href
@@ -123,7 +125,12 @@ export default function OpportunityDetail({
       <Head>
         <title>{seoTitle}</title>
         {seoDescription && <meta name="description" content={seoDescription} />}
+        <meta property="og:title" content={seoTitle} />
+        {seoDescription && <meta property="og:description" content={seoDescription} />}
+        <meta property="og:type" content={seo?.og_type || 'article'} />
         {seo?.og_image && <meta property="og:image" content={seo.og_image} />}
+        {seo?.canonical_url && <meta property="og:url" content={seo.canonical_url} />}
+        <meta name="twitter:card" content="summary_large_image" />
         {seo?.canonical_url && <link rel="canonical" href={seo.canonical_url} />}
       </Head>
 
@@ -382,6 +389,15 @@ export default function OpportunityDetail({
                   <Share2 className="h-4 w-4" />
                   Share Opportunity
                 </button>
+                <a
+                  href={whatsappShareUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#25D366] px-4 py-3 text-sm font-semibold text-[#128C3E] transition-colors hover:bg-[#25D366]/5"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Share on WhatsApp
+                </a>
               </div>
             </div>
           </aside>

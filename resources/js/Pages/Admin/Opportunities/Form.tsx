@@ -168,6 +168,9 @@ export default function OpportunityForm({ opportunity, types, categories, countr
               <div className="space-y-4">
                 <div>
                   <label className={labelClass}>Upload Image</label>
+                  <p className="mb-2 text-xs text-gray-500">
+                    Required for published posts and used in WhatsApp link previews.
+                  </p>
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/gif"

@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from 'react'
 import { Link, usePage } from '@inertiajs/react'
-import { Menu, X, Search, MessageCircle, Camera, Video, Users, Send } from 'lucide-react'
+import { Menu, X, Search, MessageCircle, Camera, Video, Users, Send, Headphones, Radio } from 'lucide-react'
 import { useState } from 'react'
 import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
@@ -8,6 +8,7 @@ import { socialLinks } from '@/lib/socialLinks'
 export default function PublicLayout({ children }: PropsWithChildren) {
   const { locale } = usePage<SharedProps>().props
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [whatsappMenuOpen, setWhatsappMenuOpen] = useState(false)
 
   const navItems = [
     { label: 'Home', href: '/' },
@@ -80,6 +81,48 @@ export default function PublicLayout({ children }: PropsWithChildren) {
       </header>
 
       <main className="flex-1">{children}</main>
+
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+        {whatsappMenuOpen && (
+          <div
+            id="whatsapp-actions"
+            className="w-56 overflow-hidden rounded-2xl border border-gray-100 bg-white p-2 shadow-xl"
+          >
+            <Link
+              href={socialLinks.support}
+              onClick={() => setWhatsappMenuOpen(false)}
+              className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-[#101828] transition-colors hover:bg-gray-50"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#25D366]/10 text-[#128C3E]">
+                <Headphones className="h-5 w-5" />
+              </span>
+              Contact support
+            </Link>
+            <a
+              href={socialLinks.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setWhatsappMenuOpen(false)}
+              className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-[#101828] transition-colors hover:bg-gray-50"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#25D366]/10 text-[#128C3E]">
+                <Radio className="h-5 w-5" />
+              </span>
+              Join WhatsApp channel
+            </a>
+          </div>
+        )}
+        <button
+          type="button"
+          aria-label={whatsappMenuOpen ? 'Close WhatsApp options' : 'Open WhatsApp options'}
+          aria-expanded={whatsappMenuOpen}
+          aria-controls="whatsapp-actions"
+          onClick={() => setWhatsappMenuOpen((open) => !open)}
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
+        >
+          {whatsappMenuOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-7 w-7" />}
+        </button>
+      </div>
 
       <footer className="border-t border-border bg-[#073B33] text-white">
         <div className="mx-auto max-w-7xl px-4 py-12">

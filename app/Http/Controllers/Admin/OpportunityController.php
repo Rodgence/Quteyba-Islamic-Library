@@ -83,6 +83,12 @@ class OpportunityController extends Controller
             'remove_featured_image' => 'nullable|boolean',
         ]);
 
+        if ($validated['status'] === 'published' && ! $request->hasFile('featured_image')) {
+            return back()->withErrors([
+                'featured_image' => 'A featured image is required before publishing so shared posts have a social preview.',
+            ])->withInput();
+        }
+
         $featuredImage = $request->file('featured_image')
             ? $this->storeFeaturedImage($request)
             : null;
@@ -144,6 +150,15 @@ class OpportunityController extends Controller
             'featured_image_alt' => 'nullable|string|max:255',
             'remove_featured_image' => 'nullable|boolean',
         ]);
+
+        $willHaveFeaturedImage = $request->hasFile('featured_image')
+            || ($opportunity->featured_image_id && ! $request->boolean('remove_featured_image'));
+
+        if ($validated['status'] === 'published' && ! $willHaveFeaturedImage) {
+            return back()->withErrors([
+                'featured_image' => 'A featured image is required before publishing so shared posts have a social preview.',
+            ])->withInput();
+        }
 
         $featuredImage = $request->file('featured_image')
             ? $this->storeFeaturedImage($request)

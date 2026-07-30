@@ -19,6 +19,9 @@ class OpportunityTypeSeeder extends Seeder
             ['name' => json_encode(['en' => 'Travel Programme']), 'slug' => 'travel-programme', 'icon' => 'Globe'],
             ['name' => json_encode(['en' => 'Conference']), 'slug' => 'conference', 'icon' => 'Users'],
             ['name' => json_encode(['en' => 'Competition']), 'slug' => 'competition', 'icon' => 'Trophy'],
+            ['name' => json_encode(['en' => 'Certificate']), 'slug' => 'certificate', 'icon' => 'Award'],
+            ['name' => json_encode(['en' => 'Document Translation']), 'slug' => 'document-translation', 'icon' => 'Languages'],
+            ['name' => json_encode(['en' => 'Premium Job']), 'slug' => 'premium-job', 'icon' => 'BadgeCheck'],
         ];
 
         foreach ($types as $type) {
