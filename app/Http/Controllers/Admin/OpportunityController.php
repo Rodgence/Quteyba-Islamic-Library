@@ -57,7 +57,7 @@ class OpportunityController extends Controller
             'opportunity' => null,
             'types' => $this->selectOptions(OpportunityType::orderBy('id')->get()),
             'categories' => $this->selectOptions(Category::orderBy('id')->get()),
-            'countries' => $this->selectOptions(Country::orderBy('id')->get()),
+            'countries' => $this->countryOptions(),
         ]);
     }
 
@@ -125,7 +125,7 @@ class OpportunityController extends Controller
             ],
             'types' => $this->selectOptions(OpportunityType::orderBy('id')->get()),
             'categories' => $this->selectOptions(Category::orderBy('id')->get()),
-            'countries' => $this->selectOptions(Country::orderBy('id')->get()),
+            'countries' => $this->countryOptions(),
         ]);
     }
 
@@ -224,6 +224,13 @@ class OpportunityController extends Controller
             'id' => $item->id,
             'name' => $this->localizedText($item->name),
         ]);
+    }
+
+    private function countryOptions()
+    {
+        return $this->selectOptions(Country::all())
+            ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)
+            ->values();
     }
 
     private function storeFeaturedImage(Request $request): Media

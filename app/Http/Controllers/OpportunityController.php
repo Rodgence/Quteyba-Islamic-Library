@@ -78,7 +78,10 @@ class OpportunityController extends Controller
         ]);
 
         $types = \App\Models\OpportunityType::orderBy('id')->get()->map(fn ($t) => ['name' => $t->name, 'slug' => $t->slug]);
-        $countries = \App\Models\Country::orderBy('id')->get()->map(fn ($c) => ['name' => $c->name, 'slug' => $c->slug]);
+        $countries = \App\Models\Country::all()
+            ->map(fn ($c) => ['name' => $this->localizedText($c->name), 'slug' => $c->slug])
+            ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)
+            ->values();
         $categories = \App\Models\Category::orderBy('id')->get()->map(fn ($c) => ['name' => $c->name, 'slug' => $c->slug]);
 
         $selectedType = $request->filled('type')

@@ -10,10 +10,14 @@ class AdminCountriesController extends Controller
 {
     public function index()
     {
-        $countries = Country::withCount('opportunities')->get()->map(fn ($country) => [
-            ...$country->toArray(),
-            'name' => $this->localizedText($country->name),
-        ]);
+        $countries = Country::withCount('opportunities')
+            ->get()
+            ->map(fn ($country) => [
+                ...$country->toArray(),
+                'name' => $this->localizedText($country->name),
+            ])
+            ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)
+            ->values();
 
         return Inertia::render('Admin/Countries/Index', ['countries' => $countries]);
     }
