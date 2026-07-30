@@ -9,11 +9,11 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $superAdmin = User::firstOrCreate(
+        $superAdmin = User::updateOrCreate(
             ['email' => 'admin@quteybaislamiclibrary.com'],
             [
                 'name' => 'Super Admin',
-                'password' => bcrypt('password'),
+                'password' => bcrypt('@QuteyTZA26'),
                 'email_verified_at' => now(),
             ]
         );
