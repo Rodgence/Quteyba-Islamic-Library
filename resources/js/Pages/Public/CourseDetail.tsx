@@ -2,6 +2,7 @@ import { Link, usePage, router } from '@inertiajs/react'
 import { ArrowLeft, BookOpen, Clock, User, Globe, GraduationCap, DollarSign } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps } from '@/Types'
+import { getLocalized } from '@/lib/localization'
 
 interface CourseItem {
   name: string
@@ -29,15 +30,6 @@ interface Props {
   seo?: SEO
 }
 
-function parseAr(value: string): string {
-  try {
-    const parsed = JSON.parse(value)
-    return parsed?.en || parsed?.ar || ''
-  } catch {
-    return value || ''
-  }
-}
-
 const statusLabels: Record<string, string> = {
   open: 'Registration Open',
   closed: 'Registration Closed',
@@ -45,11 +37,11 @@ const statusLabels: Record<string, string> = {
 }
 
 const infoItems = (course: CourseItem) => [
-  { icon: Globe, label: 'Language', value: parseAr(course.language) },
-  { icon: GraduationCap, label: 'Level', value: parseAr(course.level) },
-  { icon: Clock, label: 'Duration', value: course.duration ? parseAr(course.duration) : '—' },
-  { icon: BookOpen, label: 'Delivery Method', value: parseAr(course.delivery_method) },
-  { icon: User, label: 'Instructor', value: course.instructor ? parseAr(course.instructor) : '—' },
+  { icon: Globe, label: 'Language', value: getLocalized(course.language) },
+  { icon: GraduationCap, label: 'Level', value: getLocalized(course.level) },
+  { icon: Clock, label: 'Duration', value: course.duration ? getLocalized(course.duration) : '—' },
+  { icon: BookOpen, label: 'Delivery Method', value: getLocalized(course.delivery_method) },
+  { icon: User, label: 'Instructor', value: course.instructor ? getLocalized(course.instructor) : '—' },
   { icon: DollarSign, label: 'Price', value: course.price !== null && course.price !== undefined ? `${course.price} ${course.price_currency || 'USD'}` : 'Free' },
 ]
 
@@ -69,9 +61,9 @@ export default function CourseDetailPage({ course, related }: Props) {
             <span>/</span>
             <Link href="/courses" className="hover:text-[#073B33]">Courses</Link>
             <span>/</span>
-            <span className="text-[#101828]">{parseAr(course.name)}</span>
+            <span className="text-[#101828]">{getLocalized(course.name)}</span>
           </nav>
-          <h1 className="text-2xl font-bold text-[#073B33]">{parseAr(course.name)}</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">{getLocalized(course.name)}</h1>
         </div>
       </div>
 
@@ -81,13 +73,13 @@ export default function CourseDetailPage({ course, related }: Props) {
             {course.featured_image && (
               <img
                 src={course.featured_image.url}
-                alt={course.featured_image.alt_text || parseAr(course.name)}
+                alt={course.featured_image.alt_text || getLocalized(course.name)}
                 className="w-full rounded-2xl object-cover"
               />
             )}
 
             <div className="prose max-w-none text-sm leading-relaxed text-[#101828]/80">
-              <div dangerouslySetInnerHTML={{ __html: parseAr(course.description) }} />
+              <div dangerouslySetInnerHTML={{ __html: getLocalized(course.description) }} />
             </div>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -153,16 +145,16 @@ export default function CourseDetailPage({ course, related }: Props) {
                   {item.featured_image && (
                     <img
                       src={item.featured_image.url}
-                      alt={item.featured_image.alt_text || parseAr(item.name)}
+                      alt={item.featured_image.alt_text || getLocalized(item.name)}
                       className="h-40 w-full object-cover"
                     />
                   )}
                   <div className="p-4">
                     <h3 className="mb-1 text-sm font-semibold text-[#101828] line-clamp-1">
-                      {parseAr(item.name)}
+                      {getLocalized(item.name)}
                     </h3>
                     <p className="text-xs text-[#101828]/50 line-clamp-2">
-                      {parseAr(item.description)}
+                      {getLocalized(item.description)}
                     </p>
                   </div>
                 </Link>

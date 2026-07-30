@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react'
 import { BookOpen, Clock, User } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
+import { getLocalized } from '@/lib/localization'
 
 interface CourseItem {
   name: string
@@ -25,15 +26,6 @@ interface SEO {
 interface Props {
   courses: CourseItem[]
   seo?: SEO
-}
-
-function parseAr(value: string): string {
-  try {
-    const parsed = JSON.parse(value)
-    return parsed?.en || parsed?.ar || ''
-  } catch {
-    return value || ''
-  }
 }
 
 const statusLabels: Record<string, string> = {
@@ -68,7 +60,7 @@ export default function CoursesPage({ courses }: Props) {
                 <div className="relative">
                   <img
                     src={course.featured_image.url}
-                    alt={course.featured_image.alt_text || parseAr(course.name)}
+                    alt={course.featured_image.alt_text || getLocalized(course.name)}
                     className="h-48 w-full object-cover"
                   />
                   <span
@@ -80,24 +72,24 @@ export default function CoursesPage({ courses }: Props) {
               )}
               <div className="flex flex-1 flex-col p-5">
                 <h3 className="mb-2 text-lg font-semibold text-[#101828]">
-                  {parseAr(course.name)}
+                  {getLocalized(course.name)}
                 </h3>
                 <p className="mb-4 flex-1 text-sm leading-relaxed text-[#101828]/60 line-clamp-2">
-                  {parseAr(course.description)}
+                  {getLocalized(course.description)}
                 </p>
                 <div className="mb-4 space-y-1.5 text-xs text-[#101828]/50">
                   <div className="flex items-center gap-1.5">
                     <BookOpen className="h-3.5 w-3.5" />
-                    <span>{parseAr(course.language)}</span>
+                    <span>{getLocalized(course.language)}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Clock className="h-3.5 w-3.5" />
-                    <span>{parseAr(course.level)} · {course.duration ? parseAr(course.duration) : '—'}</span>
+                    <span>{getLocalized(course.level)} · {course.duration ? getLocalized(course.duration) : '—'}</span>
                   </div>
                   {course.instructor && (
                     <div className="flex items-center gap-1.5">
                       <User className="h-3.5 w-3.5" />
-                      <span>{parseAr(course.instructor)}</span>
+                      <span>{getLocalized(course.instructor)}</span>
                     </div>
                   )}
                 </div>

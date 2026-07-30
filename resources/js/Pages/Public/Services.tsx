@@ -1,11 +1,12 @@
 import { Link } from '@inertiajs/react'
 import { ArrowRight } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
+import { getLocalized } from '@/lib/localization'
 
 interface ServiceItem {
-  title: string
+  title: unknown
   slug: string
-  short_description: string
+  short_description: unknown
   icon: string | null
   featured_image: { url: string; alt_text?: string } | null
   price: number | null
@@ -20,15 +21,6 @@ interface SEO {
 interface Props {
   services: ServiceItem[]
   seo?: SEO
-}
-
-function parseAr(value: string): string {
-  try {
-    const parsed = JSON.parse(value)
-    return parsed?.en || parsed?.ar || ''
-  } catch {
-    return value || ''
-  }
 }
 
 export default function ServicesPage({ services }: Props) {
@@ -50,16 +42,16 @@ export default function ServicesPage({ services }: Props) {
               {service.featured_image && (
                 <img
                   src={service.featured_image.url}
-                  alt={service.featured_image.alt_text || parseAr(service.title)}
+                  alt={service.featured_image.alt_text || getLocalized(service.title)}
                   className="h-48 w-full object-cover"
                 />
               )}
               <div className="flex flex-1 flex-col p-5">
                 <h3 className="mb-2 text-lg font-semibold text-[#101828]">
-                  {parseAr(service.title)}
+                  {getLocalized(service.title)}
                 </h3>
                 <p className="mb-4 flex-1 text-sm leading-relaxed text-[#101828]/60 line-clamp-3">
-                  {parseAr(service.short_description)}
+                  {getLocalized(service.short_description)}
                 </p>
                 {service.price !== null && service.price !== undefined && (
                   <p className="mb-4 text-sm font-semibold text-[#073B33]">

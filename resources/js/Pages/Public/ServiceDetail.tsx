@@ -3,12 +3,13 @@ import { useState } from 'react'
 import { ArrowLeft, Check, FileText, MessageCircle } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps } from '@/Types'
+import { getLocalized } from '@/lib/localization'
 
 interface ServiceItem {
-  title: string
+  title: unknown
   slug: string
-  short_description: string
-  content: string
+  short_description: unknown
+  content: unknown
   deliverables: string | null
   required_documents: string | null
   process_steps: string | null
@@ -27,15 +28,6 @@ interface SEO {
 interface Props {
   service: ServiceItem
   seo?: SEO
-}
-
-function parseAr(value: string): string {
-  try {
-    const parsed = JSON.parse(value)
-    return parsed?.en || parsed?.ar || ''
-  } catch {
-    return value || ''
-  }
 }
 
 function parseJsonArray(value: string | null): string[] {
@@ -103,9 +95,9 @@ export default function ServiceDetailPage({ service }: Props) {
             <span>/</span>
             <Link href="/services" className="hover:text-[#073B33]">Services</Link>
             <span>/</span>
-            <span className="text-[#101828]">{parseAr(service.title)}</span>
+            <span className="text-[#101828]">{getLocalized(service.title)}</span>
           </nav>
-          <h1 className="text-2xl font-bold text-[#073B33]">{parseAr(service.title)}</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">{getLocalized(service.title)}</h1>
         </div>
       </div>
 
@@ -115,17 +107,17 @@ export default function ServiceDetailPage({ service }: Props) {
             {service.featured_image && (
               <img
                 src={service.featured_image.url}
-                alt={service.featured_image.alt_text || parseAr(service.title)}
+                alt={service.featured_image.alt_text || getLocalized(service.title)}
                 className="w-full rounded-2xl object-cover"
               />
             )}
 
             <p className="text-sm leading-relaxed text-[#101828]/70">
-              {parseAr(service.short_description)}
+              {getLocalized(service.short_description)}
             </p>
 
             <div className="prose max-w-none text-sm leading-relaxed text-[#101828]/80">
-              <div dangerouslySetInnerHTML={{ __html: parseAr(service.content) }} />
+              <div dangerouslySetInnerHTML={{ __html: getLocalized(service.content) }} />
             </div>
 
             {deliverables.length > 0 && (
