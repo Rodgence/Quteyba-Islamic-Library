@@ -29,11 +29,20 @@ npm ci
 npm run build
 php artisan migrate --force
 php artisan storage:link
-php artisan optimize
+php artisan optimize:clear
+php artisan config:cache
+php artisan event:cache
+php artisan view:cache
 php artisan db:seed --class=RoleSeeder
 php artisan db:seed --class=UserSeeder
 php artisan sitemap:generate
 ```
+
+Route caching is intentionally omitted for this shared-host deployment. This
+prevents an old `bootstrap/cache/routes-*.php` file from shadowing newly
+deployed routes. If the server reports an incorrect HTTP method for an existing
+route, run `php artisan route:clear` and restart PHP-FPM or clear OPcache from
+the hosting control panel.
 
 ## Nginx Configuration
 

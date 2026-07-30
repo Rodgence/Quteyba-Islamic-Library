@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react'
 import { ChevronRight, FileText } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { Page } from '@/Types'
+import { getLocalized } from '@/lib/localization'
 
 interface StaticPageProps {
   page: Page
@@ -9,6 +10,9 @@ interface StaticPageProps {
 }
 
 export default function StaticPage({ page, seo }: StaticPageProps) {
+  const title = getLocalized(page.title)
+  const content = getLocalized(page.content)
+
   return (
     <PublicLayout>
       <div className="mx-auto max-w-4xl px-4 py-12">
@@ -17,16 +21,16 @@ export default function StaticPage({ page, seo }: StaticPageProps) {
             Home
           </Link>
           <ChevronRight className="h-3 w-3" />
-          <span className="text-[#073B33] font-medium">{page.title}</span>
+          <span className="text-[#073B33] font-medium">{title}</span>
         </nav>
 
         <article>
-          <h1 className="mb-8 text-3xl font-bold text-[#073B33] leading-tight">{page.title}</h1>
+          <h1 className="mb-8 text-3xl font-bold text-[#073B33] leading-tight">{title}</h1>
 
-          {page.content ? (
+          {content ? (
             <div
               className="prose prose-lg max-w-none leading-[1.9] text-[#101828]/80"
-              dangerouslySetInnerHTML={{ __html: page.content }}
+              dangerouslySetInnerHTML={{ __html: content }}
             />
           ) : (
             <div className="rounded-2xl border border-border bg-white p-12 text-center">

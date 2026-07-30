@@ -8,13 +8,14 @@
     # Stop here after the internal rewrite has entered the public directory.
     RewriteRule ^public(?:/|$) - [L]
 
-    # Keep the repository outside the public web surface while allowing the
-    # domain document root to point at this project directory.
-    RewriteRule ^(.*)$ public/$1 [L]
-</IfModule>
+    # Serve real public assets without exposing repository files.
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -d
+    RewriteRule ^(.+)$ public/$1 [L]
 
-<IfModule !mod_rewrite.c>
-    RedirectMatch 302 ^/$ /public/
+    # Send application requests straight to Laravel's front controller. This
+    # avoids an Apache DirectoryIndex subrequest for the domain root.
+    RewriteRule ^ public/index.php [L]
 </IfModule>
 
 Options -Indexes
