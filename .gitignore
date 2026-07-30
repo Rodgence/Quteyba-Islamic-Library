@@ -14,7 +14,8 @@
 /.zed
 /auth.json
 /node_modules
-/public/build
+# Production assets are committed because the shared host serves the
+# repository without running the Node/Vite build step.
 /public/fonts-manifest.dev.json
 /public/hot
 /public/storage

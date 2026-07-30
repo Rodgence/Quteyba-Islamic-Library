@@ -1,0 +1,1 @@
+function e(e){let t=e;for(let e=0;e<3;e+=1){if(typeof t==`object`&&t){let e=t;t=e.en??e.ar??Object.values(e)[0]??``;continue}if(typeof t==`string`){let e=t.trim();if(e.startsWith(`{`)&&e.endsWith(`}`)||e.startsWith(`"`)&&e.endsWith(`"`))try{t=JSON.parse(e);continue}catch{}}break}return String(t??``)}export{e as t};

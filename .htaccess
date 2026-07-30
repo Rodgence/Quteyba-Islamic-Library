@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect direct /public URLs to the clean domain-root URL.
+    RewriteCond %{THE_REQUEST} \s/+public(?:[/?\s]) [NC]
+    RewriteRule ^public/?(.*)$ /$1 [R=301,L,NE]
+
+    # Stop here after the internal rewrite has entered the public directory.
+    RewriteRule ^public(?:/|$) - [L]
+
+    # Keep the repository outside the public web surface while allowing the
+    # domain document root to point at this project directory.
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    RedirectMatch 302 ^/$ /public/
+</IfModule>
+
+Options -Indexes

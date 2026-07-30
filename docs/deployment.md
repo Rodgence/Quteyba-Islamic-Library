@@ -15,6 +15,11 @@
 1. Clone repository
 2. Copy `.env.example` to `.env` and configure: DB credentials, `APP_URL`, mail settings, etc.
 3. Set `APP_ENV=production`, `APP_DEBUG=false`
+4. Set the domain document root to the project's `public` directory whenever the hosting control panel allows it.
+
+For shared Apache hosting where the domain document root must be the project directory,
+the repository's root `.htaccess` securely rewrites requests into `public/` and redirects
+direct `/public/...` browser requests to clean root-domain URLs.
 
 ## Deployment Commands
 
