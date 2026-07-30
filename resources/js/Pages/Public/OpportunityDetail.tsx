@@ -1,5 +1,6 @@
 import { Link, Head } from '@inertiajs/react'
 import PublicLayout from '@/Layouts/PublicLayout'
+import { socialLinks } from '@/lib/socialLinks'
 import {
   ArrowLeft,
   Calendar,
@@ -102,7 +103,7 @@ export default function OpportunityDetail({
   const seoTitle = seo?.title || title
   const seoDescription = seo?.description || excerpt
 
-  const whatsappUrl = 'https://wa.me/1234567890'
+  const whatsappUrl = socialLinks.whatsapp
 
   const handleShare = async () => {
     const url = window.location.href
@@ -379,7 +380,7 @@ export default function OpportunityDetail({
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[#20bd5a]"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  Contact us on WhatsApp
+                  Follow our WhatsApp Channel
                 </a>
 
                 <button

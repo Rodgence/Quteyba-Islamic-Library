@@ -13,15 +13,16 @@ class SiteSettingSeeder extends Seeder
             ['key' => 'site_name', 'value' => 'Quteyba Islamic Library', 'type' => 'string', 'group' => 'general', 'label' => 'Site Name'],
             ['key' => 'site_description', 'value' => 'Your trusted platform for discovering the latest study, work, and travel opportunities around the world', 'type' => 'text', 'group' => 'general', 'label' => 'Site Description'],
             ['key' => 'contact_email', 'value' => 'info@quteybaislamiclibrary.com', 'type' => 'string', 'group' => 'contact', 'label' => 'Email'],
-            ['key' => 'whatsapp_number', 'value' => '1234567890', 'type' => 'string', 'group' => 'contact', 'label' => 'WhatsApp Number'],
-            ['key' => 'facebook_url', 'value' => 'https://facebook.com/quteyba', 'type' => 'string', 'group' => 'social', 'label' => 'Facebook'],
-            ['key' => 'twitter_url', 'value' => 'https://twitter.com/quteyba', 'type' => 'string', 'group' => 'social', 'label' => 'Twitter'],
-            ['key' => 'instagram_url', 'value' => 'https://instagram.com/quteyba', 'type' => 'string', 'group' => 'social', 'label' => 'Instagram'],
-            ['key' => 'youtube_url', 'value' => 'https://youtube.com/@quteyba', 'type' => 'string', 'group' => 'social', 'label' => 'YouTube'],
+            ['key' => 'facebook_url', 'value' => 'https://www.facebook.com/profile.php?id=61562092804047', 'type' => 'string', 'group' => 'social', 'label' => 'Facebook'],
+            ['key' => 'x_url', 'value' => 'https://x.com/abqtbz', 'type' => 'string', 'group' => 'social', 'label' => 'X'],
+            ['key' => 'instagram_url', 'value' => 'https://www.instagram.com/abuuqutayba', 'type' => 'string', 'group' => 'social', 'label' => 'Instagram'],
+            ['key' => 'youtube_url', 'value' => 'https://youtube.com/@maktabatuabuuquteyba', 'type' => 'string', 'group' => 'social', 'label' => 'YouTube'],
+            ['key' => 'telegram_url', 'value' => 'https://t.me/+qAi0JaW_a-UzMDc0', 'type' => 'string', 'group' => 'social', 'label' => 'Telegram'],
+            ['key' => 'whatsapp_channel_url', 'value' => 'https://whatsapp.com/channel/0029VaCiGTa4Y9lwuLDTGe3W', 'type' => 'string', 'group' => 'social', 'label' => 'WhatsApp Channel'],
         ];
 
         foreach ($settings as $setting) {
-            SiteSetting::firstOrCreate(['key' => $setting['key']], $setting);
+            SiteSetting::updateOrCreate(['key' => $setting['key']], $setting);
         }
     }
 }
