@@ -14,6 +14,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
     { label: 'Opportunities', href: '/opportunities' },
     { label: 'Services', href: '/services' },
     { label: 'Courses', href: '/courses' },
+    { label: 'Certificates', href: '/certificates' },
     { label: 'About', href: '/about' },
     { label: 'Contact Us', href: '/contact' },
   ]
@@ -22,8 +23,12 @@ export default function PublicLayout({ children }: PropsWithChildren) {
     <div className="flex min-h-screen flex-col bg-white text-[#101828]" dir="ltr" lang="en">
       <header className="sticky top-0 z-50 border-b border-border bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link href="/" className="text-xl font-bold text-primary">
-            Quteyba
+          <Link href="/" aria-label="Abu Quteyba International Islamic Library">
+            <img
+              src="/logo.png"
+              alt="Abu Quteyba International Islamic Library"
+              className="h-12 w-auto object-contain"
+            />
           </Link>
 
           <nav className="hidden items-center gap-6 lg:flex">
@@ -80,7 +85,13 @@ export default function PublicLayout({ children }: PropsWithChildren) {
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <h3 className="mb-4 text-lg font-bold">Quteyba</h3>
+              <Link href="/" aria-label="Abu Quteyba International Islamic Library">
+                <img
+                  src="/logo.png"
+                  alt="Abu Quteyba International Islamic Library"
+                  className="mb-4 h-14 w-auto object-contain"
+                />
+              </Link>
               <p className="text-sm leading-relaxed opacity-80">
                 Your trusted platform for discovering the latest study, work, and travel opportunities around the world.
               </p>

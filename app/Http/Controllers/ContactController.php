@@ -26,6 +26,7 @@ class ContactController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:50',
+            'country' => 'required|string|max:100',
             'subject' => 'required|string|max:255',
             'message' => 'required|string|max:5000',
         ]);
@@ -40,6 +41,7 @@ class ContactController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
+            'country' => $validated['country'],
             'subject' => $validated['subject'],
             'message' => $validated['message'],
             'ip_address' => $request->ip(),

@@ -1,5 +1,22 @@
-import { useForm, usePage } from '@inertiajs/react'
-import { Mail, Phone, MapPin, MessageCircle, Send, Camera, Video, Users } from 'lucide-react'
+import { Link, useForm, usePage } from '@inertiajs/react'
+import {
+  ArrowRight,
+  BadgeCheck,
+  BriefcaseBusiness,
+  Camera,
+  GraduationCap,
+  Languages,
+  Mail,
+  MapPin,
+  Megaphone,
+  MessageCircle,
+  NotebookPen,
+  Phone,
+  Plane,
+  Send,
+  Users,
+  Video,
+} from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
@@ -8,6 +25,51 @@ interface ContactProps {
   seo?: Record<string, string>
 }
 
+const services = [
+  {
+    title: 'Visas',
+    description:
+      'Get help understanding visa requirements, organizing your documents, and preparing applications for countries around the world.',
+    href: '/services/visa-application-assistance',
+    icon: Plane,
+  },
+  {
+    title: 'Jobs in the Gulf Countries',
+    description:
+      'We help you prepare your CV, find suitable opportunities, and submit applications for jobs that match your skills.',
+    href: '/services/gulf-job-application-assistance',
+    icon: BriefcaseBusiness,
+  },
+  {
+    title: 'Scholarship Applications',
+    description:
+      'Explore scholarship opportunities and get support reviewing requirements, preparing documents, and submitting your application.',
+    href: '/services/scholarship-application-assistance',
+    icon: GraduationCap,
+  },
+  {
+    title: 'Letters and Research Support',
+    description:
+      'Get ethical support with professional letters, research planning, language review, and reference formatting.',
+    href: '/services/academic-research-support',
+    icon: NotebookPen,
+  },
+  {
+    title: 'Document Translation',
+    description:
+      'We help translate academic, personal, and professional documents to and from available languages.',
+    href: '/services/document-translation',
+    icon: Languages,
+  },
+  {
+    title: 'Certificate Services',
+    description:
+      'Get help organizing, translating, attesting, and verifying certificates legally issued by schools and universities.',
+    href: '/services/certificate-document-support',
+    icon: BadgeCheck,
+  },
+]
+
 export default function Contact({ seo }: ContactProps) {
   const { flash } = usePage<SharedProps>().props
 
@@ -15,6 +77,7 @@ export default function Contact({ seo }: ContactProps) {
     name: '',
     email: '',
     phone: '',
+    country: '',
     subject: '',
     message: '',
   })
@@ -35,11 +98,75 @@ export default function Contact({ seo }: ContactProps) {
           </div>
         )}
 
-        <div className="grid gap-12 lg:grid-cols-3">
+        <section className="relative isolate overflow-hidden rounded-3xl bg-[#073B33] px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-20">
+          <img
+            src="/hero.png"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+          />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#052f29]/95 via-[#073B33]/85 to-[#073B33]/25" />
+
+          <div className="max-w-2xl">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-sm font-medium">
+              <Megaphone className="h-4 w-4" />
+              Advertise with us
+            </div>
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Advertise with us now</h1>
+            <p className="mt-4 max-w-2xl leading-7 text-white/80">
+              If you are looking for exceptional employees or have job openings, we are here to support you.
+              We connect organizations with ambitious young people seeking employment and educational
+              opportunities. Let us help you reach the right audience and achieve your goals.
+            </p>
+            <a
+              href="#contact-form"
+              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#E91E63] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#d81b60]"
+            >
+              Contact us
+              <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+        </section>
+
+        <section className="py-14">
+          <div className="mb-8 max-w-2xl">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-[#E91E63]">
+              We help young people travel
+            </p>
+            <h2 className="text-3xl font-bold text-[#073B33]">What can we offer you?</h2>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {services.map((service) => {
+              const Icon = service.icon
+
+              return (
+                <Link
+                  key={service.href}
+                  href={service.href}
+                  className="group rounded-2xl border border-border bg-white p-6 transition-all hover:-translate-y-1 hover:border-[#073B33]/30 hover:shadow-lg"
+                >
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#073B33]/10 text-[#073B33] transition-colors group-hover:bg-[#073B33] group-hover:text-white">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#073B33]">{service.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#101828]/65">{service.description}</p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#E91E63]">
+                    Learn more
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+
+        <div id="contact-form" className="grid scroll-mt-24 gap-12 border-t border-border pt-14 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <h1 className="mb-2 text-3xl font-bold text-[#073B33]">Contact Us</h1>
             <p className="mb-8 text-sm text-[#101828]/60">
-              We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
+              Do you want to advertise or explore new opportunities? Fill out the form and we will get back to
+              you as soon as possible.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -90,6 +217,21 @@ export default function Contact({ seo }: ContactProps) {
                   />
                   {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
                 </div>
+              </div>
+
+              <div>
+                <label htmlFor="country" className="mb-1.5 block text-sm font-medium text-[#101828]">
+                  Country <span className="text-[#E91E63]">*</span>
+                </label>
+                <input
+                  id="country"
+                  type="text"
+                  value={data.country}
+                  onChange={(e) => setData('country', e.target.value)}
+                  className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-sm text-[#101828] placeholder:text-[#101828]/40 focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]"
+                  placeholder="Enter your country"
+                />
+                {errors.country && <p className="mt-1 text-xs text-red-600">{errors.country}</p>}
               </div>
 
               <div>

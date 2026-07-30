@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react'
-import { ArrowLeft, Mail, Phone, Calendar, MailOpen } from 'lucide-react'
+import { ArrowLeft, Mail, Phone, Calendar, MailOpen, MapPin } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
 
 interface Message {
@@ -7,6 +7,7 @@ interface Message {
   name: string
   email: string
   phone: string | null
+  country: string | null
   subject: string
   message: string
   is_read: boolean
@@ -91,6 +92,18 @@ export default function MessagesShow({ message }: Props) {
                 <div>
                   <p className="text-xs text-gray-400">Phone</p>
                   <p className="text-sm font-medium text-gray-900">{message.phone}</p>
+                </div>
+              </div>
+            )}
+
+            {message.country && (
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gray-100">
+                  <MapPin className="h-4 w-4 text-gray-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Country</p>
+                  <p className="text-sm font-medium text-gray-900">{message.country}</p>
                 </div>
               </div>
             )}
