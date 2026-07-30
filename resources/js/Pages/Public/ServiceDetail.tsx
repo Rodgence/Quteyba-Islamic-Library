@@ -116,8 +116,8 @@ export default function ServiceDetailPage({ service }: Props) {
               {getLocalized(service.short_description)}
             </p>
 
-            <div className="prose max-w-none text-sm leading-relaxed text-[#101828]/80">
-              <div dangerouslySetInnerHTML={{ __html: getLocalized(service.content) }} />
+            <div className="whitespace-pre-line text-sm leading-7 text-[#101828]/80">
+              {getLocalized(service.content)}
             </div>
 
             {deliverables.length > 0 && (

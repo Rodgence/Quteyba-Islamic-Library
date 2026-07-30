@@ -1,5 +1,5 @@
-import { router } from '@inertiajs/react'
-import { Trash2, Pencil } from 'lucide-react'
+import { Link, router } from '@inertiajs/react'
+import { Plus, Trash2, Pencil } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import { getLocalized } from '@/lib/localization'
 
@@ -41,6 +41,13 @@ export default function CoursesIndex({ courses }: Props) {
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-[#073B33]">Courses</h1>
+          <Link
+            href="/admin/courses/create"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-semibold text-white"
+          >
+            <Plus className="h-4 w-4" />
+            Add Course
+          </Link>
         </div>
 
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">

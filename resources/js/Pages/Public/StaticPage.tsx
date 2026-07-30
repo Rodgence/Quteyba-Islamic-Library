@@ -5,7 +5,9 @@ import type { Page } from '@/Types'
 import { getLocalized } from '@/lib/localization'
 
 interface StaticPageProps {
-  page: Page
+  page: Page & {
+    featured_image?: { url: string; alt_text?: string | null } | null
+  }
   seo?: Record<string, string>
 }
 
@@ -27,11 +29,18 @@ export default function StaticPage({ page, seo }: StaticPageProps) {
         <article>
           <h1 className="mb-8 text-3xl font-bold text-[#073B33] leading-tight">{title}</h1>
 
-          {content ? (
-            <div
-              className="prose prose-lg max-w-none leading-[1.9] text-[#101828]/80"
-              dangerouslySetInnerHTML={{ __html: content }}
+          {page.featured_image && (
+            <img
+              src={page.featured_image.url}
+              alt={page.featured_image.alt_text || title}
+              className="mb-8 aspect-video w-full rounded-2xl object-cover"
             />
+          )}
+
+          {content ? (
+            <div className="whitespace-pre-line text-base leading-8 text-[#101828]/80 sm:text-lg">
+              {content}
+            </div>
           ) : (
             <div className="rounded-2xl border border-border bg-white p-12 text-center">
               <FileText className="mx-auto mb-3 h-10 w-10 text-[#073B33]/20" />

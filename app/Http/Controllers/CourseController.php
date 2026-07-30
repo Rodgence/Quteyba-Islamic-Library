@@ -13,7 +13,7 @@ class CourseController extends Controller
             'id' => $c->id,
             'name' => $c->name,
             'slug' => $c->slug,
-            'description' => $c->description,
+            'description' => $this->plainText($c->description),
             'language' => $c->language,
             'level' => $c->level,
             'duration' => $c->duration,
@@ -42,7 +42,7 @@ class CourseController extends Controller
             'id' => $course->id,
             'name' => $course->name,
             'slug' => $course->slug,
-            'description' => $course->description,
+            'description' => $this->plainText($course->description),
             'language' => $course->language,
             'level' => $course->level,
             'duration' => $course->duration,
@@ -56,15 +56,19 @@ class CourseController extends Controller
 
         return Inertia::render('Public/CourseDetail', [
             'course' => $formatted,
-            'related' => Course::published()->where('id', '!=', $course->id)->limit(4)->get()->map(fn ($c) => [
+            'related' => Course::published()->with('featuredImage')->where('id', '!=', $course->id)->limit(4)->get()->map(fn ($c) => [
                 'id' => $c->id,
                 'name' => $c->name,
                 'slug' => $c->slug,
-                'description' => $c->description,
+                'description' => $this->plainText($c->description),
                 'language' => $c->language,
                 'level' => $c->level,
                 'price' => $c->price,
                 'price_currency' => $c->price_currency,
+                'featured_image' => $c->featuredImage ? [
+                    'url' => $c->featuredImage->url,
+                    'alt_text' => $c->featuredImage->alt_text,
+                ] : null,
             ]),
             'seo' => [
                 'title' => ($course->name['en'] ?? $course->name['ar'] ?? '') . ' | Quteyba Islamic Library',

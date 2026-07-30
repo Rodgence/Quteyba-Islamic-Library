@@ -1,7 +1,8 @@
-import { Head, Link, useForm } from '@inertiajs/react'
+import { useEffect, useState } from 'react'
+import { Link, useForm } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import type { Page } from '@/Types'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ImagePlus, X } from 'lucide-react'
 import { getLocalized } from '@/lib/localization'
 
 interface Props {
@@ -19,21 +20,39 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-[#101828]'
 
 export default function PageForm({ page }: Props) {
   const isEdit = page !== null
+  const [previewUrl, setPreviewUrl] = useState<string | null>(page?.featured_image?.url ?? null)
 
-  const { data, setData, post, put, processing, errors } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
+    _method: isEdit ? 'put' : 'post',
     title: getLocalized(page?.title ?? ''),
     slug: page?.slug ?? '',
     content: getLocalized(page?.content ?? ''),
     status: page?.status ?? 'draft',
+    featured_image: null as File | null,
+    featured_image_alt: page?.featured_image?.alt_text ?? '',
+    remove_featured_image: false,
   })
+
+  useEffect(() => {
+    if (!data.featured_image) return
+
+    const objectUrl = URL.createObjectURL(data.featured_image)
+    setPreviewUrl(objectUrl)
+
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [data.featured_image])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (isEdit) {
-      put(`/admin/pages/${page.id}`)
-    } else {
-      post('/admin/pages')
-    }
+    post(isEdit ? `/admin/pages/${page.id}` : '/admin/pages', {
+      forceFormData: true,
+    })
+  }
+
+  const handleRemoveImage = () => {
+    setData('featured_image', null)
+    setData('remove_featured_image', true)
+    setPreviewUrl(null)
   }
 
   return (
@@ -80,15 +99,67 @@ export default function PageForm({ page }: Props) {
               </div>
 
               <div>
-                <label className={labelClass}>Content (HTML)</label>
+                <label className={labelClass}>Description</label>
                 <textarea
                   value={data.content}
                   onChange={(e) => setData('content', e.target.value)}
                   rows={10}
-                  placeholder="<p>Page content...</p>"
+                  placeholder="Write the page description..."
                   className={inputClass}
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-[#e0e0e0] bg-white p-5">
+            <h2 className="mb-4 text-base font-semibold text-[#101828]">Featured Image</h2>
+            <div className="grid gap-5 sm:grid-cols-[240px_1fr]">
+              <div className="overflow-hidden rounded-xl border border-dashed border-gray-300 bg-gray-50">
+                {previewUrl ? (
+                  <img src={previewUrl} alt="Featured image preview" className="aspect-video h-full w-full object-cover" />
+                ) : (
+                  <div className="flex aspect-video items-center justify-center text-gray-400">
+                    <ImagePlus className="h-10 w-10" />
+                  </div>
+                )}
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className={labelClass}>Upload Image</label>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0] ?? null
+                      setData('featured_image', file)
+                      if (file) setData('remove_featured_image', false)
+                    }}
+                    className="block w-full rounded-xl border border-[#e0e0e0] bg-white text-sm text-gray-600 file:mr-4 file:border-0 file:bg-[#073B33] file:px-4 file:py-2.5 file:text-sm file:font-medium file:text-white"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">JPG, PNG, WebP, or GIF. Maximum size: 5 MB.</p>
+                  {errors.featured_image && <p className="mt-1 text-xs text-[#E91E63]">{errors.featured_image}</p>}
+                </div>
+                <div>
+                  <label className={labelClass}>Alternative Text</label>
+                  <input
+                    type="text"
+                    value={data.featured_image_alt}
+                    onChange={(event) => setData('featured_image_alt', event.target.value)}
+                    className={inputClass}
+                    placeholder="Describe the image"
+                  />
+                </div>
+                {previewUrl && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-red-600"
+                  >
+                    <X className="h-4 w-4" />
+                    Remove featured image
+                  </button>
+                )}
               </div>
             </div>
           </div>

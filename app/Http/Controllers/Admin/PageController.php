@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Media;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -31,15 +32,15 @@ class PageController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:1000',
-            'slug' => 'required|string|unique:pages',
-            'content' => 'required|string',
-            'status' => 'required|in:draft,published',
-        ]);
+        $validated = $this->validatePage($request);
+        $featuredImage = $request->file('featured_image')
+            ? $this->storeFeaturedImage($request)
+            : null;
 
+        unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
+        $validated['featured_image_id'] = $featuredImage?->id;
         $validated['title'] = $this->localizedPayload($validated['title']);
-        $validated['content'] = $this->localizedPayload($validated['content']);
+        $validated['content'] = $this->localizedPayload($this->plainText($validated['content']));
 
         Page::create($validated);
 
@@ -48,26 +49,42 @@ class PageController extends Controller
 
     public function edit(Page $page)
     {
+        $page->load('featuredImage');
+
         return Inertia::render('Admin/Pages/Form', [
             'page' => [
                 ...$page->toArray(),
                 'title' => $this->localizedText($page->title),
-                'content' => $this->localizedText($page->content),
+                'content' => $this->plainText($page->content),
+                'featured_image' => $page->featuredImage ? [
+                    'url' => $page->featuredImage->url,
+                    'alt_text' => $page->featuredImage->alt_text,
+                ] : null,
             ],
         ]);
     }
 
     public function update(Request $request, Page $page)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:1000',
-            'slug' => 'required|string|unique:pages,slug,' . $page->id,
-            'content' => 'required|string',
-            'status' => 'required|in:draft,published',
-        ]);
+        $validated = $this->validatePage($request, $page);
+        $featuredImage = $request->file('featured_image')
+            ? $this->storeFeaturedImage($request)
+            : null;
+
+        unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
+
+        if ($featuredImage) {
+            $validated['featured_image_id'] = $featuredImage->id;
+        } elseif ($request->boolean('remove_featured_image')) {
+            $validated['featured_image_id'] = null;
+        } elseif ($page->featuredImage) {
+            $page->featuredImage->update([
+                'alt_text' => $request->input('featured_image_alt'),
+            ]);
+        }
 
         $validated['title'] = $this->localizedPayload($validated['title'], $page->title);
-        $validated['content'] = $this->localizedPayload($validated['content'], $page->content);
+        $validated['content'] = $this->localizedPayload($this->plainText($validated['content']), $page->content);
 
         $page->update($validated);
 
@@ -78,5 +95,34 @@ class PageController extends Controller
     {
         $page->delete();
         return redirect()->route('admin.pages.index')->with('success', 'Page deleted successfully.');
+    }
+
+    private function validatePage(Request $request, ?Page $page = null): array
+    {
+        return $request->validate([
+            'title' => 'required|string|max:1000',
+            'slug' => 'required|string|unique:pages,slug' . ($page ? ',' . $page->id : ''),
+            'content' => 'required|string',
+            'status' => 'required|in:draft,published',
+            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+            'featured_image_alt' => 'nullable|string|max:255',
+            'remove_featured_image' => 'nullable|boolean',
+        ]);
+    }
+
+    private function storeFeaturedImage(Request $request): Media
+    {
+        $file = $request->file('featured_image');
+        $path = $file->store('pages', 'public');
+
+        return Media::create([
+            'name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+            'file_name' => $file->getClientOriginalName(),
+            'mime_type' => $file->getMimeType() ?: $file->getClientMimeType(),
+            'size' => $file->getSize(),
+            'disk' => 'public',
+            'path' => $path,
+            'alt_text' => $request->input('featured_image_alt'),
+        ]);
     }
 }

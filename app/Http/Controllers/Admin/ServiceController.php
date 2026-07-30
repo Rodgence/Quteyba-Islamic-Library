@@ -19,7 +19,7 @@ class ServiceController extends Controller
                 ...$service->toArray(),
                 'title' => $this->localizedText($service->title),
                 'short_description' => $this->localizedText($service->short_description),
-                'content' => $this->localizedText($service->content),
+                'content' => $this->plainText($service->content),
                 'featured_image' => $service->featuredImage ? [
                     'url' => $service->featuredImage->url,
                     'alt_text' => $service->featuredImage->alt_text,
@@ -44,7 +44,7 @@ class ServiceController extends Controller
                 ...$service->toArray(),
                 'title' => $this->localizedText($service->title),
                 'short_description' => $this->localizedText($service->short_description),
-                'content' => $this->localizedText($service->content),
+                'content' => $this->plainText($service->content),
                 'featured_image' => $service->featuredImage ? [
                     'url' => $service->featuredImage->url,
                     'alt_text' => $service->featuredImage->alt_text,
@@ -65,7 +65,9 @@ class ServiceController extends Controller
         $validated['featured_image_id'] = $featuredImage?->id;
         $validated['title'] = $this->localizedPayload($validated['title']);
         $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null);
-        $validated['content'] = $this->localizedPayload($validated['content'] ?? null);
+        $validated['content'] = $this->localizedPayload(
+            isset($validated['content']) ? $this->plainText($validated['content']) : null
+        );
 
         Service::create($validated);
 
@@ -102,7 +104,10 @@ class ServiceController extends Controller
 
         $validated['title'] = $this->localizedPayload($validated['title'], $service->title);
         $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null, $service->short_description);
-        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $service->content);
+        $validated['content'] = $this->localizedPayload(
+            isset($validated['content']) ? $this->plainText($validated['content']) : null,
+            $service->content
+        );
 
         $service->update($validated);
 

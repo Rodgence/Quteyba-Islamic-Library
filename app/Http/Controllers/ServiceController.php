@@ -38,7 +38,7 @@ class ServiceController extends Controller
             'title' => $service->title,
             'slug' => $service->slug,
             'short_description' => $service->short_description,
-            'content' => $service->content,
+            'content' => $this->plainText($service->content),
             'deliverables' => $service->deliverables,
             'required_documents' => $service->required_documents,
             'process_steps' => $service->process_steps,

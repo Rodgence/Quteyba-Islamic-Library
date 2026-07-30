@@ -102,6 +102,7 @@ export interface Page {
   title: string
   slug: string
   content: string
+  featured_image: Media | null
   status: 'draft' | 'published'
   seo_title: string | null
   seo_description: string | null

@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Casts\NormalizedJson;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Page extends Model
 {
     protected $fillable = [
-        'title', 'slug', 'content', 'status',
+        'title', 'slug', 'content', 'featured_image_id', 'status',
         'seo_title', 'seo_description',
         'wordpress_id', 'old_wordpress_url',
     ];
@@ -25,5 +26,10 @@ class Page extends Model
     public function scopePublished($query)
     {
         return $query->where('status', 'published');
+    }
+
+    public function featuredImage(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'featured_image_id');
     }
 }

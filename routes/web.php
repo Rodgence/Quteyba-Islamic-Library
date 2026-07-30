@@ -107,9 +107,12 @@ Route::prefix('admin')->middleware(['auth', 'role_or_permission:access admin'])-
     Route::put('/services/{service}', [\App\Http\Controllers\Admin\ServiceController::class, 'update'])->name('services.update');
     Route::delete('/services/{service}', [\App\Http\Controllers\Admin\ServiceController::class, 'destroy'])->name('services.destroy');
 
-    Route::get('/courses', fn () => Inertia::render('Admin/Courses/Index', [
-        'courses' => \App\Models\Course::get(),
-    ]))->name('courses.index');
+    Route::get('/courses', [App\Http\Controllers\Admin\CourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/create', [App\Http\Controllers\Admin\CourseController::class, 'create'])->name('courses.create');
+    Route::post('/courses', [App\Http\Controllers\Admin\CourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{course}/edit', [App\Http\Controllers\Admin\CourseController::class, 'edit'])->name('courses.edit');
+    Route::put('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'update'])->name('courses.update');
+    Route::delete('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'destroy'])->name('courses.destroy');
 
     // Media
     Route::get('/media', fn () => Inertia::render('Admin/Media/Index', [

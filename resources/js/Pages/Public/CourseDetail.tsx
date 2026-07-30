@@ -78,8 +78,8 @@ export default function CourseDetailPage({ course, related }: Props) {
               />
             )}
 
-            <div className="prose max-w-none text-sm leading-relaxed text-[#101828]/80">
-              <div dangerouslySetInnerHTML={{ __html: getLocalized(course.description) }} />
+            <div className="whitespace-pre-line text-sm leading-7 text-[#101828]/80">
+              {getLocalized(course.description)}
             </div>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">

@@ -136,13 +136,13 @@ export default function ServiceForm({ service }: Props) {
               </div>
 
               <div>
-                <label className={labelClass}>Content (HTML)</label>
+                <label className={labelClass}>Description</label>
                 <textarea
                   value={data.content}
                   onChange={(event) => setData('content', event.target.value)}
                   className={inputClass}
                   rows={12}
-                  placeholder="<h2>Service details</h2><p>Describe the service...</p>"
+                  placeholder="Describe the service..."
                 />
                 {errors.content && <p className="mt-1 text-xs text-red-600">{errors.content}</p>}
               </div>

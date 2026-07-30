@@ -9,9 +9,9 @@ class PageController extends Controller
 {
     public function show(string $slug)
     {
-        $page = Page::published()->where('slug', $slug)->firstOrFail();
+        $page = Page::published()->with('featuredImage')->where('slug', $slug)->firstOrFail();
         $title = $this->localizedText($page->title);
-        $content = $this->localizedText($page->content);
+        $content = $this->plainText($page->content);
         $seoDescription = $this->localizedText($page->seo_description);
 
         return Inertia::render('Public/StaticPage', [
@@ -19,6 +19,10 @@ class PageController extends Controller
                 'title' => $title,
                 'slug' => $page->slug,
                 'content' => $content,
+                'featured_image' => $page->featuredImage ? [
+                    'url' => $page->featuredImage->url,
+                    'alt_text' => $page->featuredImage->alt_text,
+                ] : null,
             ],
             'seo' => [
                 'title' => $page->seo_title ?: $title . ' | Quteyba Islamic Library',
