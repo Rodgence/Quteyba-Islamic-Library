@@ -310,7 +310,10 @@ export default function Contact({ seo }: ContactProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#101828]">Phone Number</p>
-                    <a href="tel:+255621835048" className="text-sm text-[#073B33] hover:underline" dir="ltr">
+                    <a href="tel:+255714241700" className="block text-sm text-[#073B33] hover:underline" dir="ltr">
+                      +255 714 241 700
+                    </a>
+                    <a href="tel:+255621835048" className="block text-sm text-[#073B33] hover:underline" dir="ltr">
                       +255 621 835 048
                     </a>
                   </div>
