@@ -22,6 +22,7 @@ import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
 
 interface ContactProps {
+  countries?: string[]
   seo?: Record<string, string>
 }
 
@@ -70,7 +71,7 @@ const services = [
   },
 ]
 
-export default function Contact({ seo }: ContactProps) {
+export default function Contact({ countries = [], seo }: ContactProps) {
   const { flash } = usePage<SharedProps>().props
 
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -223,14 +224,17 @@ export default function Contact({ seo }: ContactProps) {
                 <label htmlFor="country" className="mb-1.5 block text-sm font-medium text-[#101828]">
                   Country <span className="text-[#E91E63]">*</span>
                 </label>
-                <input
+                <select
                   id="country"
-                  type="text"
                   value={data.country}
                   onChange={(e) => setData('country', e.target.value)}
-                  className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-sm text-[#101828] placeholder:text-[#101828]/40 focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]"
-                  placeholder="Enter your country"
-                />
+                  className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]"
+                >
+                  <option value="">Select your country</option>
+                  {countries.map((country) => (
+                    <option key={country} value={country}>{country}</option>
+                  ))}
+                </select>
                 {errors.country && <p className="mt-1 text-xs text-red-600">{errors.country}</p>}
               </div>
 
