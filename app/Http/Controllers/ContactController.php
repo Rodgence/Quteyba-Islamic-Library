@@ -12,13 +12,7 @@ class ContactController extends Controller
 {
     public function contact()
     {
-        $countries = \App\Models\Country::all()
-            ->map(fn ($c) => $this->localizedText($c->name))
-            ->sort(SORT_NATURAL | SORT_FLAG_CASE)
-            ->values();
-
         return Inertia::render('Public/Contact', [
-            'countries' => $countries,
             'seo' => [
                 'title' => 'Contact Us | Quteyba Islamic Library',
                 'description' => 'Get in touch with the Quteyba Islamic Library team for inquiries and support.',

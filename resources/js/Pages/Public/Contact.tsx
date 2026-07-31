@@ -1,4 +1,5 @@
 import { Link, useForm, usePage } from '@inertiajs/react'
+import { useEffect, useRef, useState } from 'react'
 import {
   ArrowRight,
   BadgeCheck,
@@ -22,8 +23,12 @@ import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
 
 interface ContactProps {
-  countries?: string[]
   seo?: Record<string, string>
+}
+
+interface CountryResult {
+  name: string
+  slug: string
 }
 
 const services = [
@@ -71,7 +76,7 @@ const services = [
   },
 ]
 
-export default function Contact({ countries = [], seo }: ContactProps) {
+export default function Contact({ seo }: ContactProps) {
   const { flash, siteSettings } = usePage<SharedProps>().props
   const contactEmail = siteSettings.contact_email || 'info@quteyba.com'
   const contactPhone1 = siteSettings.contact_phone_1 || '+255714241700'
@@ -90,10 +95,37 @@ export default function Contact({ countries = [], seo }: ContactProps) {
     message: '',
   })
 
+  const [countryQuery, setCountryQuery] = useState('')
+  const [countryResults, setCountryResults] = useState<CountryResult[]>([])
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false)
+  const countrySearchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (countrySearchTimeout.current) clearTimeout(countrySearchTimeout.current)
+    countrySearchTimeout.current = setTimeout(() => {
+      fetch(`/countries/search?q=${encodeURIComponent(countryQuery)}`)
+        .then((res) => res.json())
+        .then((results: CountryResult[]) => setCountryResults(results))
+        .catch(() => setCountryResults([]))
+    }, 250)
+    return () => {
+      if (countrySearchTimeout.current) clearTimeout(countrySearchTimeout.current)
+    }
+  }, [countryQuery])
+
+  const selectCountry = (name: string) => {
+    setData('country', name)
+    setCountryQuery(name)
+    setShowCountryDropdown(false)
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     post('/contact', {
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        reset()
+        setCountryQuery('')
+      },
     })
   }
 
@@ -227,21 +259,41 @@ export default function Contact({ countries = [], seo }: ContactProps) {
                 </div>
               </div>
 
-              <div>
+              <div className="relative">
                 <label htmlFor="country" className="mb-1.5 block text-sm font-medium text-[#101828]">
                   Country <span className="text-[#E91E63]">*</span>
                 </label>
-                <select
+                <input
                   id="country"
-                  value={data.country}
-                  onChange={(e) => setData('country', e.target.value)}
-                  className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-sm text-[#101828] focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]"
-                >
-                  <option value="">Select your country</option>
-                  {countries.map((country) => (
-                    <option key={country} value={country}>{country}</option>
-                  ))}
-                </select>
+                  type="text"
+                  value={countryQuery}
+                  onChange={(e) => {
+                    setCountryQuery(e.target.value)
+                    setData('country', e.target.value)
+                    setShowCountryDropdown(true)
+                  }}
+                  onFocus={() => setShowCountryDropdown(true)}
+                  onBlur={() => setTimeout(() => setShowCountryDropdown(false), 150)}
+                  autoComplete="off"
+                  placeholder="Search for your country"
+                  className="w-full rounded-lg border border-border bg-white px-4 py-2.5 text-sm text-[#101828] placeholder:text-[#101828]/40 focus:border-[#073B33] focus:outline-none focus:ring-1 focus:ring-[#073B33]"
+                />
+                {showCountryDropdown && countryResults.length > 0 && (
+                  <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-lg border border-border bg-white shadow-lg">
+                    {countryResults.map((c) => (
+                      <li key={c.slug}>
+                        <button
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => selectCountry(c.name)}
+                          className="block w-full px-4 py-2 text-left text-sm text-[#101828] hover:bg-primary-light"
+                        >
+                          {c.name}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 {errors.country && <p className="mt-1 text-xs text-red-600">{errors.country}</p>}
               </div>
 

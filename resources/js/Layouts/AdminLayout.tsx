@@ -19,6 +19,8 @@ import {
   Image,
   Link2,
   Mail,
+  ClipboardList,
+  UserPlus,
 } from 'lucide-react'
 import type { SharedProps } from '@/Types'
 import { Head } from '@inertiajs/react'
@@ -39,7 +41,9 @@ const navItems: NavItem[] = [
   { label: 'Countries', href: '/admin/countries', icon: Globe, activePattern: 'countries', permission: 'view countries' },
   { label: 'Pages', href: '/admin/pages', icon: FileText, activePattern: 'pages' },
   { label: 'Services', href: '/admin/services', icon: Package, activePattern: 'services' },
+  { label: 'Service Requests', href: '/admin/service-requests', icon: ClipboardList, activePattern: 'service-requests', permission: 'view service requests' },
   { label: 'Courses', href: '/admin/courses', icon: GraduationCap, activePattern: 'courses' },
+  { label: 'Course Registrations', href: '/admin/course-registrations', icon: UserPlus, activePattern: 'course-registrations', permission: 'view courses' },
   { label: 'Media', href: '/admin/media', icon: Image, activePattern: 'media', permission: 'view media' },
   { label: 'Redirects', href: '/admin/redirects', icon: Link2, activePattern: 'redirects', permission: 'view redirects' },
   { label: 'Messages', href: '/admin/messages', icon: MessageSquare, activePattern: 'messages' },

@@ -10,6 +10,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ServiceRequestController;
 use App\Http\Controllers\CourseRegistrationController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AuthController;
 
 // Legacy redirects
@@ -36,6 +37,8 @@ Route::post('/courses/{slug}/register', [CourseRegistrationController::class, 's
 
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submitContact'])->name('contact.submit');
+
+Route::get('/countries/search', [CountryController::class, 'search'])->name('countries.search');
 
 Route::post('/subscribe', [ContactController::class, 'subscribe'])->name('subscribe');
 
@@ -100,6 +103,28 @@ Route::prefix('admin')->middleware(['auth', 'role_or_permission:access admin'])-
     Route::get('/messages', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('messages.index');
     Route::get('/messages/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('messages.show');
     Route::delete('/messages/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('messages.destroy');
+
+    // Service Requests
+    Route::get('/service-requests', [App\Http\Controllers\Admin\ServiceRequestController::class, 'index'])
+        ->middleware('permission:view service requests')
+        ->name('service-requests.index');
+    Route::put('/service-requests/{serviceRequest}', [App\Http\Controllers\Admin\ServiceRequestController::class, 'update'])
+        ->middleware('permission:manage service requests')
+        ->name('service-requests.update');
+    Route::delete('/service-requests/{serviceRequest}', [App\Http\Controllers\Admin\ServiceRequestController::class, 'destroy'])
+        ->middleware('permission:manage service requests')
+        ->name('service-requests.destroy');
+
+    // Course Registrations
+    Route::get('/course-registrations', [App\Http\Controllers\Admin\CourseRegistrationController::class, 'index'])
+        ->middleware('permission:view courses')
+        ->name('course-registrations.index');
+    Route::put('/course-registrations/{courseRegistration}', [App\Http\Controllers\Admin\CourseRegistrationController::class, 'update'])
+        ->middleware('permission:edit courses')
+        ->name('course-registrations.update');
+    Route::delete('/course-registrations/{courseRegistration}', [App\Http\Controllers\Admin\CourseRegistrationController::class, 'destroy'])
+        ->middleware('permission:edit courses')
+        ->name('course-registrations.destroy');
 
     // Services
     Route::get('/services', [\App\Http\Controllers\Admin\ServiceController::class, 'index'])->name('services.index');
