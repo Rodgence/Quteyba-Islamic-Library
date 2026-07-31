@@ -66,7 +66,10 @@ function parseFaq(value: string | null): { question: string; answer: string }[] 
 }
 
 export default function ServiceDetailPage({ service }: Props) {
-  const { locale } = usePage<SharedProps>().props
+  const { locale, siteSettings } = usePage<SharedProps>().props
+  const whatsappChatUrl = service.whatsapp_url || (siteSettings.whatsapp_number
+    ? `https://wa.me/${siteSettings.whatsapp_number}`
+    : 'https://wa.me/255714241700')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
@@ -272,7 +275,7 @@ export default function ServiceDetailPage({ service }: Props) {
               </div>
 
               <Link
-                href={service.whatsapp_url || 'https://wa.me/255714241700'}
+                href={whatsappChatUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"

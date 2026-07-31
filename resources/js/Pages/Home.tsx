@@ -1,4 +1,5 @@
-import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
+import type { SharedProps } from '@/Types'
 import {
   ArrowRight,
   BookOpen,
@@ -51,6 +52,10 @@ const steps = [
 ]
 
 export default function HomePage({ featured, latest, services, stats, seo }: HomeProps) {
+  const { siteSettings } = usePage<SharedProps>().props
+  const whatsappChatUrl = siteSettings.whatsapp_number
+    ? `https://wa.me/${siteSettings.whatsapp_number}`
+    : 'https://wa.me/255714241700'
   const statIcons = [BookOpen, Globe, GraduationCap]
 
   return (
@@ -90,28 +95,6 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
                 Contact Us
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-border bg-white py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4">
-          <h2 className="mb-8 text-center text-2xl font-bold text-[#073B33]">
-            Browse Opportunities by Type
-          </h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {categoryLinks.map(({ name, icon: Icon, href }) => (
-              <Link
-                key={name}
-                href={href}
-                className="group flex min-h-28 flex-col items-center justify-center rounded-2xl border border-border bg-white px-3 py-6 text-center transition-all hover:-translate-y-1 hover:border-[#E91E63]/50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E91E63] focus-visible:ring-offset-2"
-              >
-                <Icon className="mb-4 h-7 w-7 text-[#E91E63] transition-transform group-hover:scale-110" />
-                <span className="text-sm font-semibold text-[#101828] group-hover:text-[#073B33]">
-                  {name}
-                </span>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
@@ -181,6 +164,28 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
         </section>
       )}
 
+      <section className="border-b border-border bg-white py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <h2 className="mb-8 text-center text-2xl font-bold text-[#073B33]">
+            Browse Opportunities by Type
+          </h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {categoryLinks.map(({ name, icon: Icon, href }) => (
+              <Link
+                key={name}
+                href={href}
+                className="group flex min-h-28 flex-col items-center justify-center rounded-2xl border border-border bg-white px-3 py-6 text-center transition-all hover:-translate-y-1 hover:border-[#E91E63]/50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E91E63] focus-visible:ring-offset-2"
+              >
+                <Icon className="mb-4 h-7 w-7 text-[#E91E63] transition-transform group-hover:scale-110" />
+                <span className="text-sm font-semibold text-[#101828] group-hover:text-[#073B33]">
+                  {name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {services && services.length > 0 && (
         <section className="bg-primary-light py-16">
           <div className="mx-auto max-w-7xl px-4">
@@ -229,24 +234,6 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
           </div>
         </section>
       )}
-
-      <section className="bg-white py-16">
-        <div className="mx-auto max-w-7xl px-4">
-          <h2 className="mb-8 text-center text-2xl font-bold text-[#073B33]">Browse Opportunities by Type</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {categoryLinks.map((cat) => (
-              <Link
-                key={cat.name}
-                href={cat.href}
-                className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-white p-6 text-center transition-colors hover:border-[#073B33]/30 hover:bg-primary-light"
-              >
-                <cat.icon className="h-8 w-8 text-[#E91E63]" />
-                <span className="text-sm font-semibold text-[#101828]">{cat.name}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {featured && featured.length > 0 && (
         <section className="bg-primary-light py-16">
@@ -310,7 +297,7 @@ export default function HomePage({ featured, latest, services, stats, seo }: Hom
           <h2 className="mb-4 text-2xl font-bold">Need some help?</h2>
           <p className="mb-6 text-sm opacity-80">Contact us via WhatsApp for a free consultation</p>
           <Link
-            href="https://wa.me/255714241700"
+            href={whatsappChatUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"

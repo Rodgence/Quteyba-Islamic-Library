@@ -1,3 +1,5 @@
+import { router } from '@inertiajs/react'
+import { Trash2 } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
 
 interface Subscriber {
@@ -10,6 +12,11 @@ interface Subscriber {
 
 interface Props {
   subscribers: { data: Subscriber[] }
+}
+
+const handleDelete = (id: number) => {
+  if (!confirm('Are you sure you want to delete this subscriber?')) return
+  router.delete(`/admin/subscribers/${id}`)
 }
 
 export default function SubscribersIndex({ subscribers }: Props) {
@@ -29,6 +36,7 @@ export default function SubscribersIndex({ subscribers }: Props) {
                 <th className="px-4 py-3 font-medium text-gray-600">Email</th>
                 <th className="px-4 py-3 font-medium text-gray-600">Status</th>
                 <th className="px-4 py-3 font-medium text-gray-600">Subscribed On</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -51,11 +59,20 @@ export default function SubscribersIndex({ subscribers }: Props) {
                       ? new Date(subscriber.subscribed_at).toLocaleDateString('en-US')
                       : '-'}
                   </td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => handleDelete(subscriber.id)}
+                      className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                      title="Delete"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </td>
                 </tr>
               ))}
               {(!Array.isArray(items) || items.length === 0) && (
                 <tr>
-                  <td className="px-4 py-8 text-center text-gray-400" colSpan={3}>
+                  <td className="px-4 py-8 text-center text-gray-400" colSpan={4}>
                     No subscribers yet
                   </td>
                 </tr>

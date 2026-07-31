@@ -135,11 +135,45 @@ Route::prefix('admin')->middleware(['auth', 'role_or_permission:access admin'])-
     Route::get('/settings', fn () => Inertia::render('Admin/Settings/Index', [
         'settings' => \App\Models\SiteSetting::get()->groupBy('group'),
     ]))->name('settings.index');
+    Route::put('/settings', [App\Http\Controllers\Admin\SiteSettingController::class, 'update'])
+        ->middleware('permission:manage settings')
+        ->name('settings.update');
 
     // Users
     Route::get('/users', fn () => Inertia::render('Admin/Users/Index', [
         'users' => \App\Models\User::with('roles')->paginate(20),
+        'roles' => \Spatie\Permission\Models\Role::all(['id', 'name']),
     ]))->name('users.index');
+    Route::post('/users', [App\Http\Controllers\Admin\UserController::class, 'store'])
+        ->middleware('permission:create users')
+        ->name('users.store');
+    Route::put('/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'update'])
+        ->middleware('permission:edit users')
+        ->name('users.update');
+    Route::delete('/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])
+        ->middleware('permission:delete users')
+        ->name('users.destroy');
+
+    // Media
+    Route::delete('/media/{medium}', [App\Http\Controllers\Admin\MediaController::class, 'destroy'])
+        ->middleware('permission:delete media')
+        ->name('media.destroy');
+
+    // Redirects
+    Route::post('/redirects', [App\Http\Controllers\Admin\RedirectController::class, 'store'])
+        ->middleware('permission:manage redirects')
+        ->name('redirects.store');
+    Route::put('/redirects/{redirect}', [App\Http\Controllers\Admin\RedirectController::class, 'update'])
+        ->middleware('permission:manage redirects')
+        ->name('redirects.update');
+    Route::delete('/redirects/{redirect}', [App\Http\Controllers\Admin\RedirectController::class, 'destroy'])
+        ->middleware('permission:manage redirects')
+        ->name('redirects.destroy');
+
+    // Subscribers
+    Route::delete('/subscribers/{subscriber}', [App\Http\Controllers\Admin\SubscriberController::class, 'destroy'])
+        ->middleware('permission:manage subscribers')
+        ->name('subscribers.destroy');
 });
 
 Route::get('/robots.txt', function () {

@@ -1,4 +1,5 @@
-import { FileText } from 'lucide-react'
+import { FileText, Trash2 } from 'lucide-react'
+import { router } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
 
 interface Medium {
@@ -23,6 +24,11 @@ const formatBytes = (bytes: number) => {
 
 const isImage = (mime: string) => mime.startsWith('image/')
 
+const handleDelete = (id: number) => {
+  if (!confirm('Are you sure you want to delete this file?')) return
+  router.delete(`/admin/media/${id}`)
+}
+
 export default function MediaIndex({ media }: Props) {
   const items = media.data || media
 
@@ -35,7 +41,14 @@ export default function MediaIndex({ media }: Props) {
 
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {Array.isArray(items) && items.map((item) => (
-            <div key={item.id} className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-sm">
+            <div key={item.id} className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-sm">
+              <button
+                onClick={() => handleDelete(item.id)}
+                title="Delete"
+                className="absolute right-2 top-2 z-10 rounded-lg bg-white/90 p-1.5 text-gray-400 opacity-0 shadow transition-opacity hover:text-red-500 group-hover:opacity-100"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
               <div className="aspect-square bg-gray-100 flex items-center justify-center">
                 {isImage(item.mime_type) ? (
                   <img

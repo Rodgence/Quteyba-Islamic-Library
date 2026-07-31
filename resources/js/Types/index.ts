@@ -160,4 +160,5 @@ export interface SharedProps {
     error: string | null
   }
   ziggy: Record<string, unknown>
+  siteSettings: Record<string, string>
 }

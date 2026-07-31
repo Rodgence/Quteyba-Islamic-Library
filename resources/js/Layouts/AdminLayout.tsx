@@ -13,6 +13,12 @@ import {
   GraduationCap,
   Package,
   Users,
+  Tags,
+  Globe,
+  Layers,
+  Image,
+  Link2,
+  Mail,
 } from 'lucide-react'
 import type { SharedProps } from '@/Types'
 import { Head } from '@inertiajs/react'
@@ -22,15 +28,23 @@ interface NavItem {
   href: string
   icon: React.ComponentType<{ className?: string }>
   activePattern?: string
+  permission?: string
 }
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Opportunities', href: '/admin/opportunities', icon: Briefcase, activePattern: 'opportunities' },
+  { label: 'Types', href: '/admin/types', icon: Layers, activePattern: 'types', permission: 'view opportunities' },
+  { label: 'Categories', href: '/admin/categories', icon: Tags, activePattern: 'categories', permission: 'view categories' },
+  { label: 'Countries', href: '/admin/countries', icon: Globe, activePattern: 'countries', permission: 'view countries' },
   { label: 'Pages', href: '/admin/pages', icon: FileText, activePattern: 'pages' },
   { label: 'Services', href: '/admin/services', icon: Package, activePattern: 'services' },
   { label: 'Courses', href: '/admin/courses', icon: GraduationCap, activePattern: 'courses' },
+  { label: 'Media', href: '/admin/media', icon: Image, activePattern: 'media', permission: 'view media' },
+  { label: 'Redirects', href: '/admin/redirects', icon: Link2, activePattern: 'redirects', permission: 'view redirects' },
   { label: 'Messages', href: '/admin/messages', icon: MessageSquare, activePattern: 'messages' },
+  { label: 'Subscribers', href: '/admin/subscribers', icon: Mail, activePattern: 'subscribers', permission: 'view subscribers' },
+  { label: 'Users', href: '/admin/users', icon: Users, activePattern: 'users', permission: 'view users' },
   { label: 'Settings', href: '/admin/settings', icon: Settings, activePattern: 'settings' },
 ]
 
@@ -38,6 +52,10 @@ export default function AdminLayout({ children, title }: PropsWithChildren<{ tit
   const { auth } = usePage<SharedProps>().props
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
+
+  const visibleNavItems = navItems.filter(
+    (item) => !item.permission || auth.user?.permissions.includes(item.permission)
+  )
 
   const isActive = (item: NavItem) => {
     if (item.href === '/admin') return currentPath === '/admin'
@@ -73,7 +91,7 @@ export default function AdminLayout({ children, title }: PropsWithChildren<{ tit
 
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="space-y-1">
-            {navItems.map((item) => (
+            {visibleNavItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}

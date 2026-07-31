@@ -72,7 +72,14 @@ const services = [
 ]
 
 export default function Contact({ countries = [], seo }: ContactProps) {
-  const { flash } = usePage<SharedProps>().props
+  const { flash, siteSettings } = usePage<SharedProps>().props
+  const contactEmail = siteSettings.contact_email || 'info@quteyba.com'
+  const contactPhone1 = siteSettings.contact_phone_1 || '+255714241700'
+  const contactPhone2 = siteSettings.contact_phone_2 || '+255621835048'
+  const contactAddress = siteSettings.contact_address || 'Kingdom of Saudi Arabia'
+  const whatsappChatUrl = siteSettings.whatsapp_number
+    ? `https://wa.me/${siteSettings.whatsapp_number}`
+    : socialLinks.whatsappChat
 
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
@@ -279,7 +286,7 @@ export default function Contact({ countries = [], seo }: ContactProps) {
                 </button>
 
                 <a
-                  href={socialLinks.whatsappChat}
+                  href={whatsappChatUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"
@@ -302,8 +309,8 @@ export default function Contact({ countries = [], seo }: ContactProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#101828]">Email</p>
-                    <a href="mailto:info@quteyba.com" className="text-sm text-[#073B33] hover:underline" dir="ltr">
-                      info@quteyba.com
+                    <a href={`mailto:${contactEmail}`} className="text-sm text-[#073B33] hover:underline" dir="ltr">
+                      {contactEmail}
                     </a>
                   </div>
                 </div>
@@ -314,11 +321,11 @@ export default function Contact({ countries = [], seo }: ContactProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#101828]">Phone Number</p>
-                    <a href="tel:+255714241700" className="block text-sm text-[#073B33] hover:underline" dir="ltr">
-                      +255 714 241 700
+                    <a href={`tel:${contactPhone1}`} className="block text-sm text-[#073B33] hover:underline" dir="ltr">
+                      {contactPhone1}
                     </a>
-                    <a href="tel:+255621835048" className="block text-sm text-[#073B33] hover:underline" dir="ltr">
-                      +255 621 835 048
+                    <a href={`tel:${contactPhone2}`} className="block text-sm text-[#073B33] hover:underline" dir="ltr">
+                      {contactPhone2}
                     </a>
                   </div>
                 </div>
@@ -329,7 +336,7 @@ export default function Contact({ countries = [], seo }: ContactProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#101828]">Address</p>
-                    <p className="text-sm text-[#101828]/60">Kingdom of Saudi Arabia</p>
+                    <p className="text-sm text-[#101828]/60">{contactAddress}</p>
                   </div>
                 </div>
               </div>

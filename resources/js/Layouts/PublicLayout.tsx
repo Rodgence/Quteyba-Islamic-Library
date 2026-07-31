@@ -6,9 +6,12 @@ import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
 
 export default function PublicLayout({ children }: PropsWithChildren) {
-  const { locale } = usePage<SharedProps>().props
+  const { locale, siteSettings } = usePage<SharedProps>().props
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [whatsappMenuOpen, setWhatsappMenuOpen] = useState(false)
+  const whatsappChatUrl = siteSettings.whatsapp_number
+    ? `https://wa.me/${siteSettings.whatsapp_number}`
+    : socialLinks.whatsappChat
 
   const navItems = [
     { label: 'Home', href: '/' },
@@ -89,7 +92,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             className="w-56 overflow-hidden rounded-2xl border border-gray-100 bg-white p-2 shadow-xl"
           >
             <a
-              href={socialLinks.whatsappChat}
+              href={whatsappChatUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setWhatsappMenuOpen(false)}
