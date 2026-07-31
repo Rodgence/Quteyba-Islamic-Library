@@ -88,16 +88,18 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             id="whatsapp-actions"
             className="w-56 overflow-hidden rounded-2xl border border-gray-100 bg-white p-2 shadow-xl"
           >
-            <Link
-              href={socialLinks.support}
+            <a
+              href={socialLinks.whatsappChat}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setWhatsappMenuOpen(false)}
               className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-[#101828] transition-colors hover:bg-gray-50"
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#25D366]/10 text-[#128C3E]">
                 <Headphones className="h-5 w-5" />
               </span>
-              Contact support
-            </Link>
+              Chat on WhatsApp
+            </a>
             <a
               href={socialLinks.whatsapp}
               target="_blank"

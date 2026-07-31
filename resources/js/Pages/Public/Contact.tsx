@@ -275,13 +275,13 @@ export default function Contact({ seo }: ContactProps) {
                 </button>
 
                 <a
-                  href={socialLinks.whatsapp}
+                  href={socialLinks.whatsappChat}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  WhatsApp Channel
+                  Chat on WhatsApp
                 </a>
               </div>
             </form>
@@ -310,8 +310,8 @@ export default function Contact({ seo }: ContactProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#101828]">Phone Number</p>
-                    <a href="tel:+1234567890" className="text-sm text-[#073B33] hover:underline" dir="ltr">
-                      +123 456 7890
+                    <a href="tel:+255621835048" className="text-sm text-[#073B33] hover:underline" dir="ltr">
+                      +255 621 835 048
                     </a>
                   </div>
                 </div>
