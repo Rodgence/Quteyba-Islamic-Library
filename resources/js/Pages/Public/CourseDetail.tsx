@@ -1,4 +1,5 @@
 import { Link, usePage, router } from '@inertiajs/react'
+import { useState } from 'react'
 import { ArrowLeft, BookOpen, Clock, User, Globe, GraduationCap, DollarSign } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps } from '@/Types'
@@ -47,9 +48,17 @@ const infoItems = (course: CourseItem) => [
 
 export default function CourseDetailPage({ course, related }: Props) {
   const { locale } = usePage<SharedProps>().props
+  const [form, setForm] = useState({ name: '', email: '', phone: '' })
+  const [submitted, setSubmitted] = useState(false)
 
-  function handleRegister() {
-    router.post(`/courses/${course.slug}/register`)
+  function handleRegister(e: React.FormEvent) {
+    e.preventDefault()
+    router.post(`/courses/${course.slug}/register`, form, {
+      onSuccess: () => {
+        setSubmitted(true)
+        setForm({ name: '', email: '', phone: '' })
+      },
+    })
   }
 
   return (
@@ -92,19 +101,61 @@ export default function CourseDetailPage({ course, related }: Props) {
               ))}
             </div>
 
-            <div>
-              <button
-                disabled={course.registration_status !== 'open'}
-                onClick={handleRegister}
-                className={`w-full rounded-xl px-4 py-3 text-sm font-semibold text-white transition-colors sm:w-auto sm:px-8 ${
-                  course.registration_status === 'open'
-                    ? 'bg-[#E91E63] hover:bg-[#c2185b] cursor-pointer'
-                    : 'cursor-not-allowed bg-gray-400'
-                }`}
-              >
-                {statusLabels[course.registration_status]}
-              </button>
-            </div>
+            {course.registration_status === 'open' ? (
+              <div className="rounded-2xl border border-border bg-white p-6">
+                <h2 className="mb-4 text-lg font-semibold text-[#101828]">Register for This Course</h2>
+                {submitted ? (
+                  <p className="text-sm font-medium text-[#073B33]">Your registration has been submitted successfully. We'll be in touch soon.</p>
+                ) : (
+                  <form onSubmit={handleRegister} className="space-y-4">
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Name"
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        required
+                        className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        required
+                        className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="tel"
+                        placeholder="Phone Number"
+                        value={form.phone}
+                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                        className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full rounded-xl bg-[#E91E63] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#c2185b] sm:w-auto sm:px-8"
+                    >
+                      Registration Open
+                    </button>
+                  </form>
+                )}
+              </div>
+            ) : (
+              <div>
+                <button
+                  disabled
+                  className="w-full cursor-not-allowed rounded-xl bg-gray-400 px-4 py-3 text-sm font-semibold text-white sm:w-auto sm:px-8"
+                >
+                  {statusLabels[course.registration_status]}
+                </button>
+              </div>
+            )}
           </div>
 
           <aside className="hidden lg:block">

@@ -9,6 +9,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ServiceRequestController;
+use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\AuthController;
 
 // Legacy redirects
@@ -31,6 +32,7 @@ Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('servic
 
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
+Route::post('/courses/{slug}/register', [CourseRegistrationController::class, 'submit'])->name('courses.register');
 
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submitContact'])->name('contact.submit');
