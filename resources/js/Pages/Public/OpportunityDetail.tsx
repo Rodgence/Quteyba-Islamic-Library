@@ -203,9 +203,10 @@ export default function OpportunityDetail({
               )}
             </div>
 
-            <div className="whitespace-pre-line text-base leading-8 text-gray-800 sm:text-lg">
-              {content}
-            </div>
+            <div
+              className="prose prose-lg max-w-none text-base leading-8 text-gray-800 sm:text-lg [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
 
             <div className="mt-10 space-y-10 border-t border-gray-100 pt-8">
               {benefits && (

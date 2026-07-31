@@ -42,7 +42,7 @@ class CourseController extends Controller
             'id' => $course->id,
             'name' => $course->name,
             'slug' => $course->slug,
-            'description' => $this->plainText($course->description),
+            'description' => $this->markdownToHtml($course->description),
             'language' => $course->language,
             'level' => $course->level,
             'duration' => $course->duration,

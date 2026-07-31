@@ -13,7 +13,7 @@ interface StaticPageProps {
 
 export default function StaticPage({ page, seo }: StaticPageProps) {
   const title = getLocalized(page.title)
-  const content = getLocalized(page.content)
+  const content = page.content
 
   return (
     <PublicLayout>
@@ -38,9 +38,10 @@ export default function StaticPage({ page, seo }: StaticPageProps) {
           )}
 
           {content ? (
-            <div className="whitespace-pre-line text-base leading-8 text-[#101828]/80 sm:text-lg">
-              {content}
-            </div>
+            <div
+              className="prose prose-lg max-w-none text-base leading-8 text-[#101828]/80 sm:text-lg [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
           ) : (
             <div className="rounded-2xl border border-border bg-white p-12 text-center">
               <FileText className="mx-auto mb-3 h-10 w-10 text-[#073B33]/20" />

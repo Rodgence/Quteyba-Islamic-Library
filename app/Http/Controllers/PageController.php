@@ -11,7 +11,7 @@ class PageController extends Controller
     {
         $page = Page::published()->with('featuredImage')->where('slug', $slug)->firstOrFail();
         $title = $this->localizedText($page->title);
-        $content = $this->plainText($page->content);
+        $content = $this->markdownToHtml($page->content);
         $seoDescription = $this->localizedText($page->seo_description);
 
         return Inertia::render('Public/StaticPage', [

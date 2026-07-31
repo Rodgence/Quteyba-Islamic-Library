@@ -9,7 +9,7 @@ interface ServiceItem {
   title: unknown
   slug: string
   short_description: unknown
-  content: unknown
+  content: string
   deliverables: string | null
   required_documents: string | null
   process_steps: string | null
@@ -119,9 +119,10 @@ export default function ServiceDetailPage({ service }: Props) {
               {getLocalized(service.short_description)}
             </p>
 
-            <div className="whitespace-pre-line text-sm leading-7 text-[#101828]/80">
-              {getLocalized(service.content)}
-            </div>
+            <div
+              className="prose max-w-none text-sm leading-7 text-[#101828]/80 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
+              dangerouslySetInnerHTML={{ __html: service.content }}
+            />
 
             {deliverables.length > 0 && (
               <div>
