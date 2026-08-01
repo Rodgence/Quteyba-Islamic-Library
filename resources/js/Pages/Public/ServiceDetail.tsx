@@ -1,8 +1,9 @@
-import { Link, usePage, router } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import { useState } from 'react'
-import { ArrowLeft, Check, FileText, MessageCircle } from 'lucide-react'
+import { ArrowLeft, Check, FileText, MessageCircle, Send } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps } from '@/Types'
+import { socialLinks } from '@/lib/socialLinks'
 import { getLocalized } from '@/lib/localization'
 
 interface ServiceItem {
@@ -71,23 +72,16 @@ export default function ServiceDetailPage({ service }: Props) {
     ? `https://wa.me/${siteSettings.whatsapp_number}`
     : 'https://wa.me/255714241700')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
-  const [submitted, setSubmitted] = useState(false)
 
   const deliverables = parseJsonArray(service.deliverables)
   const requiredDocs = parseJsonArray(service.required_documents)
   const processSteps = parseJsonArray(service.process_steps)
   const faqItems = parseFaq(service.faq)
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    router.post('/service-request', form, {
-      onSuccess: () => {
-        setSubmitted(true)
-        setForm({ name: '', email: '', phone: '', message: '' })
-      },
-    })
-  }
+  const serviceTitle = getLocalized(service.title)
+  const whatsappRequestNumber = siteSettings.whatsapp_number || socialLinks.whatsappNumber
+  const whatsappRequestMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to request the *${serviceTitle}* service through your library.\n\n💵 How much is the fee for this service?\n\nThank you for your time and assistance. I look forward to your reply.`
+  const whatsappRequestUrl = `https://wa.me/${whatsappRequestNumber}?text=${encodeURIComponent(whatsappRequestMessage)}`
 
   return (
     <PublicLayout>
@@ -194,56 +188,15 @@ export default function ServiceDetailPage({ service }: Props) {
 
             <div className="rounded-2xl border border-border bg-white p-6">
               <h2 className="mb-4 text-lg font-semibold text-[#101828]">Request This Service</h2>
-              {submitted ? (
-                <p className="text-sm font-medium text-[#073B33]">Your request has been submitted successfully. We'll be in touch soon.</p>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Name"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      required
-                      className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="email"
-                      placeholder="Email"
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      required
-                      className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="tel"
-                      placeholder="Phone Number"
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <textarea
-                      placeholder="Message"
-                      rows={3}
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none resize-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#052e28]"
-                  >
-                    Send Request
-                  </button>
-                </form>
-              )}
+              <a
+                href={whatsappRequestUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#052e28]"
+              >
+                <Send className="h-4 w-4" />
+                Request via WhatsApp
+              </a>
             </div>
           </div>
 

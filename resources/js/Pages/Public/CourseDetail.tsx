@@ -1,8 +1,8 @@
-import { Link, usePage, router } from '@inertiajs/react'
-import { useState } from 'react'
-import { ArrowLeft, BookOpen, Clock, User, Globe, GraduationCap, DollarSign } from 'lucide-react'
+import { Link, usePage } from '@inertiajs/react'
+import { ArrowLeft, BookOpen, Clock, User, Globe, GraduationCap, DollarSign, Send } from 'lucide-react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps } from '@/Types'
+import { socialLinks } from '@/lib/socialLinks'
 import { getLocalized } from '@/lib/localization'
 
 interface CourseItem {
@@ -47,19 +47,11 @@ const infoItems = (course: CourseItem) => [
 ]
 
 export default function CourseDetailPage({ course, related }: Props) {
-  const { locale } = usePage<SharedProps>().props
-  const [form, setForm] = useState({ name: '', email: '', phone: '' })
-  const [submitted, setSubmitted] = useState(false)
-
-  function handleRegister(e: React.FormEvent) {
-    e.preventDefault()
-    router.post(`/courses/${course.slug}/register`, form, {
-      onSuccess: () => {
-        setSubmitted(true)
-        setForm({ name: '', email: '', phone: '' })
-      },
-    })
-  }
+  const { locale, siteSettings } = usePage<SharedProps>().props
+  const courseName = getLocalized(course.name)
+  const whatsappRegisterNumber = siteSettings.whatsapp_number || socialLinks.whatsappNumber
+  const whatsappRegisterMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to register for the *${courseName}* course through your library.\n\n💵 How much is the registration fee for this course?\n\nThank you for your time and assistance. I look forward to your reply.`
+  const whatsappRegisterUrl = `https://wa.me/${whatsappRegisterNumber}?text=${encodeURIComponent(whatsappRegisterMessage)}`
 
   return (
     <PublicLayout>
@@ -105,47 +97,15 @@ export default function CourseDetailPage({ course, related }: Props) {
             {course.registration_status === 'open' ? (
               <div className="rounded-2xl border border-border bg-white p-6">
                 <h2 className="mb-4 text-lg font-semibold text-[#101828]">Register for This Course</h2>
-                {submitted ? (
-                  <p className="text-sm font-medium text-[#073B33]">Your registration has been submitted successfully. We'll be in touch soon.</p>
-                ) : (
-                  <form onSubmit={handleRegister} className="space-y-4">
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Name"
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        required
-                        className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="email"
-                        placeholder="Email"
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        required
-                        className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="tel"
-                        placeholder="Phone Number"
-                        value={form.phone}
-                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        className="w-full rounded-xl border border-border px-4 py-2.5 text-sm focus:border-[#073B33] focus:outline-none"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full rounded-xl bg-[#E91E63] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#c2185b] sm:w-auto sm:px-8"
-                    >
-                      Registration Open
-                    </button>
-                  </form>
-                )}
+                <a
+                  href={whatsappRegisterUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E91E63] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#c2185b] sm:w-auto sm:px-8"
+                >
+                  <Send className="h-4 w-4" />
+                  Register via WhatsApp
+                </a>
               </div>
             ) : (
               <div>

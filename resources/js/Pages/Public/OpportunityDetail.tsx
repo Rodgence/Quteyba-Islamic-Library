@@ -1,5 +1,4 @@
-import { Link, Head, useForm, usePage } from '@inertiajs/react'
-import { useState } from 'react'
+import { Link, Head, usePage } from '@inertiajs/react'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
@@ -98,7 +97,6 @@ export default function OpportunityDetail({
   const applicationUrl = (opp.application_url as string) || null
   const officialSourceUrl = (opp.official_source_url as string) || null
   const status = (opp.status as string) || 'draft'
-  const slug = (opp.slug as string) || ''
   const publishedAt = (opp.published_at as string) || null
 
   const featuredImage = opp.featured_image as MediaImage | null
@@ -110,6 +108,9 @@ export default function OpportunityDetail({
 
   const whatsappUrl = siteSettings.whatsapp_channel_url || socialLinks.whatsapp
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${title}\n${seo?.canonical_url || ''}`)}`
+  const whatsappApplyNumber = siteSettings.whatsapp_number || socialLinks.whatsappNumber
+  const whatsappApplyMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to apply for *${title}* through your library.\n\n💵 How much is the registration/application service fee for this opportunity?\n\nThank you for your time and assistance. I look forward to your reply.`
+  const whatsappApplyUrl = `https://wa.me/${whatsappApplyNumber}?text=${encodeURIComponent(whatsappApplyMessage)}`
 
   const handleShare = async () => {
     const url = window.location.href
@@ -122,26 +123,6 @@ export default function OpportunityDetail({
     } else {
       await navigator.clipboard.writeText(url)
     }
-  }
-
-  const [showApplyForm, setShowApplyForm] = useState(false)
-  const [applySubmitted, setApplySubmitted] = useState(false)
-  const { data: applyData, setData: setApplyData, post: postApply, processing: applyProcessing, errors: applyErrors, reset: resetApply } = useForm({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  })
-
-  const handleApplySubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    postApply(`/opportunities/${slug}/apply`, {
-      onSuccess: () => {
-        resetApply()
-        setApplySubmitted(true)
-        setShowApplyForm(false)
-      },
-    })
   }
 
   return (
@@ -386,84 +367,15 @@ export default function OpportunityDetail({
                 )}
 
                 {!deadlineClosed && (
-                  <div className="rounded-xl border border-[#073B33]/15 bg-[#073B33]/5 p-4">
-                    {applySubmitted ? (
-                      <p className="text-sm font-medium text-[#073B33]">
-                        Your application has been submitted successfully. Our team will be in touch soon.
-                      </p>
-                    ) : showApplyForm ? (
-                      <form onSubmit={handleApplySubmit} className="space-y-3">
-                        <p className="text-sm font-semibold text-[#073B33]">Apply Now Through Our Team</p>
-                        <div>
-                          <input
-                            type="text"
-                            placeholder="Full Name"
-                            value={applyData.name}
-                            onChange={(e) => setApplyData('name', e.target.value)}
-                            required
-                            className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-[#073B33] focus:outline-none"
-                          />
-                          {applyErrors.name && <p className="mt-1 text-xs text-red-600">{applyErrors.name}</p>}
-                        </div>
-                        <div>
-                          <input
-                            type="email"
-                            placeholder="Email"
-                            value={applyData.email}
-                            onChange={(e) => setApplyData('email', e.target.value)}
-                            required
-                            dir="ltr"
-                            className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-[#073B33] focus:outline-none"
-                          />
-                          {applyErrors.email && <p className="mt-1 text-xs text-red-600">{applyErrors.email}</p>}
-                        </div>
-                        <div>
-                          <input
-                            type="tel"
-                            placeholder="Phone Number"
-                            value={applyData.phone}
-                            onChange={(e) => setApplyData('phone', e.target.value)}
-                            dir="ltr"
-                            className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-[#073B33] focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <textarea
-                            placeholder="Anything you'd like our team to know? (optional)"
-                            rows={3}
-                            value={applyData.message}
-                            onChange={(e) => setApplyData('message', e.target.value)}
-                            className="w-full resize-none rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-[#073B33] focus:outline-none"
-                          />
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            type="submit"
-                            disabled={applyProcessing}
-                            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#052b26] disabled:opacity-60"
-                          >
-                            <Send className="h-4 w-4" />
-                            {applyProcessing ? 'Submitting...' : 'Submit Application'}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setShowApplyForm(false)}
-                            className="rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-white"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                    ) : (
-                      <button
-                        onClick={() => setShowApplyForm(true)}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#073B33] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[#052b26]"
-                      >
-                        <Send className="h-4 w-4" />
-                        Apply Now Through Our Team
-                      </button>
-                    )}
-                  </div>
+                  <a
+                    href={whatsappApplyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#073B33] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[#052b26]"
+                  >
+                    <Send className="h-4 w-4" />
+                    Apply Now Through Our Team
+                  </a>
                 )}
 
                 {officialSourceUrl && (
