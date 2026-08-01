@@ -1,6 +1,7 @@
-import { Link, Head, useForm } from '@inertiajs/react'
+import { Link, Head, useForm, usePage } from '@inertiajs/react'
 import { useState } from 'react'
 import PublicLayout from '@/Layouts/PublicLayout'
+import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
 import {
   ArrowLeft,
@@ -73,6 +74,7 @@ export default function OpportunityDetail({
   seo?: SEOProps
 }) {
   const opp = opportunity as Record<string, unknown>
+  const { siteSettings } = usePage<SharedProps>().props
 
   const title = getLocalized(opp.title)
   const content = getLocalized(opp.content)
@@ -106,7 +108,7 @@ export default function OpportunityDetail({
   const seoTitle = seo?.title || title
   const seoDescription = seo?.description || excerpt
 
-  const whatsappUrl = socialLinks.whatsapp
+  const whatsappUrl = siteSettings.whatsapp_channel_url || socialLinks.whatsapp
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${title}\n${seo?.canonical_url || ''}`)}`
 
   const handleShare = async () => {

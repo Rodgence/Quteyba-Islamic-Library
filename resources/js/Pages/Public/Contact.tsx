@@ -83,6 +83,12 @@ export default function Contact({ seo }: ContactProps) {
   const whatsappChatUrl = siteSettings.whatsapp_number
     ? `https://wa.me/${siteSettings.whatsapp_number}`
     : socialLinks.whatsappChat
+  const whatsappChannelUrl = siteSettings.whatsapp_channel_url || socialLinks.whatsapp
+  const facebookUrl = siteSettings.facebook_url || socialLinks.facebook
+  const instagramUrl = siteSettings.instagram_url || socialLinks.instagram
+  const telegramUrl = siteSettings.telegram_url || socialLinks.telegram
+  const youtubeUrl = siteSettings.youtube_url || socialLinks.youtube
+  const xUrl = siteSettings.x_url || socialLinks.x
 
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
@@ -395,7 +401,7 @@ export default function Contact({ seo }: ContactProps) {
                 <h4 className="mb-3 text-sm font-semibold text-[#101828]">Follow Us</h4>
                 <div className="flex items-center gap-3">
                   <a
-                    href={socialLinks.x}
+                    href={xUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#073B33] hover:text-[#073B33]"
@@ -404,7 +410,7 @@ export default function Contact({ seo }: ContactProps) {
                     <FaXTwitter className="h-5 w-5" />
                   </a>
                   <a
-                    href={socialLinks.facebook}
+                    href={facebookUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#1877F2] hover:text-[#1877F2]"
@@ -413,7 +419,7 @@ export default function Contact({ seo }: ContactProps) {
                     <FaFacebookF className="h-4 w-4" />
                   </a>
                   <a
-                    href={socialLinks.instagram}
+                    href={instagramUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#E4405F] hover:text-[#E4405F]"
@@ -422,7 +428,7 @@ export default function Contact({ seo }: ContactProps) {
                     <FaInstagram className="h-5 w-5" />
                   </a>
                   <a
-                    href={socialLinks.telegram}
+                    href={telegramUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#26A5E4] hover:text-[#26A5E4]"
@@ -431,7 +437,7 @@ export default function Contact({ seo }: ContactProps) {
                     <FaTelegram className="h-5 w-5" />
                   </a>
                   <a
-                    href={socialLinks.youtube}
+                    href={youtubeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#FF0000] hover:text-[#FF0000]"
@@ -440,7 +446,7 @@ export default function Contact({ seo }: ContactProps) {
                     <FaYoutube className="h-5 w-5" />
                   </a>
                   <a
-                    href={socialLinks.whatsapp}
+                    href={whatsappChannelUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#25D366] hover:text-[#25D366]"

@@ -13,6 +13,12 @@ export default function PublicLayout({ children }: PropsWithChildren) {
   const whatsappChatUrl = siteSettings.whatsapp_number
     ? `https://wa.me/${siteSettings.whatsapp_number}`
     : socialLinks.whatsappChat
+  const whatsappChannelUrl = siteSettings.whatsapp_channel_url || socialLinks.whatsapp
+  const facebookUrl = siteSettings.facebook_url || socialLinks.facebook
+  const instagramUrl = siteSettings.instagram_url || socialLinks.instagram
+  const telegramUrl = siteSettings.telegram_url || socialLinks.telegram
+  const youtubeUrl = siteSettings.youtube_url || socialLinks.youtube
+  const xUrl = siteSettings.x_url || socialLinks.x
 
   const navItems = [
     { label: 'Home', href: '/' },
@@ -105,7 +111,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
               Chat on WhatsApp
             </a>
             <a
-              href={socialLinks.whatsapp}
+              href={whatsappChannelUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setWhatsappMenuOpen(false)}
@@ -166,22 +172,22 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             <div>
               <h4 className="mb-4 text-sm font-semibold">Contact Us</h4>
               <div className="flex flex-wrap gap-2">
-                <a href={socialLinks.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#25D366]">
+                <a href={whatsappChannelUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#25D366]">
                   <FaWhatsapp className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#26A5E4]">
+                <a href={telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#26A5E4]">
                   <FaTelegram className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#E4405F]">
+                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#E4405F]">
                   <FaInstagram className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#FF0000]">
+                <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#FF0000]">
                   <FaYoutube className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.x} target="_blank" rel="noopener noreferrer" aria-label="X" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
+                <a href={xUrl} target="_blank" rel="noopener noreferrer" aria-label="X" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
                   <FaXTwitter className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#1877F2]">
+                <a href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#1877F2]">
                   <FaFacebookF className="h-4 w-4" />
                 </a>
               </div>
