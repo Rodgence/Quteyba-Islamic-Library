@@ -21,6 +21,7 @@ import {
   Mail,
   ClipboardList,
   UserPlus,
+  FileCheck2,
 } from 'lucide-react'
 import type { SharedProps } from '@/Types'
 import { Head } from '@inertiajs/react'
@@ -36,6 +37,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Opportunities', href: '/admin/opportunities', icon: Briefcase, activePattern: 'opportunities' },
+  { label: 'Applications', href: '/admin/opportunity-applications', icon: FileCheck2, activePattern: 'opportunity-applications', permission: 'view opportunities' },
   { label: 'Types', href: '/admin/types', icon: Layers, activePattern: 'types', permission: 'view opportunities' },
   { label: 'Categories', href: '/admin/categories', icon: Tags, activePattern: 'categories', permission: 'view categories' },
   { label: 'Countries', href: '/admin/countries', icon: Globe, activePattern: 'countries', permission: 'view countries' },

@@ -11,6 +11,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ServiceRequestController;
 use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\AuthController;
 
 // Legacy redirects
@@ -27,6 +28,7 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
 Route::get('/opportunities/{slug}', [OpportunityController::class, 'show'])->name('opportunities.show');
+Route::post('/opportunities/{slug}/apply', [OpportunityApplicationController::class, 'submit'])->name('opportunities.apply');
 
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('services.show');
@@ -103,6 +105,17 @@ Route::prefix('admin')->middleware(['auth', 'role_or_permission:access admin'])-
     Route::get('/messages', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('messages.index');
     Route::get('/messages/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('messages.show');
     Route::delete('/messages/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('messages.destroy');
+
+    // Opportunity Applications
+    Route::get('/opportunity-applications', [App\Http\Controllers\Admin\OpportunityApplicationController::class, 'index'])
+        ->middleware('permission:view opportunities')
+        ->name('opportunity-applications.index');
+    Route::put('/opportunity-applications/{opportunityApplication}', [App\Http\Controllers\Admin\OpportunityApplicationController::class, 'update'])
+        ->middleware('permission:edit opportunities')
+        ->name('opportunity-applications.update');
+    Route::delete('/opportunity-applications/{opportunityApplication}', [App\Http\Controllers\Admin\OpportunityApplicationController::class, 'destroy'])
+        ->middleware('permission:edit opportunities')
+        ->name('opportunity-applications.destroy');
 
     // Service Requests
     Route::get('/service-requests', [App\Http\Controllers\Admin\ServiceRequestController::class, 'index'])
