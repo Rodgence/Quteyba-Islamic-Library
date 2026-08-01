@@ -81,7 +81,7 @@ export default function Contact({ seo }: ContactProps) {
   const contactEmail = siteSettings.contact_email || 'info@quteyba.com'
   const contactPhone1 = siteSettings.contact_phone_1 || '+255714241700'
   const contactPhone2 = siteSettings.contact_phone_2 || '+255621835048'
-  const contactAddress = siteSettings.contact_address || 'Kingdom of Saudi Arabia'
+  const contactAddress = siteSettings.contact_address || 'TANZANIA, Zanzibar'
   const whatsappChatUrl = siteSettings.whatsapp_number
     ? `https://wa.me/${siteSettings.whatsapp_number}`
     : socialLinks.whatsappChat

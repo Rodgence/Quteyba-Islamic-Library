@@ -15,7 +15,7 @@ class SiteSettingSeeder extends Seeder
             ['key' => 'contact_email', 'value' => 'info@quteybaislamiclibrary.com', 'type' => 'string', 'group' => 'contact', 'label' => 'Email'],
             ['key' => 'contact_phone_1', 'value' => '+255714241700', 'type' => 'string', 'group' => 'contact', 'label' => 'Phone Number 1'],
             ['key' => 'contact_phone_2', 'value' => '+255621835048', 'type' => 'string', 'group' => 'contact', 'label' => 'Phone Number 2'],
-            ['key' => 'contact_address', 'value' => 'Zanzibar, Tanzania', 'type' => 'string', 'group' => 'contact', 'label' => 'Address'],
+            ['key' => 'contact_address', 'value' => 'TANZANIA, Zanzibar', 'type' => 'string', 'group' => 'contact', 'label' => 'Address'],
             ['key' => 'whatsapp_number', 'value' => '255621835048', 'type' => 'string', 'group' => 'contact', 'label' => 'WhatsApp Chat Number'],
             ['key' => 'facebook_url', 'value' => 'https://www.facebook.com/profile.php?id=61562092804047', 'type' => 'string', 'group' => 'social', 'label' => 'Facebook'],
             ['key' => 'x_url', 'value' => 'https://x.com/abqtbz', 'type' => 'string', 'group' => 'social', 'label' => 'X'],
