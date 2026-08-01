@@ -1,6 +1,7 @@
 import { type PropsWithChildren } from 'react'
 import { Link, usePage } from '@inertiajs/react'
-import { Menu, X, Search, MessageCircle, Camera, Video, Users, Send, Headphones, Radio } from 'lucide-react'
+import { Menu, X, Search, MessageCircle, Headphones, Radio } from 'lucide-react'
+import { FaFacebookF, FaInstagram, FaTelegram, FaYoutube, FaWhatsapp, FaXTwitter } from 'react-icons/fa6'
 import { useState } from 'react'
 import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
@@ -165,23 +166,23 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             <div>
               <h4 className="mb-4 text-sm font-semibold">Contact Us</h4>
               <div className="flex flex-wrap gap-2">
-                <a href={socialLinks.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
-                  <MessageCircle className="h-4 w-4" />
+                <a href={socialLinks.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#25D366]">
+                  <FaWhatsapp className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
-                  <Send className="h-4 w-4" />
+                <a href={socialLinks.telegram} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#26A5E4]">
+                  <FaTelegram className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
-                  <Camera className="h-4 w-4" />
+                <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#E4405F]">
+                  <FaInstagram className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
-                  <Video className="h-4 w-4" />
+                <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#FF0000]">
+                  <FaYoutube className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.x} target="_blank" rel="noopener noreferrer" aria-label="X" className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-sm font-bold transition-colors hover:bg-white/20">
-                  X
+                <a href={socialLinks.x} target="_blank" rel="noopener noreferrer" aria-label="X" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
+                  <FaXTwitter className="h-4 w-4" />
                 </a>
-                <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
-                  <Users className="h-4 w-4" />
+                <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#1877F2]">
+                  <FaFacebookF className="h-4 w-4" />
                 </a>
               </div>
             </div>

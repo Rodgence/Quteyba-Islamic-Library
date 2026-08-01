@@ -4,7 +4,6 @@ import {
   ArrowRight,
   BadgeCheck,
   BriefcaseBusiness,
-  Camera,
   GraduationCap,
   Languages,
   Mail,
@@ -15,9 +14,8 @@ import {
   Phone,
   Plane,
   Send,
-  Users,
-  Video,
 } from 'lucide-react'
+import { FaFacebookF, FaInstagram, FaTelegram, FaYoutube, FaWhatsapp, FaXTwitter } from 'react-icons/fa6'
 import PublicLayout from '@/Layouts/PublicLayout'
 import type { SharedProps } from '@/Types'
 import { socialLinks } from '@/lib/socialLinks'
@@ -403,54 +401,52 @@ export default function Contact({ seo }: ContactProps) {
                     className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#073B33] hover:text-[#073B33]"
                     aria-label="X"
                   >
-                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
+                    <FaXTwitter className="h-5 w-5" />
                   </a>
                   <a
                     href={socialLinks.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#073B33] hover:text-[#073B33]"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#1877F2] hover:text-[#1877F2]"
                     aria-label="Facebook"
                   >
-                    <Users className="h-5 w-5" />
+                    <FaFacebookF className="h-4 w-4" />
                   </a>
                   <a
                     href={socialLinks.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#073B33] hover:text-[#073B33]"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#E4405F] hover:text-[#E4405F]"
                     aria-label="Instagram"
                   >
-                    <Camera className="h-5 w-5" />
+                    <FaInstagram className="h-5 w-5" />
                   </a>
                   <a
                     href={socialLinks.telegram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#073B33] hover:text-[#073B33]"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#26A5E4] hover:text-[#26A5E4]"
                     aria-label="Telegram"
                   >
-                    <Send className="h-5 w-5" />
+                    <FaTelegram className="h-5 w-5" />
                   </a>
                   <a
                     href={socialLinks.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#073B33] hover:text-[#073B33]"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#FF0000] hover:text-[#FF0000]"
                     aria-label="YouTube"
                   >
-                    <Video className="h-5 w-5" />
+                    <FaYoutube className="h-5 w-5" />
                   </a>
                   <a
                     href={socialLinks.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#073B33] hover:text-[#073B33]"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#101828]/60 transition-colors hover:border-[#25D366] hover:text-[#25D366]"
                     aria-label="WhatsApp Channel"
                   >
-                    <MessageCircle className="h-5 w-5" />
+                    <FaWhatsapp className="h-5 w-5" />
                   </a>
                 </div>
               </div>
