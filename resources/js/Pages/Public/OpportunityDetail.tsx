@@ -109,7 +109,8 @@ export default function OpportunityDetail({
   const whatsappUrl = siteSettings.whatsapp_channel_url || socialLinks.whatsapp
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${title}\n${seo?.canonical_url || ''}`)}`
   const whatsappApplyNumber = siteSettings.whatsapp_number || socialLinks.whatsappNumber
-  const whatsappApplyMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to apply for *${title}* through your library.\n\n💵 How much is the registration/application service fee for this opportunity?\n\nThank you for your time and assistance. I look forward to your reply.`
+  const opportunityLink = seo?.canonical_url || (typeof window !== 'undefined' ? window.location.href : '')
+  const whatsappApplyMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to apply for *${title}* through your library.\n🔗 ${opportunityLink}\n\n💵 How much is the registration/application service fee for this opportunity?\n\nThank you for your time and assistance. I look forward to your reply.`
   const whatsappApplyUrl = `https://wa.me/${whatsappApplyNumber}?text=${encodeURIComponent(whatsappApplyMessage)}`
 
   const handleShare = async () => {

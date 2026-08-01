@@ -80,7 +80,8 @@ export default function ServiceDetailPage({ service }: Props) {
 
   const serviceTitle = getLocalized(service.title)
   const whatsappRequestNumber = siteSettings.whatsapp_number || socialLinks.whatsappNumber
-  const whatsappRequestMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to request the *${serviceTitle}* service through your library.\n\n💵 How much is the fee for this service?\n\nThank you for your time and assistance. I look forward to your reply.`
+  const serviceLink = typeof window !== 'undefined' ? window.location.href : ''
+  const whatsappRequestMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to request the *${serviceTitle}* service through your library.\n🔗 ${serviceLink}\n\n💵 How much is the fee for this service?\n\nThank you for your time and assistance. I look forward to your reply.`
   const whatsappRequestUrl = `https://wa.me/${whatsappRequestNumber}?text=${encodeURIComponent(whatsappRequestMessage)}`
 
   return (

@@ -50,7 +50,8 @@ export default function CourseDetailPage({ course, related }: Props) {
   const { locale, siteSettings } = usePage<SharedProps>().props
   const courseName = getLocalized(course.name)
   const whatsappRegisterNumber = siteSettings.whatsapp_number || socialLinks.whatsappNumber
-  const whatsappRegisterMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to register for the *${courseName}* course through your library.\n\n💵 How much is the registration fee for this course?\n\nThank you for your time and assistance. I look forward to your reply.`
+  const courseLink = typeof window !== 'undefined' ? window.location.href : ''
+  const whatsappRegisterMessage = `Hello Abuu Qutaybah, 👋\n\nI would like to register for the *${courseName}* course through your library.\n🔗 ${courseLink}\n\n💵 How much is the registration fee for this course?\n\nThank you for your time and assistance. I look forward to your reply.`
   const whatsappRegisterUrl = `https://wa.me/${whatsappRegisterNumber}?text=${encodeURIComponent(whatsappRegisterMessage)}`
 
   return (
