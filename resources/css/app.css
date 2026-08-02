@@ -9,3 +9,25 @@
   --color-border: rgb(16 24 40 / 10%);
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
+
+.rich-text-editor {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.rich-text-editor .ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f9fafb;
+}
+
+.rich-text-editor .ql-container.ql-snow {
+  border: none;
+  font-size: 0.875rem;
+  min-height: 220px;
+}
+
+.rich-text-editor .ql-editor {
+  min-height: 220px;
+}

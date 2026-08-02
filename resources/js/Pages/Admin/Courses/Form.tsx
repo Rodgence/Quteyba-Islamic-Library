@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import { ArrowLeft, ImagePlus, Save, X } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
+import RichTextEditor from '@/Components/RichTextEditor'
 
 interface CourseFormData {
   id: number
@@ -104,11 +105,9 @@ export default function CourseForm({ course }: Props) {
               </div>
               <div>
                 <label className={labelClass}>Description</label>
-                <textarea
+                <RichTextEditor
                   value={data.description}
-                  onChange={(e) => setData('description', e.target.value)}
-                  rows={10}
-                  className={inputClass}
+                  onChange={(html) => setData('description', html)}
                   placeholder="Write the course description..."
                 />
                 {errors.description && <p className="mt-1 text-xs text-red-600">{errors.description}</p>}

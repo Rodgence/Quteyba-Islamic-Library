@@ -1,6 +1,7 @@
 import { Link, useForm } from '@inertiajs/react'
 import { useEffect, useState } from 'react'
 import AdminLayout from '@/Layouts/AdminLayout'
+import RichTextEditor from '@/Components/RichTextEditor'
 import type { Opportunity } from '@/Types'
 import { ArrowLeft, ImagePlus, X } from 'lucide-react'
 import { getLocalized } from '@/lib/localization'
@@ -137,12 +138,10 @@ export default function OpportunityForm({ opportunity, types, categories, countr
 
               <div>
                 <label className={labelClass}>Description</label>
-                <textarea
+                <RichTextEditor
                   value={data.content}
-                  onChange={(e) => setData('content', e.target.value)}
-                  rows={8}
+                  onChange={(html) => setData('content', html)}
                   placeholder="Write the opportunity description..."
-                  className={inputClass}
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}
               </div>

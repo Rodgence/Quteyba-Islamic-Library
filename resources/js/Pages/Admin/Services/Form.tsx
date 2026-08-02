@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import { ArrowLeft, ImagePlus, Save, X } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
+import RichTextEditor from '@/Components/RichTextEditor'
 
 interface ServiceFormData {
   id: number
@@ -137,11 +138,9 @@ export default function ServiceForm({ service }: Props) {
 
               <div>
                 <label className={labelClass}>Description</label>
-                <textarea
+                <RichTextEditor
                   value={data.content}
-                  onChange={(event) => setData('content', event.target.value)}
-                  className={inputClass}
-                  rows={12}
+                  onChange={(html) => setData('content', html)}
                   placeholder="Describe the service..."
                 />
                 {errors.content && <p className="mt-1 text-xs text-red-600">{errors.content}</p>}

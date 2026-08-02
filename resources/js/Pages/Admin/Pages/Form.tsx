@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
+import RichTextEditor from '@/Components/RichTextEditor'
 import type { Page } from '@/Types'
 import { ArrowLeft, ImagePlus, X } from 'lucide-react'
 import { getLocalized } from '@/lib/localization'
@@ -100,12 +101,10 @@ export default function PageForm({ page }: Props) {
 
               <div>
                 <label className={labelClass}>Description</label>
-                <textarea
+                <RichTextEditor
                   value={data.content}
-                  onChange={(e) => setData('content', e.target.value)}
-                  rows={10}
+                  onChange={(html) => setData('content', html)}
                   placeholder="Write the page description..."
-                  className={inputClass}
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}
               </div>
