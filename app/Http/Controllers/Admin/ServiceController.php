@@ -120,8 +120,8 @@ class ServiceController extends Controller
         return $request->validate([
             'title' => 'required|string|max:1000',
             'slug' => 'required|string|unique:services,slug' . ($service ? ',' . $service->id : ''),
-            'short_description' => 'nullable|string|max:5000',
-            'content' => 'nullable|string',
+            'short_description' => 'required|string|max:5000',
+            'content' => 'required|string',
             'icon' => 'nullable|string|max:255',
             'whatsapp_url' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published',
