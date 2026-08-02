@@ -43,7 +43,7 @@ class AdminCountriesController extends Controller
             'slug' => 'required|string|unique:countries,slug,' . $country->id,
             'code' => 'required|string|size:3|unique:countries,code,' . $country->id,
         ]);
-        $validated['name'] = $this->localizedPayload($validated['name'], $country->name);
+        $validated['name'] = $this->localizedPayload($validated['name'], existing: $country->name);
         $country->update($validated);
 
         return back()->with('success', 'Country updated.');

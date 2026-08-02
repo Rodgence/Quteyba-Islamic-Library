@@ -23,8 +23,8 @@ class ServiceController extends Controller
         return Inertia::render('Public/Services', [
             'services' => $services,
             'seo' => [
-                'title' => 'Services | Quteyba Islamic Library',
-                'description' => 'Comprehensive services for university and scholarship applications, document translation, and employment and visa assistance.',
+                'title' => 'الخدمات | مكتبة قتيبة الإسلامية',
+                'description' => 'خدمات شاملة لطلبات الجامعات والمنح الدراسية، وترجمة المستندات، والمساعدة في التوظيف والتأشيرات.',
             ],
         ]);
     }
@@ -52,8 +52,8 @@ class ServiceController extends Controller
         return Inertia::render('Public/ServiceDetail', [
             'service' => $formatted,
             'seo' => [
-                'title' => ($service->title['en'] ?? $service->title['ar'] ?? '') . ' | Quteyba Islamic Library',
-                'description' => $service->short_description['en'] ?? $service->short_description['ar'] ?? '',
+                'title' => ($service->title['ar'] ?? $service->title['en'] ?? '') . ' | مكتبة قتيبة الإسلامية',
+                'description' => $service->short_description['ar'] ?? $service->short_description['en'] ?? '',
             ],
         ]);
     }

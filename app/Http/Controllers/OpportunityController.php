@@ -96,10 +96,10 @@ class OpportunityController extends Controller
             'categories' => $categories,
             'filters' => $request->only(['search', 'type', 'country', 'category', 'funding', 'education', 'status_filter', 'sort']),
             'seo' => [
-                'title' => ($selectedTypeName ?: 'Opportunities') . ' | Quteyba Islamic Library',
+                'title' => ($selectedTypeName ?: 'الفرص') . ' | مكتبة قتيبة الإسلامية',
                 'description' => $selectedTypeName
-                    ? "Browse the latest {$selectedTypeName} posts from Quteyba Islamic Library."
-                    : 'Browse all available scholarships, jobs, internships, and visa opportunities from around the world.',
+                    ? "تصفح أحدث فرص {$selectedTypeName} من مكتبة قتيبة الإسلامية."
+                    : 'تصفح جميع المنح الدراسية والوظائف والتدريب وفرص التأشيرات المتاحة حول العالم.',
             ],
         ]);
     }
@@ -164,14 +164,14 @@ class OpportunityController extends Controller
             'updated_at' => $opportunity->updated_at->format('Y-m-d'),
         ];
 
-        $title = ($opportunity->title['en'] ?? $opportunity->title['ar'] ?? '') . ' | Quteyba Islamic Library';
+        $title = ($opportunity->title['ar'] ?? $opportunity->title['en'] ?? '') . ' | مكتبة قتيبة الإسلامية';
 
         return Inertia::render('Public/OpportunityDetail', [
             'opportunity' => $formatted,
             'related' => $related,
             'seo' => [
                 'title' => $title,
-                'description' => $opportunity->excerpt['en'] ?? $opportunity->excerpt['ar'] ?? '',
+                'description' => $opportunity->excerpt['ar'] ?? $opportunity->excerpt['en'] ?? '',
                 'og_image' => $opportunity->featuredImage
                     ? url($opportunity->featuredImage->url)
                     : url('/logo.png'),

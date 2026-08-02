@@ -42,9 +42,6 @@ class ServiceController extends Controller
         return Inertia::render('Admin/Services/Form', [
             'service' => [
                 ...$service->toArray(),
-                'title' => $this->localizedText($service->title),
-                'short_description' => $this->localizedText($service->short_description),
-                'content' => $this->plainText($service->content),
                 'featured_image' => $service->featuredImage ? [
                     'url' => $service->featuredImage->url,
                     'alt_text' => $service->featuredImage->alt_text,
@@ -63,11 +60,10 @@ class ServiceController extends Controller
 
         unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
         $validated['featured_image_id'] = $featuredImage?->id;
-        $validated['title'] = $this->localizedPayload($validated['title']);
-        $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null);
-        $validated['content'] = $this->localizedPayload(
-            isset($validated['content']) ? $this->plainText($validated['content']) : null
-        );
+        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null);
+        $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null, $validated['short_description_ar'] ?? null);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null);
+        unset($validated['title_ar'], $validated['short_description_ar'], $validated['content_ar']);
 
         Service::create($validated);
 
@@ -102,12 +98,10 @@ class ServiceController extends Controller
             ]);
         }
 
-        $validated['title'] = $this->localizedPayload($validated['title'], $service->title);
-        $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null, $service->short_description);
-        $validated['content'] = $this->localizedPayload(
-            isset($validated['content']) ? $this->plainText($validated['content']) : null,
-            $service->content
-        );
+        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null, $service->title);
+        $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null, $validated['short_description_ar'] ?? null, $service->short_description);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null, $service->content);
+        unset($validated['title_ar'], $validated['short_description_ar'], $validated['content_ar']);
 
         $service->update($validated);
 
@@ -119,9 +113,12 @@ class ServiceController extends Controller
     {
         return $request->validate([
             'title' => 'required|string|max:1000',
+            'title_ar' => 'nullable|string|max:1000',
             'slug' => 'required|string|unique:services,slug' . ($service ? ',' . $service->id : ''),
             'short_description' => 'required|string|max:5000',
+            'short_description_ar' => 'nullable|string|max:5000',
             'content' => 'required|string',
+            'content_ar' => 'nullable|string',
             'icon' => 'nullable|string|max:255',
             'whatsapp_url' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published',

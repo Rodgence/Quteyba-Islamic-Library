@@ -32,18 +32,18 @@ interface Props {
 }
 
 const statusLabels: Record<string, string> = {
-  open: 'Registration Open',
-  closed: 'Registration Closed',
-  soon: 'Coming Soon',
+  open: 'التسجيل مفتوح',
+  closed: 'التسجيل مغلق',
+  soon: 'قريبًا',
 }
 
 const infoItems = (course: CourseItem) => [
-  { icon: Globe, label: 'Language', value: getLocalized(course.language) },
-  { icon: GraduationCap, label: 'Level', value: getLocalized(course.level) },
-  { icon: Clock, label: 'Duration', value: course.duration ? getLocalized(course.duration) : '—' },
-  { icon: BookOpen, label: 'Delivery Method', value: getLocalized(course.delivery_method) },
-  { icon: User, label: 'Instructor', value: course.instructor ? getLocalized(course.instructor) : '—' },
-  { icon: DollarSign, label: 'Price', value: course.price !== null && course.price !== undefined ? `${course.price} ${course.price_currency || 'USD'}` : 'Free' },
+  { icon: Globe, label: 'اللغة', value: getLocalized(course.language) },
+  { icon: GraduationCap, label: 'المستوى', value: getLocalized(course.level) },
+  { icon: Clock, label: 'المدة', value: course.duration ? getLocalized(course.duration) : '—' },
+  { icon: BookOpen, label: 'طريقة التقديم', value: getLocalized(course.delivery_method) },
+  { icon: User, label: 'المدرّب', value: course.instructor ? getLocalized(course.instructor) : '—' },
+  { icon: DollarSign, label: 'السعر', value: course.price !== null && course.price !== undefined ? `${course.price} ${course.price_currency || 'USD'}` : 'مجاني' },
 ]
 
 export default function CourseDetailPage({ course, related }: Props) {
@@ -59,9 +59,9 @@ export default function CourseDetailPage({ course, related }: Props) {
       <div className="bg-primary-light py-8">
         <div className="mx-auto max-w-7xl px-4">
           <nav className="mb-4 flex items-center gap-2 text-sm text-[#101828]/60">
-            <Link href="/" className="hover:text-[#073B33]">Home</Link>
+            <Link href="/" className="hover:text-[#073B33]">الرئيسية</Link>
             <span>/</span>
-            <Link href="/courses" className="hover:text-[#073B33]">Courses</Link>
+            <Link href="/courses" className="hover:text-[#073B33]">الدورات</Link>
             <span>/</span>
             <span className="text-[#101828]">{getLocalized(course.name)}</span>
           </nav>
@@ -81,7 +81,7 @@ export default function CourseDetailPage({ course, related }: Props) {
             )}
 
             <div
-              className="prose max-w-none text-sm leading-7 text-[#101828]/80 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
+              className="prose max-w-none text-sm leading-7 text-[#101828]/80 [&_ul]:list-disc [&_ul]:ps-5 [&_li]:my-1"
               dangerouslySetInnerHTML={{ __html: course.description }}
             />
 
@@ -97,7 +97,7 @@ export default function CourseDetailPage({ course, related }: Props) {
 
             {course.registration_status === 'open' ? (
               <div className="rounded-2xl border border-border bg-white p-6">
-                <h2 className="mb-4 text-lg font-semibold text-[#101828]">Register for This Course</h2>
+                <h2 className="mb-4 text-lg font-semibold text-[#101828]">سجّل في هذه الدورة</h2>
                 <a
                   href={whatsappRegisterUrl}
                   target="_blank"
@@ -105,7 +105,7 @@ export default function CourseDetailPage({ course, related }: Props) {
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E91E63] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#c2185b] sm:w-auto sm:px-8"
                 >
                   <Send className="h-4 w-4" />
-                  Register via WhatsApp
+                  التسجيل عبر واتساب
                 </a>
               </div>
             ) : (
@@ -123,7 +123,7 @@ export default function CourseDetailPage({ course, related }: Props) {
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-6">
               <div className="rounded-2xl border border-border bg-white p-5">
-                <h3 className="mb-4 text-sm font-semibold text-[#101828]">Course Information</h3>
+                <h3 className="mb-4 text-sm font-semibold text-[#101828]">معلومات الدورة</h3>
                 <div className="space-y-3 text-sm">
                   {infoItems(course).map((item, i) => (
                     <div key={i} className="flex items-center justify-between">
@@ -138,8 +138,8 @@ export default function CourseDetailPage({ course, related }: Props) {
                 href="/courses"
                 className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-medium text-[#101828] transition-colors hover:bg-primary-light"
               >
-                <ArrowLeft className="h-4 w-4" />
-                All Courses
+                <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
+                جميع الدورات
               </Link>
             </div>
           </aside>
@@ -147,7 +147,7 @@ export default function CourseDetailPage({ course, related }: Props) {
 
         {related.length > 0 && (
           <div className="mt-16">
-            <h2 className="mb-6 text-xl font-bold text-[#073B33]">Related Courses</h2>
+            <h2 className="mb-6 text-xl font-bold text-[#073B33]">دورات ذات صلة</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => (
                 <Link

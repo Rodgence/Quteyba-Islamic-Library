@@ -4,12 +4,13 @@ import { Link, useForm } from '@inertiajs/react'
 import { ArrowLeft, ImagePlus, Save, X } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import RichTextEditor from '@/Components/RichTextEditor'
+import { getLocaleValue } from '@/lib/localization'
 
 interface CourseFormData {
   id: number
-  name: string
+  name: unknown
   slug: string
-  description: string
+  description: unknown
   language: string
   level: string
   duration: string | null
@@ -38,9 +39,11 @@ export default function CourseForm({ course }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(course?.featured_image?.url ?? null)
   const { data, setData, post, processing, errors } = useForm({
     _method: isEdit ? 'put' : 'post',
-    name: course?.name ?? '',
+    name: getLocaleValue(course?.name, 'en'),
+    name_ar: getLocaleValue(course?.name, 'ar'),
     slug: course?.slug ?? '',
-    description: course?.description ?? '',
+    description: getLocaleValue(course?.description, 'en'),
+    description_ar: getLocaleValue(course?.description, 'ar'),
     language: course?.language ?? '',
     level: course?.level ?? '',
     duration: course?.duration ?? '',
@@ -93,24 +96,39 @@ export default function CourseForm({ course }: Props) {
             <div className="grid gap-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label className={labelClass}>Name</label>
+                  <label className={labelClass}>Name (English)</label>
                   <input value={data.name} onChange={(e) => setData('name', e.target.value)} className={inputClass} />
                   {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
                 </div>
                 <div>
-                  <label className={labelClass}>Slug</label>
-                  <input value={data.slug} onChange={(e) => setData('slug', e.target.value)} className={inputClass} />
-                  {errors.slug && <p className="mt-1 text-xs text-red-600">{errors.slug}</p>}
+                  <label className={labelClass}>Name (Arabic)</label>
+                  <input value={data.name_ar} onChange={(e) => setData('name_ar', e.target.value)} className={inputClass} dir="rtl" placeholder="اسم الدورة" />
+                  {errors.name_ar && <p className="mt-1 text-xs text-red-600">{errors.name_ar}</p>}
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Description</label>
+                <label className={labelClass}>Slug</label>
+                <input value={data.slug} onChange={(e) => setData('slug', e.target.value)} className={inputClass} />
+                {errors.slug && <p className="mt-1 text-xs text-red-600">{errors.slug}</p>}
+              </div>
+              <div>
+                <label className={labelClass}>Description (English)</label>
                 <RichTextEditor
                   value={data.description}
                   onChange={(html) => setData('description', html)}
                   placeholder="Write the course description..."
                 />
                 {errors.description && <p className="mt-1 text-xs text-red-600">{errors.description}</p>}
+              </div>
+              <div>
+                <label className={labelClass}>Description (Arabic)</label>
+                <RichTextEditor
+                  value={data.description_ar}
+                  onChange={(html) => setData('description_ar', html)}
+                  placeholder="اكتب وصف الدورة..."
+                  dir="rtl"
+                />
+                {errors.description_ar && <p className="mt-1 text-xs text-red-600">{errors.description_ar}</p>}
               </div>
             </div>
           </section>

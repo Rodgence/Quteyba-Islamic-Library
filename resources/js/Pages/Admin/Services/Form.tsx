@@ -4,13 +4,14 @@ import { Link, useForm } from '@inertiajs/react'
 import { ArrowLeft, ImagePlus, Save, X } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import RichTextEditor from '@/Components/RichTextEditor'
+import { getLocaleValue } from '@/lib/localization'
 
 interface ServiceFormData {
   id: number
-  title: string
+  title: unknown
   slug: string
-  short_description: string | null
-  content: string | null
+  short_description: unknown
+  content: unknown
   icon: string | null
   whatsapp_url: string | null
   status: 'draft' | 'published'
@@ -36,10 +37,13 @@ export default function ServiceForm({ service }: Props) {
 
   const { data, setData, post, processing, errors } = useForm({
     _method: isEdit ? 'put' : 'post',
-    title: service?.title ?? '',
+    title: getLocaleValue(service?.title, 'en'),
+    title_ar: getLocaleValue(service?.title, 'ar'),
     slug: service?.slug ?? '',
-    short_description: service?.short_description ?? '',
-    content: service?.content ?? '',
+    short_description: getLocaleValue(service?.short_description, 'en'),
+    short_description_ar: getLocaleValue(service?.short_description, 'ar'),
+    content: getLocaleValue(service?.content, 'en'),
+    content_ar: getLocaleValue(service?.content, 'ar'),
     icon: service?.icon ?? '',
     whatsapp_url: service?.whatsapp_url ?? '',
     status: service?.status ?? 'draft',
@@ -99,7 +103,7 @@ export default function ServiceForm({ service }: Props) {
             <div className="grid gap-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label className={labelClass}>Title</label>
+                  <label className={labelClass}>Title (English)</label>
                   <input
                     type="text"
                     value={data.title}
@@ -110,40 +114,80 @@ export default function ServiceForm({ service }: Props) {
                   {errors.title && <p className="mt-1 text-xs text-red-600">{errors.title}</p>}
                 </div>
                 <div>
-                  <label className={labelClass}>Slug</label>
+                  <label className={labelClass}>Title (Arabic)</label>
                   <input
                     type="text"
-                    value={data.slug}
-                    onChange={(event) => setData('slug', event.target.value)}
+                    value={data.title_ar}
+                    onChange={(event) => setData('title_ar', event.target.value)}
                     className={inputClass}
-                    placeholder="service-slug"
+                    dir="rtl"
+                    placeholder="عنوان الخدمة"
                   />
-                  {errors.slug && <p className="mt-1 text-xs text-red-600">{errors.slug}</p>}
+                  {errors.title_ar && <p className="mt-1 text-xs text-red-600">{errors.title_ar}</p>}
                 </div>
               </div>
 
               <div>
-                <label className={labelClass}>Short Description</label>
-                <textarea
-                  value={data.short_description}
-                  onChange={(event) => setData('short_description', event.target.value)}
+                <label className={labelClass}>Slug</label>
+                <input
+                  type="text"
+                  value={data.slug}
+                  onChange={(event) => setData('slug', event.target.value)}
                   className={inputClass}
-                  rows={3}
-                  placeholder="A short summary displayed on service cards."
+                  placeholder="service-slug"
                 />
-                {errors.short_description && (
-                  <p className="mt-1 text-xs text-red-600">{errors.short_description}</p>
-                )}
+                {errors.slug && <p className="mt-1 text-xs text-red-600">{errors.slug}</p>}
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label className={labelClass}>Short Description (English)</label>
+                  <textarea
+                    value={data.short_description}
+                    onChange={(event) => setData('short_description', event.target.value)}
+                    className={inputClass}
+                    rows={3}
+                    placeholder="A short summary displayed on service cards."
+                  />
+                  {errors.short_description && (
+                    <p className="mt-1 text-xs text-red-600">{errors.short_description}</p>
+                  )}
+                </div>
+                <div>
+                  <label className={labelClass}>Short Description (Arabic)</label>
+                  <textarea
+                    value={data.short_description_ar}
+                    onChange={(event) => setData('short_description_ar', event.target.value)}
+                    className={inputClass}
+                    rows={3}
+                    dir="rtl"
+                    placeholder="ملخص قصير يظهر في بطاقات الخدمة."
+                  />
+                  {errors.short_description_ar && (
+                    <p className="mt-1 text-xs text-red-600">{errors.short_description_ar}</p>
+                  )}
+                </div>
               </div>
 
               <div>
-                <label className={labelClass}>Description</label>
+                <label className={labelClass}>Description (English)</label>
                 <RichTextEditor
                   value={data.content}
                   onChange={(html) => setData('content', html)}
                   placeholder="Describe the service..."
                 />
                 {errors.content && <p className="mt-1 text-xs text-red-600">{errors.content}</p>}
+              </div>
+
+              <div>
+                <label className={labelClass}>Description (Arabic)</label>
+                <RichTextEditor
+                  value={data.content_ar}
+                  onChange={(html) => setData('content_ar', html)}
+                  placeholder="صف الخدمة..."
+                  dir="rtl"
+                />
+                {errors.content_ar && <p className="mt-1 text-xs text-red-600">{errors.content_ar}</p>}
               </div>
             </div>
           </section>

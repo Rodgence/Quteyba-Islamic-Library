@@ -39,8 +39,9 @@ class CourseController extends Controller
 
         unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
         $validated['featured_image_id'] = $featuredImage?->id;
-        $validated['name'] = $this->localizedPayload($validated['name']);
-        $validated['description'] = $this->localizedPayload($this->plainText($validated['description']));
+        $validated['name'] = $this->localizedPayload($validated['name'], $validated['name_ar'] ?? null);
+        $validated['description'] = $this->localizedPayload($validated['description'] ?? null, $validated['description_ar'] ?? null);
+        unset($validated['name_ar'], $validated['description_ar']);
 
         Course::create($validated);
 
@@ -54,8 +55,6 @@ class CourseController extends Controller
         return Inertia::render('Admin/Courses/Form', [
             'course' => [
                 ...$course->toArray(),
-                'name' => $this->localizedText($course->name),
-                'description' => $this->plainText($course->description),
                 'featured_image' => $course->featuredImage ? [
                     'url' => $course->featuredImage->url,
                     'alt_text' => $course->featuredImage->alt_text,
@@ -83,11 +82,9 @@ class CourseController extends Controller
             ]);
         }
 
-        $validated['name'] = $this->localizedPayload($validated['name'], $course->name);
-        $validated['description'] = $this->localizedPayload(
-            $this->plainText($validated['description']),
-            $course->description
-        );
+        $validated['name'] = $this->localizedPayload($validated['name'], $validated['name_ar'] ?? null, $course->name);
+        $validated['description'] = $this->localizedPayload($validated['description'] ?? null, $validated['description_ar'] ?? null, $course->description);
+        unset($validated['name_ar'], $validated['description_ar']);
 
         $course->update($validated);
 
@@ -105,8 +102,10 @@ class CourseController extends Controller
     {
         return $request->validate([
             'name' => 'required|string|max:1000',
+            'name_ar' => 'nullable|string|max:1000',
             'slug' => 'required|string|unique:courses,slug' . ($course ? ',' . $course->id : ''),
             'description' => 'required|string',
+            'description_ar' => 'nullable|string',
             'language' => 'required|string|max:100',
             'level' => 'required|string|max:100',
             'duration' => 'nullable|string|max:100',

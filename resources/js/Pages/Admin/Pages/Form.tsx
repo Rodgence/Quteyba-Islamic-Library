@@ -2,12 +2,23 @@ import { useEffect, useState } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import RichTextEditor from '@/Components/RichTextEditor'
-import type { Page } from '@/Types'
 import { ArrowLeft, ImagePlus, X } from 'lucide-react'
-import { getLocalized } from '@/lib/localization'
+import { getLocaleValue } from '@/lib/localization'
+
+interface PageFormData {
+  id: number
+  title: unknown
+  slug: string
+  content: unknown
+  status: 'draft' | 'published'
+  featured_image: {
+    url: string
+    alt_text: string | null
+  } | null
+}
 
 interface Props {
-  page: Page | null
+  page: PageFormData | null
 }
 
 const statusOptions = [
@@ -25,9 +36,11 @@ export default function PageForm({ page }: Props) {
 
   const { data, setData, post, processing, errors } = useForm({
     _method: isEdit ? 'put' : 'post',
-    title: getLocalized(page?.title ?? ''),
+    title: getLocaleValue(page?.title, 'en'),
+    title_ar: getLocaleValue(page?.title, 'ar'),
     slug: page?.slug ?? '',
-    content: getLocalized(page?.content ?? ''),
+    content: getLocaleValue(page?.content, 'en'),
+    content_ar: getLocaleValue(page?.content, 'ar'),
     status: page?.status ?? 'draft',
     featured_image: null as File | null,
     featured_image_alt: page?.featured_image?.alt_text ?? '',
@@ -76,16 +89,30 @@ export default function PageForm({ page }: Props) {
             <h2 className="mb-4 text-base font-semibold text-[#101828]">Page Content</h2>
 
             <div className="space-y-4">
-              <div>
-                <label className={labelClass}>Title</label>
-                <textarea
-                  value={data.title}
-                  onChange={(e) => setData('title', e.target.value)}
-                  rows={2}
-                  placeholder="Page title"
-                  className={inputClass}
-                />
-                {errors.title && <p className="mt-1 text-xs text-[#E91E63]">{errors.title}</p>}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className={labelClass}>Title (English)</label>
+                  <textarea
+                    value={data.title}
+                    onChange={(e) => setData('title', e.target.value)}
+                    rows={2}
+                    placeholder="Page title"
+                    className={inputClass}
+                  />
+                  {errors.title && <p className="mt-1 text-xs text-[#E91E63]">{errors.title}</p>}
+                </div>
+                <div>
+                  <label className={labelClass}>Title (Arabic)</label>
+                  <textarea
+                    value={data.title_ar}
+                    onChange={(e) => setData('title_ar', e.target.value)}
+                    rows={2}
+                    dir="rtl"
+                    placeholder="عنوان الصفحة"
+                    className={inputClass}
+                  />
+                  {errors.title_ar && <p className="mt-1 text-xs text-[#E91E63]">{errors.title_ar}</p>}
+                </div>
               </div>
 
               <div>
@@ -100,13 +127,24 @@ export default function PageForm({ page }: Props) {
               </div>
 
               <div>
-                <label className={labelClass}>Description</label>
+                <label className={labelClass}>Description (English)</label>
                 <RichTextEditor
                   value={data.content}
                   onChange={(html) => setData('content', html)}
                   placeholder="Write the page description..."
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}
+              </div>
+
+              <div>
+                <label className={labelClass}>Description (Arabic)</label>
+                <RichTextEditor
+                  value={data.content_ar}
+                  onChange={(html) => setData('content_ar', html)}
+                  placeholder="اكتب وصف الصفحة..."
+                  dir="rtl"
+                />
+                {errors.content_ar && <p className="mt-1 text-xs text-[#E91E63]">{errors.content_ar}</p>}
               </div>
             </div>
           </div>
@@ -170,7 +208,7 @@ export default function PageForm({ page }: Props) {
               <label className={labelClass}>Status</label>
               <select
                 value={data.status}
-                onChange={(e) => setData('status', e.target.value as Page['status'])}
+                onChange={(e) => setData('status', e.target.value as 'draft' | 'published')}
                 className={inputClass}
               >
                 {statusOptions.map((opt) => (

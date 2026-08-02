@@ -6,6 +6,7 @@ interface Props {
   value: string
   onChange: (html: string) => void
   placeholder?: string
+  dir?: 'ltr' | 'rtl'
 }
 
 const toolbarOptions = [
@@ -20,7 +21,7 @@ const toolbarOptions = [
   ['clean'],
 ]
 
-export default function RichTextEditor({ value, onChange, placeholder }: Props) {
+export default function RichTextEditor({ value, onChange, placeholder, dir = 'ltr' }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const quillRef = useRef<Quill | null>(null)
   const onChangeRef = useRef(onChange)
@@ -38,6 +39,8 @@ export default function RichTextEditor({ value, onChange, placeholder }: Props) 
       modules: { toolbar: toolbarOptions },
     })
 
+    quill.root.setAttribute('dir', dir)
+    quill.root.style.textAlign = dir === 'rtl' ? 'right' : 'left'
     quill.root.innerHTML = value
     quillRef.current = quill
 

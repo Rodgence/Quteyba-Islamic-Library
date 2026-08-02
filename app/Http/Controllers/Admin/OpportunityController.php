@@ -65,9 +65,12 @@ class OpportunityController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:1000',
+            'title_ar' => 'nullable|string|max:1000',
             'slug' => 'required|string|unique:opportunities',
             'excerpt' => 'nullable|string|max:5000',
+            'excerpt_ar' => 'nullable|string|max:5000',
             'content' => 'required|string',
+            'content_ar' => 'nullable|string',
             'opportunity_type_id' => 'nullable|exists:opportunity_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'country_id' => 'nullable|exists:countries,id',
@@ -94,11 +97,10 @@ class OpportunityController extends Controller
             : null;
         unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
         $validated['featured_image_id'] = $featuredImage?->id;
-        $validated['title'] = $this->localizedPayload($validated['title']);
-        $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null);
-        $validated['content'] = $this->localizedPayload(
-            isset($validated['content']) ? $this->plainText($validated['content']) : null
-        );
+        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null);
+        $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null, $validated['excerpt_ar'] ?? null);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null);
+        unset($validated['title_ar'], $validated['excerpt_ar'], $validated['content_ar']);
 
         Opportunity::create($validated);
 
@@ -113,9 +115,6 @@ class OpportunityController extends Controller
         return Inertia::render('Admin/Opportunities/Form', [
             'opportunity' => [
                 ...$opportunity->toArray(),
-                'title' => $this->localizedText($opportunity->title),
-                'excerpt' => $this->localizedText($opportunity->excerpt),
-                'content' => $this->plainText($opportunity->content),
                 'application_deadline' => $opportunity->application_deadline?->format('Y-m-d'),
                 'published_at' => $opportunity->published_at?->format('Y-m-d\TH:i'),
                 'featured_image' => $opportunity->featuredImage ? [
@@ -133,9 +132,12 @@ class OpportunityController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:1000',
+            'title_ar' => 'nullable|string|max:1000',
             'slug' => 'required|string|unique:opportunities,slug,' . $opportunity->id,
             'excerpt' => 'nullable|string|max:5000',
+            'excerpt_ar' => 'nullable|string|max:5000',
             'content' => 'required|string',
+            'content_ar' => 'nullable|string',
             'opportunity_type_id' => 'nullable|exists:opportunity_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'country_id' => 'nullable|exists:countries,id',
@@ -175,12 +177,10 @@ class OpportunityController extends Controller
             ]);
         }
 
-        $validated['title'] = $this->localizedPayload($validated['title'], $opportunity->title);
-        $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null, $opportunity->excerpt);
-        $validated['content'] = $this->localizedPayload(
-            isset($validated['content']) ? $this->plainText($validated['content']) : null,
-            $opportunity->content
-        );
+        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null, $opportunity->title);
+        $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null, $validated['excerpt_ar'] ?? null, $opportunity->excerpt);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null, $opportunity->content);
+        unset($validated['title_ar'], $validated['excerpt_ar'], $validated['content_ar']);
 
         $opportunity->update($validated);
 

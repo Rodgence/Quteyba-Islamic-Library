@@ -39,8 +39,9 @@ class PageController extends Controller
 
         unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
         $validated['featured_image_id'] = $featuredImage?->id;
-        $validated['title'] = $this->localizedPayload($validated['title']);
-        $validated['content'] = $this->localizedPayload($this->plainText($validated['content']));
+        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null);
+        unset($validated['title_ar'], $validated['content_ar']);
 
         Page::create($validated);
 
@@ -54,8 +55,6 @@ class PageController extends Controller
         return Inertia::render('Admin/Pages/Form', [
             'page' => [
                 ...$page->toArray(),
-                'title' => $this->localizedText($page->title),
-                'content' => $this->plainText($page->content),
                 'featured_image' => $page->featuredImage ? [
                     'url' => $page->featuredImage->url,
                     'alt_text' => $page->featuredImage->alt_text,
@@ -83,8 +82,9 @@ class PageController extends Controller
             ]);
         }
 
-        $validated['title'] = $this->localizedPayload($validated['title'], $page->title);
-        $validated['content'] = $this->localizedPayload($this->plainText($validated['content']), $page->content);
+        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null, $page->title);
+        $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null, $page->content);
+        unset($validated['title_ar'], $validated['content_ar']);
 
         $page->update($validated);
 
@@ -101,8 +101,10 @@ class PageController extends Controller
     {
         return $request->validate([
             'title' => 'required|string|max:1000',
+            'title_ar' => 'nullable|string|max:1000',
             'slug' => 'required|string|unique:pages,slug' . ($page ? ',' . $page->id : ''),
             'content' => 'required|string',
+            'content_ar' => 'nullable|string',
             'status' => 'required|in:draft,published',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
             'featured_image_alt' => 'nullable|string|max:255',

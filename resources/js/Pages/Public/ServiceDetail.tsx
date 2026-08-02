@@ -37,7 +37,7 @@ function parseJsonArray(value: string | null): string[] {
     const parsed = JSON.parse(value)
     if (Array.isArray(parsed)) {
       return parsed.map((item: string | { ar?: string; en?: string }) =>
-        typeof item === 'string' ? item : (item?.en || item?.ar || '')
+        typeof item === 'string' ? item : (item?.ar || item?.en || '')
       )
     }
     return []
@@ -55,8 +55,8 @@ function parseFaq(value: string | null): { question: string; answer: string }[] 
         const q = typeof item.question === 'string' ? JSON.parse(item.question) : item.question
         const a = typeof item.answer === 'string' ? JSON.parse(item.answer) : item.answer
         return {
-          question: q?.en || q?.ar || item.question || '',
-          answer: a?.en || a?.ar || item.answer || '',
+          question: q?.ar || q?.en || item.question || '',
+          answer: a?.ar || a?.en || item.answer || '',
         }
       })
     }
@@ -89,9 +89,9 @@ export default function ServiceDetailPage({ service }: Props) {
       <div className="bg-primary-light py-8">
         <div className="mx-auto max-w-7xl px-4">
           <nav className="mb-4 flex items-center gap-2 text-sm text-[#101828]/60">
-            <Link href="/" className="hover:text-[#073B33]">Home</Link>
+            <Link href="/" className="hover:text-[#073B33]">الرئيسية</Link>
             <span>/</span>
-            <Link href="/services" className="hover:text-[#073B33]">Services</Link>
+            <Link href="/services" className="hover:text-[#073B33]">الخدمات</Link>
             <span>/</span>
             <span className="text-[#101828]">{getLocalized(service.title)}</span>
           </nav>
@@ -115,13 +115,13 @@ export default function ServiceDetailPage({ service }: Props) {
             </p>
 
             <div
-              className="prose max-w-none text-sm leading-7 text-[#101828]/80 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
+              className="prose max-w-none text-sm leading-7 text-[#101828]/80 [&_ul]:list-disc [&_ul]:ps-5 [&_li]:my-1"
               dangerouslySetInnerHTML={{ __html: service.content }}
             />
 
             {deliverables.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-[#101828]">Deliverables</h2>
+                <h2 className="mb-3 text-lg font-semibold text-[#101828]">المخرجات</h2>
                 <ul className="space-y-2">
                   {deliverables.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-[#101828]/70">
@@ -135,7 +135,7 @@ export default function ServiceDetailPage({ service }: Props) {
 
             {requiredDocs.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-[#101828]">Required Documents</h2>
+                <h2 className="mb-3 text-lg font-semibold text-[#101828]">المستندات المطلوبة</h2>
                 <ul className="space-y-2">
                   {requiredDocs.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-[#101828]/70">
@@ -149,7 +149,7 @@ export default function ServiceDetailPage({ service }: Props) {
 
             {processSteps.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-[#101828]">Process Steps</h2>
+                <h2 className="mb-3 text-lg font-semibold text-[#101828]">خطوات العملية</h2>
                 <ol className="space-y-3">
                   {processSteps.map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-[#101828]/70">
@@ -165,7 +165,7 @@ export default function ServiceDetailPage({ service }: Props) {
 
             {faqItems.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-[#101828]">Frequently Asked Questions</h2>
+                <h2 className="mb-3 text-lg font-semibold text-[#101828]">الأسئلة الشائعة</h2>
                 <div className="space-y-2">
                   {faqItems.map((item, i) => (
                     <div key={i} className="overflow-hidden rounded-xl border border-border">
@@ -188,7 +188,7 @@ export default function ServiceDetailPage({ service }: Props) {
             )}
 
             <div className="rounded-2xl border border-border bg-white p-6">
-              <h2 className="mb-4 text-lg font-semibold text-[#101828]">Request This Service</h2>
+              <h2 className="mb-4 text-lg font-semibold text-[#101828]">اطلب هذه الخدمة</h2>
               <a
                 href={whatsappRequestUrl}
                 target="_blank"
@@ -196,7 +196,7 @@ export default function ServiceDetailPage({ service }: Props) {
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#052e28]"
               >
                 <Send className="h-4 w-4" />
-                Request via WhatsApp
+                الطلب عبر واتساب
               </a>
             </div>
           </div>
@@ -204,11 +204,11 @@ export default function ServiceDetailPage({ service }: Props) {
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-6">
               <div className="rounded-2xl border border-border bg-white p-5">
-                <h3 className="mb-4 text-sm font-semibold text-[#101828]">Service Information</h3>
+                <h3 className="mb-4 text-sm font-semibold text-[#101828]">معلومات الخدمة</h3>
                 <div className="space-y-3 text-sm">
                   {service.price !== null && service.price !== undefined && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[#101828]/60">Price</span>
+                      <span className="text-[#101828]/60">السعر</span>
                       <span className="font-semibold text-[#073B33]">
                         {service.price} {service.price_currency || 'USD'}
                       </span>
@@ -216,14 +216,14 @@ export default function ServiceDetailPage({ service }: Props) {
                   )}
                   {deliverables.length > 0 && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[#101828]/60">Deliverables</span>
-                      <span className="font-medium text-[#101828]">{deliverables.length} items</span>
+                      <span className="text-[#101828]/60">المخرجات</span>
+                      <span className="font-medium text-[#101828]">{deliverables.length} عناصر</span>
                     </div>
                   )}
                   {requiredDocs.length > 0 && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[#101828]/60">Documents</span>
-                      <span className="font-medium text-[#101828]">{requiredDocs.length} documents</span>
+                      <span className="text-[#101828]/60">المستندات</span>
+                      <span className="font-medium text-[#101828]">{requiredDocs.length} مستندات</span>
                     </div>
                   )}
                 </div>
@@ -236,15 +236,15 @@ export default function ServiceDetailPage({ service }: Props) {
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"
               >
                 <MessageCircle className="h-4 w-4" />
-                Contact us on WhatsApp
+                تواصل معنا عبر واتساب
               </Link>
 
               <Link
                 href="/services"
                 className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-medium text-[#101828] transition-colors hover:bg-primary-light"
               >
-                <ArrowLeft className="h-4 w-4" />
-                All Services
+                <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
+                جميع الخدمات
               </Link>
             </div>
           </aside>

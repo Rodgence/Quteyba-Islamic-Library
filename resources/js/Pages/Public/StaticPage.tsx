@@ -20,7 +20,7 @@ export default function StaticPage({ page, seo }: StaticPageProps) {
       <div className="mx-auto max-w-4xl px-4 py-12">
         <nav className="mb-6 flex items-center gap-2 text-sm text-[#101828]/50">
           <Link href="/" className="hover:text-[#073B33] transition-colors">
-            Home
+            الرئيسية
           </Link>
           <ChevronRight className="h-3 w-3" />
           <span className="text-[#073B33] font-medium">{title}</span>
@@ -39,13 +39,13 @@ export default function StaticPage({ page, seo }: StaticPageProps) {
 
           {content ? (
             <div
-              className="prose prose-lg max-w-none text-base leading-8 text-[#101828]/80 sm:text-lg [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1"
+              className="prose prose-lg max-w-none text-base leading-8 text-[#101828]/80 sm:text-lg [&_ul]:list-disc [&_ul]:ps-5 [&_li]:my-1"
               dangerouslySetInnerHTML={{ __html: content }}
             />
           ) : (
             <div className="rounded-2xl border border-border bg-white p-12 text-center">
               <FileText className="mx-auto mb-3 h-10 w-10 text-[#073B33]/20" />
-              <p className="text-sm text-[#101828]/60">No content available at this time.</p>
+              <p className="text-sm text-[#101828]/60">لا يوجد محتوى متاح حاليًا.</p>
             </div>
           )}
         </article>

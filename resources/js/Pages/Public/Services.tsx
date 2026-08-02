@@ -28,7 +28,7 @@ export default function ServicesPage({ services }: Props) {
     <PublicLayout>
       <div className="bg-primary-light py-12">
         <div className="mx-auto max-w-7xl px-4">
-          <h1 className="text-2xl font-bold text-[#073B33]">Our Services</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">خدماتنا</h1>
         </div>
       </div>
 
@@ -62,8 +62,8 @@ export default function ServicesPage({ services }: Props) {
                   href={`/services/${service.slug}`}
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#073B33] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#052e28]"
                 >
-                  Request Service
-                  <ArrowRight className="h-4 w-4" />
+                  طلب الخدمة
+                  <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                 </Link>
               </div>
             </div>

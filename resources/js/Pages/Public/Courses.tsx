@@ -29,9 +29,9 @@ interface Props {
 }
 
 const statusLabels: Record<string, string> = {
-  open: 'Open',
-  closed: 'Closed',
-  soon: 'Coming Soon',
+  open: 'التسجيل مفتوح',
+  closed: 'التسجيل مغلق',
+  soon: 'قريبًا',
 }
 
 const statusStyles: Record<string, string> = {
@@ -45,7 +45,7 @@ export default function CoursesPage({ courses }: Props) {
     <PublicLayout>
       <div className="bg-primary-light py-12">
         <div className="mx-auto max-w-7xl px-4">
-          <h1 className="text-2xl font-bold text-[#073B33]">Courses</h1>
+          <h1 className="text-2xl font-bold text-[#073B33]">الدورات</h1>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ export default function CoursesPage({ courses }: Props) {
                     className="h-48 w-full object-cover"
                   />
                   <span
-                    className={`absolute left-3 top-3 rounded-lg px-2.5 py-1 text-xs font-semibold ${statusStyles[course.registration_status]}`}
+                    className={`absolute start-3 top-3 rounded-lg px-2.5 py-1 text-xs font-semibold ${statusStyles[course.registration_status]}`}
                   >
                     {statusLabels[course.registration_status]}
                   </span>
@@ -97,13 +97,13 @@ export default function CoursesPage({ courses }: Props) {
                   <span className="text-sm font-semibold text-[#073B33]">
                     {course.price !== null && course.price !== undefined
                       ? `${course.price} ${course.price_currency || 'USD'}`
-                      : 'Free'}
+                      : 'مجاني'}
                   </span>
                   <Link
                     href={`/courses/${course.slug}`}
                     className="rounded-xl bg-[#E91E63] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#c2185b]"
                   >
-                    Details
+                    التفاصيل
                   </Link>
                 </div>
               </div>

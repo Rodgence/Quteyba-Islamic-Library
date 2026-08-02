@@ -37,7 +37,7 @@ class AdminCategoriesController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|unique:categories,slug,' . $category->id,
         ]);
-        $validated['name'] = $this->localizedPayload($validated['name'], $category->name);
+        $validated['name'] = $this->localizedPayload($validated['name'], existing: $category->name);
         $category->update($validated);
 
         return back()->with('success', 'Category updated.');

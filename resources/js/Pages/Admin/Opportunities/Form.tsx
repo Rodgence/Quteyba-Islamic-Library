@@ -4,7 +4,7 @@ import AdminLayout from '@/Layouts/AdminLayout'
 import RichTextEditor from '@/Components/RichTextEditor'
 import type { Opportunity } from '@/Types'
 import { ArrowLeft, ImagePlus, X } from 'lucide-react'
-import { getLocalized } from '@/lib/localization'
+import { getLocalized, getLocaleValue } from '@/lib/localization'
 
 interface SelectOption {
   id: number
@@ -40,10 +40,13 @@ export default function OpportunityForm({ opportunity, types, categories, countr
 
   const { data, setData, post, processing, errors } = useForm({
     _method: isEdit ? 'put' : 'post',
-    title: getLocalized(opportunity?.title ?? ''),
+    title: getLocaleValue(opportunity?.title, 'en'),
+    title_ar: getLocaleValue(opportunity?.title, 'ar'),
     slug: opportunity?.slug ?? '',
-    excerpt: getLocalized(opportunity?.excerpt ?? ''),
-    content: getLocalized(opportunity?.content ?? ''),
+    excerpt: getLocaleValue(opportunity?.excerpt, 'en'),
+    excerpt_ar: getLocaleValue(opportunity?.excerpt, 'ar'),
+    content: getLocaleValue(opportunity?.content, 'en'),
+    content_ar: getLocaleValue(opportunity?.content, 'ar'),
     opportunity_type_id: String(opportunity?.opportunity_type_id ?? opportunity?.opportunity_type?.id ?? ''),
     category_id: String(opportunity?.category_id ?? opportunity?.category?.id ?? ''),
     country_id: String(opportunity?.country_id ?? opportunity?.country?.id ?? ''),
@@ -101,16 +104,30 @@ export default function OpportunityForm({ opportunity, types, categories, countr
             <h2 className="mb-4 text-base font-semibold text-[#101828]">Basic Information</h2>
 
             <div className="space-y-4">
-              <div>
-                <label className={labelClass}>Title</label>
-                <textarea
-                  value={data.title}
-                  onChange={(e) => setData('title', e.target.value)}
-                  rows={2}
-                  placeholder="Opportunity title"
-                  className={inputClass}
-                />
-                {errors.title && <p className="mt-1 text-xs text-[#E91E63]">{errors.title}</p>}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className={labelClass}>Title (English)</label>
+                  <textarea
+                    value={data.title}
+                    onChange={(e) => setData('title', e.target.value)}
+                    rows={2}
+                    placeholder="Opportunity title"
+                    className={inputClass}
+                  />
+                  {errors.title && <p className="mt-1 text-xs text-[#E91E63]">{errors.title}</p>}
+                </div>
+                <div>
+                  <label className={labelClass}>Title (Arabic)</label>
+                  <textarea
+                    value={data.title_ar}
+                    onChange={(e) => setData('title_ar', e.target.value)}
+                    rows={2}
+                    dir="rtl"
+                    placeholder="عنوان الفرصة"
+                    className={inputClass}
+                  />
+                  {errors.title_ar && <p className="mt-1 text-xs text-[#E91E63]">{errors.title_ar}</p>}
+                </div>
               </div>
 
               <div>
@@ -124,26 +141,51 @@ export default function OpportunityForm({ opportunity, types, categories, countr
                 {errors.slug && <p className="mt-1 text-xs text-[#E91E63]">{errors.slug}</p>}
               </div>
 
-              <div>
-                <label className={labelClass}>Excerpt</label>
-                <textarea
-                  value={data.excerpt}
-                  onChange={(e) => setData('excerpt', e.target.value)}
-                  rows={2}
-                  placeholder="Short excerpt"
-                  className={inputClass}
-                />
-                {errors.excerpt && <p className="mt-1 text-xs text-[#E91E63]">{errors.excerpt}</p>}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className={labelClass}>Excerpt (English)</label>
+                  <textarea
+                    value={data.excerpt}
+                    onChange={(e) => setData('excerpt', e.target.value)}
+                    rows={2}
+                    placeholder="Short excerpt"
+                    className={inputClass}
+                  />
+                  {errors.excerpt && <p className="mt-1 text-xs text-[#E91E63]">{errors.excerpt}</p>}
+                </div>
+                <div>
+                  <label className={labelClass}>Excerpt (Arabic)</label>
+                  <textarea
+                    value={data.excerpt_ar}
+                    onChange={(e) => setData('excerpt_ar', e.target.value)}
+                    rows={2}
+                    dir="rtl"
+                    placeholder="مقتطف قصير"
+                    className={inputClass}
+                  />
+                  {errors.excerpt_ar && <p className="mt-1 text-xs text-[#E91E63]">{errors.excerpt_ar}</p>}
+                </div>
               </div>
 
               <div>
-                <label className={labelClass}>Description</label>
+                <label className={labelClass}>Description (English)</label>
                 <RichTextEditor
                   value={data.content}
                   onChange={(html) => setData('content', html)}
                   placeholder="Write the opportunity description..."
                 />
                 {errors.content && <p className="mt-1 text-xs text-[#E91E63]">{errors.content}</p>}
+              </div>
+
+              <div>
+                <label className={labelClass}>Description (Arabic)</label>
+                <RichTextEditor
+                  value={data.content_ar}
+                  onChange={(html) => setData('content_ar', html)}
+                  placeholder="اكتب وصف الفرصة..."
+                  dir="rtl"
+                />
+                {errors.content_ar && <p className="mt-1 text-xs text-[#E91E63]">{errors.content_ar}</p>}
               </div>
             </div>
           </div>

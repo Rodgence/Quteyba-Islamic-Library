@@ -39,7 +39,7 @@ class AdminTypesController extends Controller
             'slug' => 'required|string|unique:opportunity_types,slug,' . $type->id,
             'icon' => 'nullable|string|max:255',
         ]);
-        $validated['name'] = $this->localizedPayload($validated['name'], $type->name);
+        $validated['name'] = $this->localizedPayload($validated['name'], existing: $type->name);
         $type->update($validated);
 
         return back()->with('success', 'Type updated.');

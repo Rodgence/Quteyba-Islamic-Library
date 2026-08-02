@@ -8,7 +8,7 @@ abstract class Controller
     {
         for ($depth = 0; $depth < 5; $depth++) {
             if (is_array($value)) {
-                $value = $value['en'] ?? $value['ar'] ?? reset($value) ?: '';
+                $value = $value['ar'] ?? $value['en'] ?? reset($value) ?: '';
                 continue;
             }
 
@@ -27,14 +27,21 @@ abstract class Controller
         return is_scalar($value) ? (string) $value : '';
     }
 
-    protected function localizedPayload(?string $value, mixed $existing = null): ?array
+    protected function localizedPayload(?string $valueEn, ?string $valueAr = null, mixed $existing = null): ?array
     {
-        if ($value === null) {
+        if ($valueEn === null && $valueAr === null) {
             return null;
         }
 
         $translations = is_array($existing) ? $existing : [];
-        $translations['en'] = $value;
+
+        if ($valueEn !== null) {
+            $translations['en'] = $valueEn;
+        }
+
+        if ($valueAr !== null) {
+            $translations['ar'] = $valueAr;
+        }
 
         return $translations;
     }

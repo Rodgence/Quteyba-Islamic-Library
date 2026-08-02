@@ -21,23 +21,23 @@ export default function PublicLayout({ children }: PropsWithChildren) {
   const xUrl = siteSettings.x_url || socialLinks.x
 
   const navItems = [
-    { label: 'Home', href: '/' },
-    { label: 'Opportunities', href: '/opportunities' },
-    { label: 'Services', href: '/services' },
-    { label: 'Courses', href: '/courses' },
-    { label: 'Certificates', href: '/certificates' },
-    { label: 'About', href: '/about' },
-    { label: 'Contact Us', href: '/contact' },
+    { label: 'الرئيسية', href: '/' },
+    { label: 'الفرص', href: '/opportunities' },
+    { label: 'الخدمات', href: '/services' },
+    { label: 'الدورات', href: '/courses' },
+    { label: 'الشهادات', href: '/certificates' },
+    { label: 'من نحن', href: '/about' },
+    { label: 'اتصل بنا', href: '/contact' },
   ]
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-[#101828]" dir="ltr" lang="en">
+    <div className="flex min-h-screen flex-col bg-white text-[#101828]" dir="rtl" lang="ar">
       <header className="sticky top-0 z-50 border-b border-border bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link href="/" aria-label="Abu Quteyba International Islamic Library">
+          <Link href="/" aria-label="مكتبة أبي قتيبة الإسلامية العالمية">
             <img
               src="/logo.png"
-              alt="Abu Quteyba International Islamic Library"
+              alt="مكتبة أبي قتيبة الإسلامية العالمية"
               className="h-12 w-auto object-contain"
             />
           </Link>
@@ -58,14 +58,14 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             <Link
               href="/search"
               className="rounded-lg border border-border p-2 text-black hover:text-primary"
-              aria-label="Search"
+              aria-label="بحث"
             >
               <Search className="h-4 w-4" />
             </Link>
             <button
               className="rounded-lg border border-border p-2 lg:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Menu"
+              aria-label="القائمة"
             >
               {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
@@ -108,7 +108,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#25D366]/10 text-[#128C3E]">
                 <Headphones className="h-5 w-5" />
               </span>
-              Chat on WhatsApp
+              الدردشة عبر واتساب
             </a>
             <a
               href={whatsappChannelUrl}
@@ -120,13 +120,13 @@ export default function PublicLayout({ children }: PropsWithChildren) {
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#25D366]/10 text-[#128C3E]">
                 <Radio className="h-5 w-5" />
               </span>
-              Join WhatsApp channel
+              انضم إلى قناة واتساب
             </a>
           </div>
         )}
         <button
           type="button"
-          aria-label={whatsappMenuOpen ? 'Close WhatsApp options' : 'Open WhatsApp options'}
+          aria-label={whatsappMenuOpen ? 'إغلاق خيارات واتساب' : 'فتح خيارات واتساب'}
           aria-expanded={whatsappMenuOpen}
           aria-controls="whatsapp-actions"
           onClick={() => setWhatsappMenuOpen((open) => !open)}
@@ -140,61 +140,61 @@ export default function PublicLayout({ children }: PropsWithChildren) {
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <Link href="/" aria-label="Abu Quteyba International Islamic Library">
+              <Link href="/" aria-label="مكتبة أبي قتيبة الإسلامية العالمية">
                 <img
                   src="/logo.png"
-                  alt="Abu Quteyba International Islamic Library"
+                  alt="مكتبة أبي قتيبة الإسلامية العالمية"
                   className="mb-4 h-14 w-auto object-contain"
                 />
               </Link>
               <p className="text-sm leading-relaxed opacity-80">
-                Your trusted platform for discovering the latest study, work, and travel opportunities around the world.
+                منصتك الموثوقة لاكتشاف أحدث فرص الدراسة والعمل والسفر حول العالم.
               </p>
             </div>
             <div>
-              <h4 className="mb-4 text-sm font-semibold">Quick Links</h4>
+              <h4 className="mb-4 text-sm font-semibold">روابط سريعة</h4>
               <div className="flex flex-col gap-2 text-sm opacity-80">
-                <Link href="/opportunities" className="hover:underline">Opportunities</Link>
-                <Link href="/services" className="hover:underline">Services</Link>
-                <Link href="/courses" className="hover:underline">Courses</Link>
-                <Link href="/about" className="hover:underline">About</Link>
+                <Link href="/opportunities" className="hover:underline">الفرص</Link>
+                <Link href="/services" className="hover:underline">الخدمات</Link>
+                <Link href="/courses" className="hover:underline">الدورات</Link>
+                <Link href="/about" className="hover:underline">من نحن</Link>
               </div>
             </div>
             <div>
-              <h4 className="mb-4 text-sm font-semibold">Important Pages</h4>
+              <h4 className="mb-4 text-sm font-semibold">صفحات مهمة</h4>
               <div className="flex flex-col gap-2 text-sm opacity-80">
-                <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
-                <Link href="/terms-and-conditions" className="hover:underline">Terms & Conditions</Link>
-                <Link href="/certificates" className="hover:underline">Certificates</Link>
-                <Link href="/advertise" className="hover:underline">Advertise</Link>
+                <Link href="/privacy-policy" className="hover:underline">سياسة الخصوصية</Link>
+                <Link href="/terms-and-conditions" className="hover:underline">الشروط والأحكام</Link>
+                <Link href="/certificates" className="hover:underline">الشهادات</Link>
+                <Link href="/advertise" className="hover:underline">أعلن معنا</Link>
               </div>
             </div>
             <div>
-              <h4 className="mb-4 text-sm font-semibold">Contact Us</h4>
+              <h4 className="mb-4 text-sm font-semibold">اتصل بنا</h4>
               <div className="flex flex-wrap gap-2">
-                <a href={whatsappChannelUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#25D366]">
+                <a href={whatsappChannelUrl} target="_blank" rel="noopener noreferrer" aria-label="قناة واتساب" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#25D366]">
                   <FaWhatsapp className="h-4 w-4" />
                 </a>
-                <a href={telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#26A5E4]">
+                <a href={telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="تيليجرام" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#26A5E4]">
                   <FaTelegram className="h-4 w-4" />
                 </a>
-                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#E4405F]">
+                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="إنستغرام" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#E4405F]">
                   <FaInstagram className="h-4 w-4" />
                 </a>
-                <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#FF0000]">
+                <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label="يوتيوب" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#FF0000]">
                   <FaYoutube className="h-4 w-4" />
                 </a>
-                <a href={xUrl} target="_blank" rel="noopener noreferrer" aria-label="X" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
+                <a href={xUrl} target="_blank" rel="noopener noreferrer" aria-label="إكس" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
                   <FaXTwitter className="h-4 w-4" />
                 </a>
-                <a href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#1877F2]">
+                <a href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="فيسبوك" className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-[#1877F2]">
                   <FaFacebookF className="h-4 w-4" />
                 </a>
               </div>
             </div>
           </div>
           <div className="mt-8 border-t border-white/10 pt-6 text-center text-xs opacity-60">
-            All rights reserved &copy; {new Date().getFullYear()} Quteyba Islamic Library
+            جميع الحقوق محفوظة © {new Date().getFullYear()} مكتبة قتيبة الإسلامية
           </div>
         </div>
       </footer>

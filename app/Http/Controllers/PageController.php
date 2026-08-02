@@ -25,7 +25,7 @@ class PageController extends Controller
                 ] : null,
             ],
             'seo' => [
-                'title' => $page->seo_title ?: $title . ' | Quteyba Islamic Library',
+                'title' => $page->seo_title ?: $title . ' | مكتبة قتيبة الإسلامية',
                 'description' => $seoDescription,
             ],
         ]);

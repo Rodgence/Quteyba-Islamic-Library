@@ -43,9 +43,9 @@ class HomeController extends Controller
             ]);
 
         $stats = [
-            ['label' => 'Opportunities', 'value' => Opportunity::published()->count()],
-            ['label' => 'Countries', 'value' => \App\Models\Country::count()],
-            ['label' => 'Opportunity Types', 'value' => \App\Models\OpportunityType::count()],
+            ['label' => 'فرصة', 'value' => Opportunity::published()->count()],
+            ['label' => 'دولة', 'value' => \App\Models\Country::count()],
+            ['label' => 'نوع فرصة', 'value' => \App\Models\OpportunityType::count()],
         ];
 
         return Inertia::render('Home', [
@@ -54,8 +54,8 @@ class HomeController extends Controller
             'services' => $services,
             'stats' => $stats,
             'seo' => [
-                'title' => 'Quteyba Islamic Library - Your Opportunity to Study, Work, and Travel',
-                'description' => 'Discover the latest scholarships, jobs, internships, and visa opportunities from trusted sources around the world.',
+                'title' => 'مكتبة قتيبة الإسلامية - فرصتك للدراسة والعمل والسفر',
+                'description' => 'اكتشف أحدث المنح الدراسية والوظائف والتدريب وفرص التأشيرات من مصادر موثوقة حول العالم.',
             ],
         ]);
     }
