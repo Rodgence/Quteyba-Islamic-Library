@@ -1,10 +1,11 @@
 import { Link, useForm } from '@inertiajs/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import RichTextEditor from '@/Components/RichTextEditor'
 import type { Opportunity } from '@/Types'
 import { ArrowLeft, ImagePlus, X } from 'lucide-react'
 import { getLocalized, getLocaleValue } from '@/lib/localization'
+import { slugify } from '@/lib/slugify'
 
 interface SelectOption {
   id: number
@@ -37,6 +38,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-[#101828]'
 export default function OpportunityForm({ opportunity, types, categories, countries }: Props) {
   const isEdit = opportunity !== null
   const [previewUrl, setPreviewUrl] = useState<string | null>(opportunity?.featured_image?.url ?? null)
+  const slugTouchedRef = useRef(isEdit)
 
   const { data, setData, post, processing, errors } = useForm({
     _method: isEdit ? 'put' : 'post',
@@ -109,7 +111,14 @@ export default function OpportunityForm({ opportunity, types, categories, countr
                   <label className={labelClass}>Title (English)</label>
                   <textarea
                     value={data.title}
-                    onChange={(e) => setData('title', e.target.value)}
+                    onChange={(e) => {
+                      const nextTitle = e.target.value
+                      setData('title', nextTitle)
+                      if (!slugTouchedRef.current) {
+                        const nextSlug = slugify(nextTitle)
+                        if (/[a-z]/.test(nextSlug)) setData('slug', nextSlug)
+                      }
+                    }}
                     rows={2}
                     placeholder="Opportunity title"
                     className={inputClass}
@@ -135,9 +144,16 @@ export default function OpportunityForm({ opportunity, types, categories, countr
                 <input
                   type="text"
                   value={data.slug}
-                  onChange={(e) => setData('slug', e.target.value)}
+                  onChange={(e) => {
+                    slugTouchedRef.current = true
+                    setData('slug', e.target.value)
+                  }}
+                  placeholder="auto-generated-from-title"
                   className={inputClass}
                 />
+                <p className="mt-1 text-xs text-gray-500">
+                  Used in the page URL — lowercase letters, numbers, and hyphens only.
+                </p>
                 {errors.slug && <p className="mt-1 text-xs text-[#E91E63]">{errors.slug}</p>}
               </div>
 

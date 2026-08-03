@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import { ArrowLeft, ImagePlus, Save, X } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import RichTextEditor from '@/Components/RichTextEditor'
 import { getLocaleValue } from '@/lib/localization'
+import { slugify } from '@/lib/slugify'
 
 interface CourseFormData {
   id: number
@@ -37,6 +38,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-gray-700'
 export default function CourseForm({ course }: Props) {
   const isEdit = course !== null
   const [previewUrl, setPreviewUrl] = useState<string | null>(course?.featured_image?.url ?? null)
+  const slugTouchedRef = useRef(isEdit)
   const { data, setData, post, processing, errors } = useForm({
     _method: isEdit ? 'put' : 'post',
     name: getLocaleValue(course?.name, 'en'),
@@ -97,7 +99,18 @@ export default function CourseForm({ course }: Props) {
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label className={labelClass}>Name (English)</label>
-                  <input value={data.name} onChange={(e) => setData('name', e.target.value)} className={inputClass} />
+                  <input
+                    value={data.name}
+                    onChange={(e) => {
+                      const nextName = e.target.value
+                      setData('name', nextName)
+                      if (!slugTouchedRef.current) {
+                        const nextSlug = slugify(nextName)
+                        if (/[a-z]/.test(nextSlug)) setData('slug', nextSlug)
+                      }
+                    }}
+                    className={inputClass}
+                  />
                   {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
                 </div>
                 <div>
@@ -108,7 +121,18 @@ export default function CourseForm({ course }: Props) {
               </div>
               <div>
                 <label className={labelClass}>Slug</label>
-                <input value={data.slug} onChange={(e) => setData('slug', e.target.value)} className={inputClass} />
+                <input
+                  value={data.slug}
+                  onChange={(e) => {
+                    slugTouchedRef.current = true
+                    setData('slug', e.target.value)
+                  }}
+                  placeholder="auto-generated-from-name"
+                  className={inputClass}
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Used in the page URL — lowercase letters, numbers, and hyphens only.
+                </p>
                 {errors.slug && <p className="mt-1 text-xs text-red-600">{errors.slug}</p>}
               </div>
               <div>

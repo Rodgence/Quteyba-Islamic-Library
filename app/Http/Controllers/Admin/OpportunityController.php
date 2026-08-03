@@ -66,7 +66,7 @@ class OpportunityController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:1000',
             'title_ar' => 'nullable|string|max:1000',
-            'slug' => 'required|string|unique:opportunities',
+            'slug' => ['required', 'string', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:opportunities'],
             'excerpt' => 'nullable|string|max:5000',
             'excerpt_ar' => 'nullable|string|max:5000',
             'content' => 'required|string',
@@ -84,6 +84,8 @@ class OpportunityController extends Controller
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
             'featured_image_alt' => 'nullable|string|max:255',
             'remove_featured_image' => 'nullable|boolean',
+        ], [
+            'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
         ]);
 
         if ($validated['status'] === 'published' && ! $request->hasFile('featured_image')) {
@@ -133,7 +135,7 @@ class OpportunityController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:1000',
             'title_ar' => 'nullable|string|max:1000',
-            'slug' => 'required|string|unique:opportunities,slug,' . $opportunity->id,
+            'slug' => ['required', 'string', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:opportunities,slug,' . $opportunity->id],
             'excerpt' => 'nullable|string|max:5000',
             'excerpt_ar' => 'nullable|string|max:5000',
             'content' => 'required|string',
@@ -151,6 +153,8 @@ class OpportunityController extends Controller
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
             'featured_image_alt' => 'nullable|string|max:255',
             'remove_featured_image' => 'nullable|boolean',
+        ], [
+            'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
         ]);
 
         $willHaveFeaturedImage = $request->hasFile('featured_image')

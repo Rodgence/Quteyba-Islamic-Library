@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import { ArrowLeft, ImagePlus, Save, X } from 'lucide-react'
 import AdminLayout from '@/Layouts/AdminLayout'
 import RichTextEditor from '@/Components/RichTextEditor'
 import { getLocaleValue } from '@/lib/localization'
+import { slugify } from '@/lib/slugify'
 
 interface ServiceFormData {
   id: number
@@ -34,6 +35,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-gray-700'
 export default function ServiceForm({ service }: Props) {
   const isEdit = service !== null
   const [previewUrl, setPreviewUrl] = useState<string | null>(service?.featured_image?.url ?? null)
+  const slugTouchedRef = useRef(isEdit)
 
   const { data, setData, post, processing, errors } = useForm({
     _method: isEdit ? 'put' : 'post',
@@ -107,7 +109,14 @@ export default function ServiceForm({ service }: Props) {
                   <input
                     type="text"
                     value={data.title}
-                    onChange={(event) => setData('title', event.target.value)}
+                    onChange={(event) => {
+                      const nextTitle = event.target.value
+                      setData('title', nextTitle)
+                      if (!slugTouchedRef.current) {
+                        const nextSlug = slugify(nextTitle)
+                        if (/[a-z]/.test(nextSlug)) setData('slug', nextSlug)
+                      }
+                    }}
                     className={inputClass}
                     placeholder="Service title"
                   />
@@ -132,10 +141,16 @@ export default function ServiceForm({ service }: Props) {
                 <input
                   type="text"
                   value={data.slug}
-                  onChange={(event) => setData('slug', event.target.value)}
+                  onChange={(event) => {
+                    slugTouchedRef.current = true
+                    setData('slug', event.target.value)
+                  }}
                   className={inputClass}
-                  placeholder="service-slug"
+                  placeholder="auto-generated-from-title"
                 />
+                <p className="mt-1 text-xs text-gray-500">
+                  Used in the page URL — lowercase letters, numbers, and hyphens only.
+                </p>
                 {errors.slug && <p className="mt-1 text-xs text-red-600">{errors.slug}</p>}
               </div>
 

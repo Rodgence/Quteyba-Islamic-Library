@@ -102,13 +102,20 @@ class PageController extends Controller
         return $request->validate([
             'title' => 'required|string|max:1000',
             'title_ar' => 'nullable|string|max:1000',
-            'slug' => 'required|string|unique:pages,slug' . ($page ? ',' . $page->id : ''),
+            'slug' => [
+                'required',
+                'string',
+                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                'unique:pages,slug' . ($page ? ',' . $page->id : ''),
+            ],
             'content' => 'required|string',
             'content_ar' => 'nullable|string',
             'status' => 'required|in:draft,published',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
             'featured_image_alt' => 'nullable|string|max:255',
             'remove_featured_image' => 'nullable|boolean',
+        ], [
+            'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
         ]);
     }
 

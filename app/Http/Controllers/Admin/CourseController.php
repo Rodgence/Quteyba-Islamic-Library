@@ -103,7 +103,12 @@ class CourseController extends Controller
         return $request->validate([
             'name' => 'required|string|max:1000',
             'name_ar' => 'nullable|string|max:1000',
-            'slug' => 'required|string|unique:courses,slug' . ($course ? ',' . $course->id : ''),
+            'slug' => [
+                'required',
+                'string',
+                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                'unique:courses,slug' . ($course ? ',' . $course->id : ''),
+            ],
             'description' => 'required|string',
             'description_ar' => 'nullable|string',
             'language' => 'required|string|max:100',
@@ -118,6 +123,8 @@ class CourseController extends Controller
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
             'featured_image_alt' => 'nullable|string|max:255',
             'remove_featured_image' => 'nullable|boolean',
+        ], [
+            'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
         ]);
     }
 
