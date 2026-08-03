@@ -26,6 +26,11 @@ export default function RichTextEditor({ value, onChange, placeholder, dir = 'lt
   const quillRef = useRef<Quill | null>(null)
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
+  // Tracks the last HTML we told the parent about, so the sync effect below
+  // can tell "value changed because we typed it" apart from "value changed
+  // because the parent loaded different content" and only reset the editor
+  // (which would clobber in-progress typing) for the latter.
+  const lastEmittedRef = useRef(value)
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -42,10 +47,12 @@ export default function RichTextEditor({ value, onChange, placeholder, dir = 'lt
     quill.root.setAttribute('dir', dir)
     quill.root.style.textAlign = dir === 'rtl' ? 'right' : 'left'
     quill.root.innerHTML = value
+    lastEmittedRef.current = value
     quillRef.current = quill
 
     quill.on('text-change', () => {
       const html = quill.getText().trim() === '' ? '' : quill.root.innerHTML
+      lastEmittedRef.current = html
       onChangeRef.current(html)
     })
 
@@ -59,10 +66,9 @@ export default function RichTextEditor({ value, onChange, placeholder, dir = 'lt
   useEffect(() => {
     const quill = quillRef.current
     if (!quill) return
-    const currentHtml = quill.getText().trim() === '' ? '' : quill.root.innerHTML
-    if (value !== currentHtml) {
-      quill.root.innerHTML = value
-    }
+    if (value === lastEmittedRef.current) return
+    quill.root.innerHTML = value
+    lastEmittedRef.current = value
   }, [value])
 
   return <div ref={containerRef} className="rich-text-editor" />
