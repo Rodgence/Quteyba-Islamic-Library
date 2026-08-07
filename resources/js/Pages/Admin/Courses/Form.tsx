@@ -92,7 +92,13 @@ export default function CourseForm({ course }: Props) {
           <h1 className="text-2xl font-bold text-[#073B33]">{isEdit ? 'Edit Course' : 'Add Course'}</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          data-gramm="false"
+          data-gramm_editor="false"
+          data-enable-grammarly="false"
+        >
           <section className="rounded-2xl border border-gray-200 bg-white p-5">
             <h2 className="mb-4 font-semibold text-gray-900">Course Content</h2>
             <div className="grid gap-5">

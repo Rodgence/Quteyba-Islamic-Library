@@ -99,7 +99,13 @@ export default function ServiceForm({ service }: Props) {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          data-gramm="false"
+          data-gramm_editor="false"
+          data-enable-grammarly="false"
+        >
           <section className="rounded-2xl border border-gray-200 bg-white p-5">
             <h2 className="mb-4 text-base font-semibold text-gray-900">Basic Information</h2>
             <div className="grid gap-5">

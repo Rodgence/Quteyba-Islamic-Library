@@ -46,6 +46,12 @@ export default function RichTextEditor({ value, onChange, placeholder, dir = 'lt
 
     quill.root.setAttribute('dir', dir)
     quill.root.style.textAlign = dir === 'rtl' ? 'right' : 'left'
+    // Tell Grammarly (and similar writing-assistant extensions) to leave this
+    // contenteditable area alone — they attach to exactly this kind of element
+    // and a malfunctioning copy can corrupt what's being typed.
+    quill.root.setAttribute('data-gramm', 'false')
+    quill.root.setAttribute('data-gramm_editor', 'false')
+    quill.root.setAttribute('data-enable-grammarly', 'false')
     quill.root.innerHTML = value
     lastEmittedRef.current = value
     quillRef.current = quill

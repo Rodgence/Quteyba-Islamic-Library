@@ -86,7 +86,13 @@ export default function PageForm({ page }: Props) {
           </h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+          data-gramm="false"
+          data-gramm_editor="false"
+          data-enable-grammarly="false"
+        >
           <div className="rounded-2xl border border-[#e0e0e0] bg-white p-5">
             <h2 className="mb-4 text-base font-semibold text-[#101828]">Page Content</h2>
 
