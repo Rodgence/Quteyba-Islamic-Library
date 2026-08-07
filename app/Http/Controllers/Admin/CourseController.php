@@ -39,7 +39,7 @@ class CourseController extends Controller
 
         unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
         $validated['featured_image_id'] = $featuredImage?->id;
-        $validated['name'] = $this->localizedPayload($validated['name'], $validated['name_ar'] ?? null);
+        $validated['name'] = $this->localizedPayload($validated['name'] ?? null, $validated['name_ar'] ?? null);
         $validated['description'] = $this->localizedPayload($validated['description'] ?? null, $validated['description_ar'] ?? null);
         unset($validated['name_ar'], $validated['description_ar']);
 
@@ -82,7 +82,7 @@ class CourseController extends Controller
             ]);
         }
 
-        $validated['name'] = $this->localizedPayload($validated['name'], $validated['name_ar'] ?? null, $course->name);
+        $validated['name'] = $this->localizedPayload($validated['name'] ?? null, $validated['name_ar'] ?? null, $course->name);
         $validated['description'] = $this->localizedPayload($validated['description'] ?? null, $validated['description_ar'] ?? null, $course->description);
         unset($validated['name_ar'], $validated['description_ar']);
 
@@ -101,16 +101,16 @@ class CourseController extends Controller
     private function validateCourse(Request $request, ?Course $course = null): array
     {
         return $request->validate([
-            'name' => 'required|string|max:1000',
-            'name_ar' => 'nullable|string|max:1000',
+            'name' => 'nullable|required_without:name_ar|string|max:1000',
+            'name_ar' => 'nullable|required_without:name|string|max:1000',
             'slug' => [
                 'required',
                 'string',
                 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
                 'unique:courses,slug' . ($course ? ',' . $course->id : ''),
             ],
-            'description' => 'required|string',
-            'description_ar' => 'nullable|string',
+            'description' => 'nullable|required_without:description_ar|string',
+            'description_ar' => 'nullable|required_without:description|string',
             'language' => 'required|string|max:100',
             'level' => 'required|string|max:100',
             'duration' => 'nullable|string|max:100',
@@ -125,6 +125,10 @@ class CourseController extends Controller
             'remove_featured_image' => 'nullable|boolean',
         ], [
             'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
+            'name.required_without' => 'Provide a name in English or Arabic.',
+            'name_ar.required_without' => 'Provide a name in English or Arabic.',
+            'description.required_without' => 'Provide a description in English or Arabic.',
+            'description_ar.required_without' => 'Provide a description in English or Arabic.',
         ]);
     }
 

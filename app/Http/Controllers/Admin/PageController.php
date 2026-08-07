@@ -39,7 +39,7 @@ class PageController extends Controller
 
         unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
         $validated['featured_image_id'] = $featuredImage?->id;
-        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null);
+        $validated['title'] = $this->localizedPayload($validated['title'] ?? null, $validated['title_ar'] ?? null);
         $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null);
         unset($validated['title_ar'], $validated['content_ar']);
 
@@ -82,7 +82,7 @@ class PageController extends Controller
             ]);
         }
 
-        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null, $page->title);
+        $validated['title'] = $this->localizedPayload($validated['title'] ?? null, $validated['title_ar'] ?? null, $page->title);
         $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null, $page->content);
         unset($validated['title_ar'], $validated['content_ar']);
 
@@ -100,22 +100,26 @@ class PageController extends Controller
     private function validatePage(Request $request, ?Page $page = null): array
     {
         return $request->validate([
-            'title' => 'required|string|max:1000',
-            'title_ar' => 'nullable|string|max:1000',
+            'title' => 'nullable|required_without:title_ar|string|max:1000',
+            'title_ar' => 'nullable|required_without:title|string|max:1000',
             'slug' => [
                 'required',
                 'string',
                 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
                 'unique:pages,slug' . ($page ? ',' . $page->id : ''),
             ],
-            'content' => 'required|string',
-            'content_ar' => 'nullable|string',
+            'content' => 'nullable|required_without:content_ar|string',
+            'content_ar' => 'nullable|required_without:content|string',
             'status' => 'required|in:draft,published',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
             'featured_image_alt' => 'nullable|string|max:255',
             'remove_featured_image' => 'nullable|boolean',
         ], [
             'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
+            'title.required_without' => 'Provide a title in English or Arabic.',
+            'title_ar.required_without' => 'Provide a title in English or Arabic.',
+            'content.required_without' => 'Provide a description in English or Arabic.',
+            'content_ar.required_without' => 'Provide a description in English or Arabic.',
         ]);
     }
 

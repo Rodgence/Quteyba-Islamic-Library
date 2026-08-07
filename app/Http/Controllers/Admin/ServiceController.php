@@ -60,7 +60,7 @@ class ServiceController extends Controller
 
         unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
         $validated['featured_image_id'] = $featuredImage?->id;
-        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null);
+        $validated['title'] = $this->localizedPayload($validated['title'] ?? null, $validated['title_ar'] ?? null);
         $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null, $validated['short_description_ar'] ?? null);
         $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null);
         unset($validated['title_ar'], $validated['short_description_ar'], $validated['content_ar']);
@@ -98,7 +98,7 @@ class ServiceController extends Controller
             ]);
         }
 
-        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null, $service->title);
+        $validated['title'] = $this->localizedPayload($validated['title'] ?? null, $validated['title_ar'] ?? null, $service->title);
         $validated['short_description'] = $this->localizedPayload($validated['short_description'] ?? null, $validated['short_description_ar'] ?? null, $service->short_description);
         $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null, $service->content);
         unset($validated['title_ar'], $validated['short_description_ar'], $validated['content_ar']);
@@ -112,18 +112,18 @@ class ServiceController extends Controller
     private function validateService(Request $request, ?Service $service = null): array
     {
         return $request->validate([
-            'title' => 'required|string|max:1000',
-            'title_ar' => 'nullable|string|max:1000',
+            'title' => 'nullable|required_without:title_ar|string|max:1000',
+            'title_ar' => 'nullable|required_without:title|string|max:1000',
             'slug' => [
                 'required',
                 'string',
                 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
                 'unique:services,slug' . ($service ? ',' . $service->id : ''),
             ],
-            'short_description' => 'required|string|max:5000',
-            'short_description_ar' => 'nullable|string|max:5000',
-            'content' => 'required|string',
-            'content_ar' => 'nullable|string',
+            'short_description' => 'nullable|required_without:short_description_ar|string|max:5000',
+            'short_description_ar' => 'nullable|required_without:short_description|string|max:5000',
+            'content' => 'nullable|required_without:content_ar|string',
+            'content_ar' => 'nullable|required_without:content|string',
             'icon' => 'nullable|string|max:255',
             'whatsapp_url' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published',
@@ -134,6 +134,12 @@ class ServiceController extends Controller
             'remove_featured_image' => 'nullable|boolean',
         ], [
             'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
+            'title.required_without' => 'Provide a title in English or Arabic.',
+            'title_ar.required_without' => 'Provide a title in English or Arabic.',
+            'short_description.required_without' => 'Provide a short description in English or Arabic.',
+            'short_description_ar.required_without' => 'Provide a short description in English or Arabic.',
+            'content.required_without' => 'Provide a description in English or Arabic.',
+            'content_ar.required_without' => 'Provide a description in English or Arabic.',
         ]);
     }
 

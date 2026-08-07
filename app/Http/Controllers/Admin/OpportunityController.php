@@ -64,13 +64,13 @@ class OpportunityController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:1000',
-            'title_ar' => 'nullable|string|max:1000',
+            'title' => 'nullable|required_without:title_ar|string|max:1000',
+            'title_ar' => 'nullable|required_without:title|string|max:1000',
             'slug' => ['required', 'string', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:opportunities'],
             'excerpt' => 'nullable|string|max:5000',
             'excerpt_ar' => 'nullable|string|max:5000',
-            'content' => 'required|string',
-            'content_ar' => 'nullable|string',
+            'content' => 'nullable|required_without:content_ar|string',
+            'content_ar' => 'nullable|required_without:content|string',
             'opportunity_type_id' => 'nullable|exists:opportunity_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'country_id' => 'nullable|exists:countries,id',
@@ -86,6 +86,10 @@ class OpportunityController extends Controller
             'remove_featured_image' => 'nullable|boolean',
         ], [
             'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
+            'title.required_without' => 'Provide a title in English or Arabic.',
+            'title_ar.required_without' => 'Provide a title in English or Arabic.',
+            'content.required_without' => 'Provide a description in English or Arabic.',
+            'content_ar.required_without' => 'Provide a description in English or Arabic.',
         ]);
 
         if ($validated['status'] === 'published' && ! $request->hasFile('featured_image')) {
@@ -99,7 +103,7 @@ class OpportunityController extends Controller
             : null;
         unset($validated['featured_image'], $validated['featured_image_alt'], $validated['remove_featured_image']);
         $validated['featured_image_id'] = $featuredImage?->id;
-        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null);
+        $validated['title'] = $this->localizedPayload($validated['title'] ?? null, $validated['title_ar'] ?? null);
         $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null, $validated['excerpt_ar'] ?? null);
         $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null);
         unset($validated['title_ar'], $validated['excerpt_ar'], $validated['content_ar']);
@@ -133,13 +137,13 @@ class OpportunityController extends Controller
     public function update(Request $request, Opportunity $opportunity)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:1000',
-            'title_ar' => 'nullable|string|max:1000',
+            'title' => 'nullable|required_without:title_ar|string|max:1000',
+            'title_ar' => 'nullable|required_without:title|string|max:1000',
             'slug' => ['required', 'string', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:opportunities,slug,' . $opportunity->id],
             'excerpt' => 'nullable|string|max:5000',
             'excerpt_ar' => 'nullable|string|max:5000',
-            'content' => 'required|string',
-            'content_ar' => 'nullable|string',
+            'content' => 'nullable|required_without:content_ar|string',
+            'content_ar' => 'nullable|required_without:content|string',
             'opportunity_type_id' => 'nullable|exists:opportunity_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'country_id' => 'nullable|exists:countries,id',
@@ -155,6 +159,10 @@ class OpportunityController extends Controller
             'remove_featured_image' => 'nullable|boolean',
         ], [
             'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
+            'title.required_without' => 'Provide a title in English or Arabic.',
+            'title_ar.required_without' => 'Provide a title in English or Arabic.',
+            'content.required_without' => 'Provide a description in English or Arabic.',
+            'content_ar.required_without' => 'Provide a description in English or Arabic.',
         ]);
 
         $willHaveFeaturedImage = $request->hasFile('featured_image')
@@ -181,7 +189,7 @@ class OpportunityController extends Controller
             ]);
         }
 
-        $validated['title'] = $this->localizedPayload($validated['title'], $validated['title_ar'] ?? null, $opportunity->title);
+        $validated['title'] = $this->localizedPayload($validated['title'] ?? null, $validated['title_ar'] ?? null, $opportunity->title);
         $validated['excerpt'] = $this->localizedPayload($validated['excerpt'] ?? null, $validated['excerpt_ar'] ?? null, $opportunity->excerpt);
         $validated['content'] = $this->localizedPayload($validated['content'] ?? null, $validated['content_ar'] ?? null, $opportunity->content);
         unset($validated['title_ar'], $validated['excerpt_ar'], $validated['content_ar']);
