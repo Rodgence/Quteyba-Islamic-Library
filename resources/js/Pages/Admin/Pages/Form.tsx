@@ -88,7 +88,8 @@ export default function PageForm({ page }: Props) {
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-5"
+          className="space-y-5 notranslate"
+          translate="no"
           data-gramm="false"
           data-gramm_editor="false"
           data-enable-grammarly="false"

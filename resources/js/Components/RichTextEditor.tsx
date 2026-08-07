@@ -52,6 +52,13 @@ export default function RichTextEditor({ value, onChange, placeholder, dir = 'lt
     quill.root.setAttribute('data-gramm', 'false')
     quill.root.setAttribute('data-gramm_editor', 'false')
     quill.root.setAttribute('data-enable-grammarly', 'false')
+    // Tell page-translation (Chrome's built-in translate, and most translate
+    // extensions) to skip this element. Unlike a <textarea>'s value, this is a
+    // real contenteditable DOM subtree of text nodes, which translators
+    // actively rewrite — directly conflicting with Quill's own DOM
+    // management and corrupting whatever the user is typing.
+    quill.root.setAttribute('translate', 'no')
+    quill.root.classList.add('notranslate')
     quill.root.innerHTML = value
     lastEmittedRef.current = value
     quillRef.current = quill
@@ -77,5 +84,5 @@ export default function RichTextEditor({ value, onChange, placeholder, dir = 'lt
     lastEmittedRef.current = value
   }, [value])
 
-  return <div ref={containerRef} className="rich-text-editor" />
+  return <div ref={containerRef} className="rich-text-editor notranslate" translate="no" />
 }

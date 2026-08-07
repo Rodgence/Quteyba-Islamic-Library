@@ -94,7 +94,8 @@ export default function CourseForm({ course }: Props) {
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-6"
+          className="space-y-6 notranslate"
+          translate="no"
           data-gramm="false"
           data-gramm_editor="false"
           data-enable-grammarly="false"
